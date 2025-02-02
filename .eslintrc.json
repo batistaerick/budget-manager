@@ -1,0 +1,37 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:tailwindcss/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "project": "./tsconfig.json" },
+  "plugins": ["@typescript-eslint", "react", "tailwindcss", "import"],
+  "ignorePatterns": ["src/amplifyconfiguration.json", "src/aws-exports.js"],
+  "rules": {
+    "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/max-params": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-floating-promises": "warn",
+    "@typescript-eslint/no-unnecessary-condition": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/require-await": "warn",
+
+    "import/no-unresolved": "error",
+
+    "no-console": ["warn", { "allow": ["error"] }],
+    "no-else-return": "warn",
+    "no-nested-ternary": "warn",
+    "no-unused-vars": "warn",
+    "no-useless-return": "warn",
+
+    "react/jsx-key": "warn",
+    "react/react-in-jsx-scope": "off",
+
+    "tailwindcss/classnames-order": "warn",
+    "tailwindcss/no-custom-classname": "warn"
+  }
+}
