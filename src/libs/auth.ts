@@ -12,7 +12,7 @@ import type { SafeParseReturnType } from 'zod';
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   pages: { signIn: '/auth' },
-  session: { strategy: 'jwt' },
+  session: { strategy: 'jwt', maxAge: 604800 },
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID ?? '',

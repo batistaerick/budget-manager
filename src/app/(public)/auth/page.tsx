@@ -46,6 +46,8 @@ export default function Login(): JSX.Element {
 
     if (response?.error) {
       setIsError(true);
+    } else {
+      window.location.reload();
     }
   }, [email, password]);
 
@@ -81,23 +83,13 @@ export default function Login(): JSX.Element {
 
   return (
     <div
-      className={`
-        relative h-screen w-screen
-        bg-[url('/images/AuthBackground.jpg')] bg-cover bg-fixed bg-center bg-no-repeat
-      `}
+      className={`relative h-screen w-screen bg-[url('/images/AuthBackground.jpg')] bg-cover bg-fixed bg-center bg-no-repeat`}
     >
       <div
-        className={`
-          flex h-screen w-screen items-center justify-center
-          bg-black bg-opacity-50
-        `}
+        className={`flex h-screen w-screen items-center justify-center bg-black bg-opacity-50`}
       >
         <div
-          className={`
-            max-w-md self-center rounded-3xl px-16
-            pb-16 pt-5 transition-colors duration-500
-            sm:bg-slate-950 sm:bg-opacity-90 lg:mt-2 lg:w-2/5
-          `}
+          className={`max-w-md self-center rounded-3xl px-16 pb-16 pt-5 transition-colors duration-500 sm:bg-slate-950 sm:bg-opacity-90 lg:mt-2 lg:w-2/5`}
         >
           <h2 className="mb-8 flex items-center justify-center text-4xl font-semibold text-white">
             {variant === 'login' ? 'Sign-in' : 'Sign-up'}
@@ -139,7 +131,7 @@ export default function Login(): JSX.Element {
           </div>
           <div className="mt-10">
             <button
-              className="h-12 w-full bg-blue-950 rounded-md text-white font-bold text-lg"
+              className="h-12 w-full rounded-md bg-blue-950 text-lg font-bold text-white"
               disabled={!password.length}
               onClick={onClick}
             >
@@ -148,22 +140,14 @@ export default function Login(): JSX.Element {
           </div>
           <div className="mt-8 flex flex-row items-center justify-center gap-4">
             <FcGoogle
-              className={`
-                flex h-10 w-10 cursor-pointer
-                items-center justify-center rounded-full
-                bg-white transition hover:opacity-80
-              `}
+              className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white transition hover:opacity-80`}
               size={30}
               onClick={(): Promise<SignInResponse | undefined> =>
                 signIn('github', { callbackUrl: '/' })
               }
             />
             <FaFacebook
-              className={`
-                flex h-10 w-10 cursor-pointer
-                items-center justify-center rounded-full
-                bg-white text-blue-700 transition hover:opacity-80
-              `}
+              className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white text-blue-700 transition hover:opacity-80`}
               size={30}
               onClick={(): Promise<SignInResponse | undefined> =>
                 signIn('github', { callbackUrl: '/' })
