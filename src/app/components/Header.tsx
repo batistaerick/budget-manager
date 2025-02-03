@@ -1,34 +1,50 @@
 'use client';
+import NewTransaction from '@/app/components/NewTransaction';
 import clsx from 'clsx';
 import { signOut } from 'next-auth/react';
 import { useState, type JSX } from 'react';
+import { AiOutlinePlus } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { PiSignOutBold } from 'react-icons/pi';
 import { VscRobot } from 'react-icons/vsc';
 
 export default function Header(): JSX.Element {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isLeftOpen, setIsLeftOpen] = useState(false);
+  const [isRightOpen, setIsRightOpen] = useState(false);
 
   return (
     <>
-      {isOpen && (
+      {isLeftOpen && (
         <button
           className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
-          onClick={(): void => setIsOpen(false)}
+          onClick={(): void => setIsLeftOpen(false)}
         />
       )}
-      <header className="flex p-4 shadow-md">
+      {isRightOpen && (
         <button
-          onClick={(): void => setIsOpen((prev: boolean): boolean => !prev)}
+          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+          onClick={(): void => setIsRightOpen(false)}
+        />
+      )}
+      <header className="flex justify-between p-4 shadow-md">
+        <button
+          onClick={(): void => setIsLeftOpen((prev: boolean): boolean => !prev)}
         >
           <VscRobot size={40} className="text-white hover:text-gray-400" />
+        </button>
+        <button
+          onClick={(): void =>
+            setIsRightOpen((prev: boolean): boolean => !prev)
+          }
+        >
+          <AiOutlinePlus size={40} className="text-white hover:text-gray-400" />
         </button>
       </header>
       <div
         className={clsx(
           'fixed left-0 top-0 h-full w-64 transform bg-blue-950 p-6 shadow-lg transition-transform',
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+          isLeftOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
         <p className="text-2xl font-semibold">Menu</p>
@@ -48,6 +64,14 @@ export default function Header(): JSX.Element {
             </button>
           </div>
         </nav>
+      </div>
+      <div
+        className={clsx(
+          'fixed right-0 top-0 h-full w-[500px] transform bg-black shadow-lg transition-transform',
+          isRightOpen ? 'translate-x-0' : 'translate-x-full'
+        )}
+      >
+        <NewTransaction onClose={setIsRightOpen} />
       </div>
     </>
   );

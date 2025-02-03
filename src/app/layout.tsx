@@ -1,4 +1,5 @@
 import Header from '@/app/components/Header';
+import '@/app/globals.css';
 import { auth } from '@/libs/auth';
 import type { Metadata } from 'next';
 import type { Session } from 'next-auth';
@@ -6,7 +7,6 @@ import { SessionProvider } from 'next-auth/react';
 import type { NextFontWithVariable } from 'next/dist/compiled/@next/font';
 import { Geist, Geist_Mono } from 'next/font/google';
 import type { JSX, ReactNode } from 'react';
-import './globals.css';
 
 const geistSans: NextFontWithVariable = Geist({
   variable: '--font-geist-sans',

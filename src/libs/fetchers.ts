@@ -36,15 +36,24 @@ export async function postFetcher<TResponse, TBody = TResponse>(
     });
 }
 
-export async function patchFetch<T>(
+export async function putFetcher<T>(
   url: string,
   body?: T,
   config?: AxiosRequestConfig
 ): Promise<T> {
   return await defaultAxios
-    .patch<T>(url, body, config)
+    .put<T>(url, body, config)
     .then((response: AxiosResponse<T>): T => response.data)
     .catch((error: AxiosError): never => {
       throw error;
     });
+}
+
+export async function deleteFetcher(
+  url: string,
+  config?: AxiosRequestConfig
+): Promise<void> {
+  await defaultAxios.delete(url, config).catch((error: AxiosError): never => {
+    throw error;
+  });
 }
