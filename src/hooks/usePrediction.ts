@@ -14,6 +14,11 @@ export default function usePredictions(
 
   return useSWR(
     `/api/predictions/${lastMonth}`,
-    getFetcher<{ netPrediction: number }>
+    getFetcher<{ netPrediction: number }>,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
 }

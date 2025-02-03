@@ -1,8 +1,20 @@
 'use client';
+import DatePickerDialog from '@/app/components/DatePickerDialog';
 import usePredictions from '@/hooks/usePrediction';
-import type { JSX } from 'react';
+import { useState, type JSX } from 'react';
 
 export default function Analytics(): JSX.Element {
-  const { data } = usePredictions(new Date());
-  return <div>Value = {data?.netPrediction}</div>;
+  const [date, setDate] = useState<Date>(new Date());
+  const { data } = usePredictions(date);
+  return (
+    <div>
+      <DatePickerDialog
+        date={date}
+        setDate={setDate}
+        dateFormat="MMM/yyyy"
+        showMonthYearPicker
+      />
+      <div>Value = {data?.netPrediction}</div>
+    </div>
+  );
 }
