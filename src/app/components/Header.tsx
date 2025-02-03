@@ -13,18 +13,17 @@ export default function Header(): JSX.Element {
   const [isLeftOpen, setIsLeftOpen] = useState(false);
   const [isRightOpen, setIsRightOpen] = useState(false);
 
+  function closeMenu(): void {
+    setIsLeftOpen(false);
+    setIsRightOpen(false);
+  }
+
   return (
     <>
-      {isLeftOpen && (
+      {(isLeftOpen || isRightOpen) && (
         <button
-          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
-          onClick={(): void => setIsLeftOpen(false)}
-        />
-      )}
-      {isRightOpen && (
-        <button
-          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
-          onClick={(): void => setIsRightOpen(false)}
+          className="fixed inset-0 cursor-default bg-black bg-opacity-50 transition-opacity"
+          onClick={closeMenu}
         />
       )}
       <header className="flex justify-between p-4 shadow-md">

@@ -17,7 +17,7 @@ export default function FinancialMovements({
   mutateOnDelete,
 }: Readonly<FinancialMovementsProps>): JSX.Element {
   async function deleteTransaction(): Promise<void> {
-    await deleteFetcher(`/transactions/${transaction.id}`);
+    await deleteFetcher(`/api/transactions/${transaction.id}`);
     await mutateOnDelete();
   }
 
@@ -27,8 +27,8 @@ export default function FinancialMovements({
     if (transaction?.repeats) {
       return transaction.repeats;
     }
-    if (transaction.createdAt) {
-      return formatDate(transaction.createdAt, 'en-US');
+    if (transaction.date) {
+      return formatDate(transaction.date, 'en-US');
     }
     return '';
   }

@@ -12,6 +12,7 @@ import {
   type SetStateAction,
 } from 'react';
 import { FcCurrencyExchange, FcIdea, FcSurvey } from 'react-icons/fc';
+import { useSWRConfig } from 'swr';
 
 export interface NewTransactionProps {
   transaction?: Transaction;
@@ -34,6 +35,7 @@ export default function NewTransaction({
       repeats: undefined,
     }
   );
+  const { mutate } = useSWRConfig();
 
   useEffect((): void => {
     setForm(
@@ -57,8 +59,10 @@ export default function NewTransaction({
         } catch (error: unknown) {
           console.error(error);
         }
+        await mutate('/api/transactions?type=EXPENSE');
+        await mutate('/api/transactions?type=INCOME');
       },
-      [form]
+      [form, mutate]
     );
 
   function handleChange({

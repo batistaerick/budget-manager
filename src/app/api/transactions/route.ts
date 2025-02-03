@@ -76,11 +76,20 @@ export async function GET(request: Request): Promise<Response> {
   try {
     const { id }: User = await getCurrentUser();
     const url = new URL(request.url);
-    const transactionType = url.searchParams.get('type') as TransactionType;
+
+    const transactionType: TransactionType = url.searchParams.get(
+      'type'
+    ) as TransactionType;
+    const startDate: string = url.searchParams.get('startDate') as string;
+    const endDate: string = url.searchParams.get('endDate') as string;
 
     const transactions: Transaction[] | null =
       await prisma.transaction.findMany({
-        where: { userId: id, transactionType },
+        where: {
+          userId: id,
+          transactionType,
+          date: { gte: new Date(startDate), lte: new Date(endDate) },
+        },
       });
     return new Response(JSON.stringify(transactions));
   } catch (error: unknown) {
