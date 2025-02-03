@@ -39,7 +39,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 async function authorize(
   credentials: Partial<Record<'email' | 'password', unknown>>
 ): Promise<User> {
-  if (!credentials?.email || !credentials?.password) {
+  if (!credentials.email || !credentials.password) {
     throw new Error('Email and password required');
   }
   const email: SafeParseReturnType<string, string> = emailSchema.safeParse(

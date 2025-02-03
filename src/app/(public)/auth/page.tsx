@@ -4,12 +4,12 @@ import { postFetcher } from '@/libs/fetchers';
 import { signIn, useSession, type SignInResponse } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import {
-  KeyboardEvent,
   useCallback,
   useEffect,
   useState,
   type ChangeEvent,
   type JSX,
+  type KeyboardEvent,
 } from 'react';
 import { FaFacebook } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
@@ -73,7 +73,7 @@ export default function Login(): JSX.Element {
     key,
   }: KeyboardEvent<HTMLInputElement>): Promise<void> {
     if (key === 'Enter') {
-      onClick();
+      await onClick();
     }
   }
 

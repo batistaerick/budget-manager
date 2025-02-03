@@ -3,10 +3,10 @@ import Input from '@/app/components/Input';
 import { postFetcher, putFetcher } from '@/libs/fetchers';
 import type { Transaction } from '@prisma/client';
 import {
-  ChangeEvent,
   useCallback,
   useEffect,
   useState,
+  type ChangeEvent,
   type Dispatch,
   type JSX,
   type SetStateAction,
@@ -46,32 +46,31 @@ export default function NewTransaction({
     );
   }, [date]);
 
-  const onSubmit: (event: ChangeEvent<HTMLFormElement>) => Promise<void> =
-    useCallback(
-      async (event: ChangeEvent<HTMLFormElement>): Promise<void> => {
-        try {
-          event.preventDefault();
-          if (form?.id) {
-            await putFetcher<Partial<Transaction>>('/api/transactions', form);
-          } else {
-            await postFetcher<Partial<Transaction>>('/api/transactions', form);
-          }
-        } catch (error: unknown) {
-          console.error(error);
+  const onSubmit = useCallback(
+    async (event: ChangeEvent<HTMLFormElement>): Promise<void> => {
+      try {
+        event.preventDefault();
+        if (form?.id) {
+          await putFetcher<Partial<Transaction>>('/api/transactions', form);
+        } else {
+          await postFetcher<Partial<Transaction>>('/api/transactions', form);
         }
-        await mutate((): true => true);
-        setForm({
-          id: undefined,
-          value: undefined,
-          category: '',
-          notes: '',
-          date,
-          transactionType: undefined,
-          repeats: undefined,
-        });
-      },
-      [form, mutate, date]
-    );
+      } catch (error: unknown) {
+        console.error(error);
+      }
+      await mutate((): true => true);
+      setForm({
+        id: undefined,
+        value: undefined,
+        category: '',
+        notes: '',
+        date,
+        transactionType: undefined,
+        repeats: undefined,
+      });
+    },
+    [form, mutate, date]
+  );
 
   function handleChange({
     currentTarget: { value, id },

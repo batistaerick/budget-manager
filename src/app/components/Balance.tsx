@@ -16,7 +16,7 @@ export default function Balance({
     if (transactions) {
       return transactions.reduce(
         (sum: number, transaction: Transaction): number =>
-          sum + (transaction?.value ?? 0),
+          sum + transaction.value,
         0
       );
     }

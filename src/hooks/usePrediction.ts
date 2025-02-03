@@ -1,6 +1,6 @@
 import { getFetcher } from '@/libs/fetchers';
 import { getLocalDate } from '@/utils/globalFormats';
-import useSWR, { SWRResponse } from 'swr';
+import useSWR, { type SWRResponse } from 'swr';
 
 export default function usePredictions(
   endDate: Date

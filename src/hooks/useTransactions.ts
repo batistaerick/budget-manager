@@ -1,7 +1,7 @@
 import { getFetcher } from '@/libs/fetchers';
 import { getLocalDate } from '@/utils/globalFormats';
 import type { Transaction, TransactionType } from '@prisma/client';
-import useSWR, { SWRResponse } from 'swr';
+import useSWR, { type SWRResponse } from 'swr';
 
 export default function useTransactions(
   transactionType: TransactionType,

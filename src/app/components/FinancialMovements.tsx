@@ -5,7 +5,7 @@ import type { Transaction } from '@prisma/client';
 import type { JSX } from 'react';
 import { BiEdit } from 'react-icons/bi';
 import { FcFullTrash } from 'react-icons/fc';
-import { KeyedMutator } from 'swr';
+import type { KeyedMutator } from 'swr';
 
 export interface FinancialMovementsProps {
   transaction: Transaction;
@@ -24,17 +24,14 @@ export default function FinancialMovements({
   function onEdit(): void {}
 
   function getDate(): string {
-    if (transaction?.repeats) {
+    if (transaction.repeats) {
       const day: string = new Date(transaction.date)
         .getDate()
         .toString()
         .padStart(2, '0');
       return `Day ${day} (Monthly)`;
     }
-    if (transaction.date) {
-      return formatDate(transaction.date, 'en-US');
-    }
-    return '';
+    return formatDate(transaction.date, 'en-US');
   }
 
   return (

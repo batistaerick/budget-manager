@@ -2,8 +2,8 @@ import getCurrentUser from '@/utils/getCurrentUser';
 import {
   PrismaClient,
   RepeatInterval,
-  TransactionType,
   type Transaction,
+  type TransactionType,
   type User,
 } from '@prisma/client';
 

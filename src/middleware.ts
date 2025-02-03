@@ -1,6 +1,6 @@
 import { auth } from '@/libs/auth';
 import type { Session } from 'next-auth';
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 export default async function middleware(
   request: NextRequest

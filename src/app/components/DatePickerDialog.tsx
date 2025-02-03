@@ -1,7 +1,7 @@
 'use client';
 import DatePickerCustomButton from '@/app/components/DatePickerCustomButton';
 import { enUS } from 'date-fns/locale';
-import { Dispatch, SetStateAction, type JSX } from 'react';
+import type { Dispatch, JSX, SetStateAction } from 'react';
 import DatePicker from 'react-datepicker';
 import { FcCalendar } from 'react-icons/fc';
 
