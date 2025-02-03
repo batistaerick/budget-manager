@@ -15,7 +15,7 @@ export default function Transactions({
   title,
 }: Readonly<SingleTransactionProps>): JSX.Element {
   return (
-    <div className="w-full rounded-xl bg-blue-950 bg-opacity-65">
+    <div className="w-full rounded-xl bg-blue-950/90">
       <div className="mx-3">
         <div className="w-full">
           <div className="my-2 grid grid-cols-3 text-lg">

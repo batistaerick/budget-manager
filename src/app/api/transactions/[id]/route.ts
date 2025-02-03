@@ -2,17 +2,18 @@ import getCurrentUser from '@/utils/getCurrentUser';
 import { PrismaClient, type Transaction } from '@prisma/client';
 
 interface TypeContext {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const prisma = new PrismaClient();
 
 export async function GET(
   _: Request,
-  { params: { id } }: TypeContext
+  { params }: TypeContext
 ): Promise<Response> {
   try {
     await getCurrentUser();
+    const { id } = await params;
     const transaction: Transaction | null = await prisma.transaction.findUnique(
       { where: { id } }
     );
@@ -28,10 +29,11 @@ export async function GET(
 
 export async function DELETE(
   _: Request,
-  { params: { id } }: TypeContext
+  { params }: TypeContext
 ): Promise<Response> {
   try {
     await getCurrentUser();
+    const { id } = await params;
     await prisma.transaction.delete({ where: { id } });
     return new Response(undefined, { status: 204 });
   } catch (error: unknown) {

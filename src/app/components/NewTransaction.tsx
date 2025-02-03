@@ -59,10 +59,18 @@ export default function NewTransaction({
         } catch (error: unknown) {
           console.error(error);
         }
-        await mutate('/api/transactions?type=EXPENSE');
-        await mutate('/api/transactions?type=INCOME');
+        await mutate((): true => true);
+        setForm({
+          id: undefined,
+          value: undefined,
+          category: '',
+          notes: '',
+          date,
+          transactionType: undefined,
+          repeats: undefined,
+        });
       },
-      [form, mutate]
+      [form, mutate, date]
     );
 
   function handleChange({

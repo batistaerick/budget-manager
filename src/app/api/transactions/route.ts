@@ -27,11 +27,12 @@ export async function POST(request: Request): Promise<Response> {
         userId: id,
         category,
         notes,
-        value: Number(value),
         date,
-        installments: installments ?? null,
+        value: Number(value),
+        createdAt: new Date(),
         transactionType: transactionType as TransactionType,
         repeats: repeats as RepeatInterval | null,
+        installments: installments ?? null,
       },
     });
     return new Response(JSON.stringify(transaction), { status: 201 });
@@ -88,7 +89,10 @@ export async function GET(request: Request): Promise<Response> {
         where: {
           userId: id,
           transactionType,
-          date: { gte: new Date(startDate), lte: new Date(endDate) },
+          OR: [
+            { date: { gte: new Date(startDate), lte: new Date(endDate) } },
+            { repeats: RepeatInterval.MONTHLY },
+          ],
         },
       });
     return new Response(JSON.stringify(transactions));

@@ -25,7 +25,11 @@ export default function FinancialMovements({
 
   function getDate(): string {
     if (transaction?.repeats) {
-      return transaction.repeats;
+      const day: string = new Date(transaction.date)
+        .getDate()
+        .toString()
+        .padStart(2, '0');
+      return `Day ${day} (Monthly)`;
     }
     if (transaction.date) {
       return formatDate(transaction.date, 'en-US');

@@ -22,27 +22,27 @@ export default function Header(): JSX.Element {
     <>
       {(isLeftOpen || isRightOpen) && (
         <button
-          className="fixed inset-0 cursor-default bg-black bg-opacity-50 transition-opacity"
+          className="fixed inset-0 z-10 cursor-default bg-black/50 transition-opacity"
           onClick={closeMenu}
         />
       )}
-      <header className="flex justify-between p-4 shadow-md">
-        <button
+      <header className="flex justify-between px-4 py-3 shadow-md">
+        <VscRobot
+          size={50}
+          className="cursor-pointer rounded-md bg-blue-950/50 p-1 text-white hover:text-gray-400"
           onClick={(): void => setIsLeftOpen((prev: boolean): boolean => !prev)}
-        >
-          <VscRobot size={40} className="text-white hover:text-gray-400" />
-        </button>
-        <button
+        />
+        <AiOutlinePlus
+          className="cursor-pointer rounded-md bg-blue-950/50 p-1 text-white hover:text-gray-400"
+          size={50}
           onClick={(): void =>
             setIsRightOpen((prev: boolean): boolean => !prev)
           }
-        >
-          <AiOutlinePlus size={40} className="text-white hover:text-gray-400" />
-        </button>
+        />
       </header>
       <div
         className={clsx(
-          'fixed left-0 top-0 h-full w-64 transform bg-blue-950 p-6 shadow-lg transition-transform',
+          'fixed left-0 top-0 z-10 h-full w-64 transform bg-blue-950 p-6 shadow-lg transition-transform',
           isLeftOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
@@ -66,7 +66,7 @@ export default function Header(): JSX.Element {
       </div>
       <div
         className={clsx(
-          'fixed right-0 top-0 h-full w-[500px] transform bg-black shadow-lg transition-transform',
+          'fixed right-0 top-0 z-10 h-full w-[500px] transform bg-black shadow-lg transition-transform',
           isRightOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >

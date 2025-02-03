@@ -1,13 +1,17 @@
 import Money from '@/app/components/Money';
-import useTransactions from '@/hooks/useTransactions';
-import { TransactionType, type Transaction } from '@prisma/client';
+import { type Transaction } from '@prisma/client';
 import { useMemo, type JSX } from 'react';
 import { FcBearish, FcBullish } from 'react-icons/fc';
 
-export default function Balance(): JSX.Element {
-  const { data: incomesResponse } = useTransactions(TransactionType.INCOME);
-  const { data: expensesResponse } = useTransactions(TransactionType.EXPENSE);
+interface BalanceProps {
+  expenses: Transaction[];
+  incomes: Transaction[];
+}
 
+export default function Balance({
+  expenses,
+  incomes,
+}: Readonly<BalanceProps>): JSX.Element {
   function total(transactions: Transaction[] | undefined): number {
     if (transactions) {
       return transactions.reduce(
@@ -19,21 +23,21 @@ export default function Balance(): JSX.Element {
     return 0;
   }
 
-  const incomes: number = useMemo(
-    (): number => total(incomesResponse),
-    [incomesResponse]
-  );
-  const expenses: number = useMemo(
-    (): number => total(expensesResponse),
-    [expensesResponse]
+  const totalIncomes: number = useMemo((): number => total(incomes), [incomes]);
+  const totalExpenses: number = useMemo(
+    (): number => total(expenses),
+    [expenses]
   );
 
   return (
-    <div className="flex w-full cursor-default flex-col gap-2 rounded-xl bg-slate-700 bg-opacity-60 p-3">
-      <div className="flex items-center justify-between">
+    <div className="flex w-full cursor-default flex-col gap-2 rounded-xl bg-slate-700/90 p-3">
+      <div className="flex w-1/2 items-center justify-between">
         <div>
           Total
-          <Money className="text-left text-3xl" value={incomes - expenses} />
+          <Money
+            className="text-left text-3xl"
+            value={totalIncomes - totalExpenses}
+          />
         </div>
       </div>
       <div className="flex justify-between text-sm">
@@ -41,14 +45,14 @@ export default function Balance(): JSX.Element {
           Expenses
           <div className="flex items-end gap-1">
             <FcBearish size={35} />
-            <Money value={expenses} />
+            <Money value={totalExpenses} />
           </div>
         </div>
         <div className="flex gap-1">
           <div className="text-end">
             Incomes
             <div className="flex items-end justify-end gap-1">
-              <Money value={incomes} />
+              <Money value={totalIncomes} />
               <FcBullish size={35} />
             </div>
           </div>
