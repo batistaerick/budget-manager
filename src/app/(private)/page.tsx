@@ -10,11 +10,11 @@ export default function Home(): JSX.Element {
   const [date, setDate] = useState<Date>(new Date());
   const { data: incomes, mutate: incomesMutate } = useTransactions(
     TransactionType.INCOME,
-    date
+    { startDate: date }
   );
   const { data: expenses, mutate: expensesMutate } = useTransactions(
     TransactionType.EXPENSE,
-    date
+    { startDate: date }
   );
 
   return (

@@ -7,16 +7,14 @@ import {
   useEffect,
   useState,
   type ChangeEvent,
-  type Dispatch,
   type JSX,
-  type SetStateAction,
 } from 'react';
 import { FcCurrencyExchange, FcIdea, FcSurvey } from 'react-icons/fc';
 import { useSWRConfig } from 'swr';
 
 export interface NewTransactionProps {
   transaction?: Transaction;
-  onClose: Dispatch<SetStateAction<boolean>>;
+  onClose: () => void;
 }
 
 export default function NewTransaction({
@@ -157,7 +155,7 @@ export default function NewTransaction({
           <button
             className="h-12 w-full rounded-md bg-neutral-700"
             type="button"
-            onClick={(): void => onClose(false)}
+            onClick={(): void => onClose()}
           >
             Cancel
           </button>

@@ -1,59 +1,58 @@
-import type {
-  AxiosError,
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-} from 'axios';
-import axios from 'axios';
-
-const defaultAxios: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_GATEWAY_HOST!,
-  withCredentials: true,
-});
-
 export async function getFetcher<T>(
   url: string,
-  config?: AxiosRequestConfig
+  config?: RequestInit
 ): Promise<T> {
-  return await defaultAxios
-    .get<T>(url, config)
-    .then((response: AxiosResponse<T>): T => response.data)
-    .catch((error: AxiosError): never => {
-      throw error;
-    });
+  const response = await fetch(url, { method: 'GET', ...config });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  return response.json();
 }
 
 export async function postFetcher<TResponse, TBody = TResponse>(
   url: string,
   body?: TBody,
-  config?: AxiosRequestConfig
+  config?: RequestInit
 ): Promise<TResponse> {
-  return await defaultAxios
-    .post<TResponse>(url, body, config)
-    .then((response: AxiosResponse<TResponse>): TResponse => response.data)
-    .catch((error: AxiosError): never => {
-      throw error;
-    });
+  const response = await fetch(url, {
+    method: 'POST',
+    body: body ? JSON.stringify(body) : undefined,
+    headers: { 'Content-Type': 'application/json', ...(config?.headers || {}) },
+    ...config,
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  return response.json();
 }
 
 export async function putFetcher<T>(
   url: string,
   body?: T,
-  config?: AxiosRequestConfig
+  config?: RequestInit
 ): Promise<T> {
-  return await defaultAxios
-    .put<T>(url, body, config)
-    .then((response: AxiosResponse<T>): T => response.data)
-    .catch((error: AxiosError): never => {
-      throw error;
-    });
+  const response = await fetch(url, {
+    method: 'PUT',
+    body: body ? JSON.stringify(body) : undefined,
+    headers: { 'Content-Type': 'application/json', ...(config?.headers || {}) },
+    ...config,
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  return response.json();
 }
 
 export async function deleteFetcher(
   url: string,
-  config?: AxiosRequestConfig
+  config?: RequestInit
 ): Promise<void> {
-  await defaultAxios.delete(url, config).catch((error: AxiosError): never => {
-    throw error;
-  });
+  const response = await fetch(url, { method: 'DELETE', ...config });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
 }
