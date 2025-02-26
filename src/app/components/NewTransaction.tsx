@@ -82,7 +82,7 @@ export default function NewTransaction({
   }
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-slate-700/35 p-5 backdrop-blur-sm">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-slate-700/35 p-5 backdrop-blur-xs">
       <div className="flex items-center justify-center">
         <DatePickerDialog date={date} setDate={setDate} />
       </div>

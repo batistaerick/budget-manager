@@ -82,15 +82,9 @@ export default function Login(): JSX.Element {
   }
 
   return (
-    <div
-      className={`relative h-screen w-screen bg-[url('/images/AuthBackground.jpg')] bg-cover bg-fixed bg-center bg-no-repeat`}
-    >
-      <div
-        className={`flex h-screen w-screen items-center justify-center bg-black/50`}
-      >
-        <div
-          className={`max-w-md self-center rounded-3xl px-16 pb-16 pt-5 transition-colors duration-500 sm:bg-slate-950 sm:bg-opacity-90 lg:mt-2 lg:w-2/5`}
-        >
+    <div className="relative h-screen w-screen bg-[url('/images/AuthBackground.jpg')] bg-cover bg-fixed bg-center bg-no-repeat">
+      <div className="flex h-screen w-screen items-center justify-center bg-black/50">
+        <div className="sm:bg-opacity-90 max-w-md self-center rounded-3xl px-16 pt-5 pb-16 transition-colors duration-500 sm:bg-slate-950 lg:mt-2 lg:w-2/5">
           <h2 className="mb-8 flex items-center justify-center text-4xl font-semibold text-white">
             {variant === 'login' ? 'Sign-in' : 'Sign-up'}
           </h2>
@@ -140,14 +134,14 @@ export default function Login(): JSX.Element {
           </div>
           <div className="mt-8 flex flex-row items-center justify-center gap-4">
             <FcGoogle
-              className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white transition hover:opacity-80`}
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white transition hover:opacity-80"
               size={30}
               onClick={(): Promise<SignInResponse | undefined> =>
                 signIn('github', { callbackUrl: '/' })
               }
             />
             <FaFacebook
-              className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white text-blue-700 transition hover:opacity-80`}
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white text-blue-700 transition hover:opacity-80"
               size={30}
               onClick={(): Promise<SignInResponse | undefined> =>
                 signIn('github', { callbackUrl: '/' })

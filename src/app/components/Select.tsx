@@ -12,7 +12,7 @@ export default function Select({
   children,
 }: Readonly<SelectProps>) {
   return (
-    <select className="rounded border p-2" value={value} onChange={onChange}>
+    <select className="rounded-sm border p-2" value={value} onChange={onChange}>
       {children}
     </select>
   );
