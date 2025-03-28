@@ -1,10 +1,10 @@
 'use client';
-import Balance from '@/app/components/Balance';
-import Transactions from '@/app/components/Transactions';
+import Balance from '@/components/Balance';
+import DatePickerDialog from '@/components/DatePickerDialog';
+import Transactions from '@/components/Transactions';
 import useTransactions from '@/hooks/useTransactions';
 import { TransactionType } from '@prisma/client';
 import { useState, type JSX } from 'react';
-import DatePickerDialog from '../components/DatePickerDialog';
 
 export default function Home(): JSX.Element {
   const [date, setDate] = useState<Date>(new Date());

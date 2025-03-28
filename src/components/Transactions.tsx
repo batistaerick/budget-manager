@@ -1,4 +1,4 @@
-import FinancialMovements from '@/app/components/FinancialMovements';
+import FinancialMovements from '@/components/FinancialMovements';
 import type { Transaction } from '@prisma/client';
 import type { JSX } from 'react';
 import type { KeyedMutator } from 'swr';

@@ -1,5 +1,5 @@
 'use client';
-import DatePickerDialog from '@/app/components/DatePickerDialog';
+import DatePickerDialog from '@/components/DatePickerDialog';
 import usePredictions from '@/hooks/usePrediction';
 import useTransactions from '@/hooks/useTransactions';
 import { TransactionType, type Transaction } from '@prisma/client';

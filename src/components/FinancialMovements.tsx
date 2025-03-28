@@ -1,4 +1,4 @@
-import Money from '@/app/components/Money';
+import Money from '@/components/Money';
 import { deleteFetcher } from '@/libs/fetchers';
 import { formatDate } from '@/utils/globalFormats';
 import type { Transaction } from '@prisma/client';

@@ -1,5 +1,5 @@
 'use client';
-import Input from '@/app/components/Input';
+import Input from '@/components/Input';
 import { postFetcher } from '@/libs/fetchers';
 import { signIn, useSession, type SignInResponse } from 'next-auth/react';
 import { redirect } from 'next/navigation';

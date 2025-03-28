@@ -1,5 +1,5 @@
-import Header from '@/app/components/Header';
 import '@/app/globals.css';
+import Header from '@/components/Header';
 import { auth } from '@/libs/auth';
 import type { Metadata } from 'next';
 import type { Session } from 'next-auth';

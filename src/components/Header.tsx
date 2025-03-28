@@ -1,5 +1,5 @@
 'use client';
-import NewTransaction from '@/app/components/NewTransaction';
+import NewTransaction from '@/components/NewTransaction';
 import clsx from 'clsx';
 import { useState, type JSX } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
@@ -39,7 +39,7 @@ export default function Header(): JSX.Element {
       </header>
       <div
         className={clsx(
-          'fixed left-0 top-0 z-10 h-full w-72 transform bg-black shadow-lg transition-transform',
+          'fixed top-0 left-0 z-10 h-full w-72 transform bg-black shadow-lg transition-transform',
           isLeftOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
@@ -47,7 +47,7 @@ export default function Header(): JSX.Element {
       </div>
       <div
         className={clsx(
-          'fixed right-0 top-0 z-10 h-full w-[500px] transform bg-black shadow-lg transition-transform',
+          'fixed top-0 right-0 z-10 h-full w-[500px] transform bg-black shadow-lg transition-transform',
           isRightOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >

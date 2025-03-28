@@ -1,5 +1,5 @@
-import DatePickerDialog from '@/app/components/DatePickerDialog';
-import Input from '@/app/components/Input';
+import DatePickerDialog from '@/components/DatePickerDialog';
+import Input from '@/components/Input';
 import { postFetcher, putFetcher } from '@/libs/fetchers';
 import type { Transaction } from '@prisma/client';
 import {

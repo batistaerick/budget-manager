@@ -1,4 +1,4 @@
-import Money from '@/app/components/Money';
+import Money from '@/components/Money';
 import { type Transaction } from '@prisma/client';
 import { useMemo, type JSX } from 'react';
 import { FcBearish, FcBullish } from 'react-icons/fc';
