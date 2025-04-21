@@ -1,6 +1,6 @@
+import { prisma } from '@/libs/prisma';
 import getCurrentUser from '@/utils/getCurrentUser';
 import {
-  PrismaClient,
   RepeatInterval,
   TransactionType,
   type Transaction,
@@ -9,8 +9,6 @@ import {
 interface TypeContext {
   params: Promise<{ lastDate: string }>;
 }
-
-const prisma = new PrismaClient();
 
 export async function GET(
   _: Request,

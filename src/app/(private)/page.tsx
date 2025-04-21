@@ -1,4 +1,5 @@
 'use client';
+
 import Balance from '@/components/Balance';
 import DatePickerDialog from '@/components/DatePickerDialog';
 import Transactions from '@/components/Transactions';
@@ -18,11 +19,11 @@ export default function Home(): JSX.Element {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2 p-4">
+    <main className="flex flex-col items-center justify-center gap-2 p-4">
       <DatePickerDialog
         date={date}
         setDate={setDate}
-        dateFormat="MMM/yyyy"
+        dateFormat="MMMM/yyyy"
         showMonthYearPicker
       />
       <Balance incomes={incomes ?? []} expenses={expenses ?? []} />
@@ -36,6 +37,6 @@ export default function Home(): JSX.Element {
         transactionsMutate={expensesMutate}
         title="Expenses"
       />
-    </div>
+    </main>
   );
 }

@@ -1,3 +1,4 @@
+'use client';
 import FinancialMovements from '@/components/FinancialMovements';
 import type { Transaction } from '@prisma/client';
 import type { JSX } from 'react';

@@ -19,7 +19,7 @@ export default function DatePickerDialog({
   showMonthYearPicker,
 }: Readonly<DatePickerDialogProps>): JSX.Element {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-blue-950 p-2">
       <FcCalendar size={25} />
       <DatePicker
         selected={date}

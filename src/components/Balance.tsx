@@ -1,3 +1,4 @@
+'use client';
 import Money from '@/components/Money';
 import { type Transaction } from '@prisma/client';
 import { useMemo, type JSX } from 'react';

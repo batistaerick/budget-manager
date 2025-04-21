@@ -15,7 +15,7 @@ export default function Input({
   return (
     <div className="relative">
       <input
-        className="text-md peer block w-full appearance-none rounded-md bg-neutral-700 px-6 pt-6 pb-1 text-white focus:ring-0"
+        className="text-md peer block w-full appearance-none rounded-md bg-neutral-700 px-6 pt-6 pb-1 focus:ring-0"
         placeholder=" "
         id={id}
         type={type}

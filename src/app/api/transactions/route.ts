@@ -1,13 +1,11 @@
+import { prisma } from '@/libs/prisma';
 import getCurrentUser from '@/utils/getCurrentUser';
 import {
-  PrismaClient,
   RepeatInterval,
   type Transaction,
   type TransactionType,
   type User,
 } from '@prisma/client';
-
-const prisma = new PrismaClient();
 
 export async function POST(request: Request): Promise<Response> {
   try {

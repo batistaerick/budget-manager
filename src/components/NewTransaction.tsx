@@ -94,6 +94,7 @@ export default function NewTransaction({
         <div>
           <FcCurrencyExchange className="mb-1" size={25} />
           <Input
+            className="no-spinner"
             id="value"
             label="Value"
             type="number"
@@ -127,7 +128,7 @@ export default function NewTransaction({
           </label>
           <select
             id="transactionType"
-            className={`w-44 rounded-md border border-neutral-700 bg-neutral-700 p-3 ${form?.transactionType ? 'text-white' : 'text-zinc-400'} `}
+            className={`w-44 rounded-md border border-neutral-700 bg-neutral-700 p-3 ${form?.transactionType ? '' : 'text-zinc-400'} `}
             value={form?.transactionType ?? ''}
             onChange={handleChange}
           >
@@ -142,7 +143,7 @@ export default function NewTransaction({
           </label>
           <select
             id="repeats"
-            className={`w-44 rounded-md border border-neutral-700 bg-neutral-700 p-3 ${form?.repeats ? 'text-white' : 'text-zinc-400'} `}
+            className={`w-44 rounded-md border border-neutral-700 bg-neutral-700 p-3 ${form?.repeats ? '' : 'text-zinc-400'} `}
             value={form?.repeats ?? ''}
             onChange={handleChange}
           >

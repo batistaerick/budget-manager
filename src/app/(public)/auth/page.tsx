@@ -11,7 +11,7 @@ import {
   type JSX,
   type KeyboardEvent,
 } from 'react';
-import { FaFacebook } from 'react-icons/fa';
+import { BsGithub } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
 
 export default function Login(): JSX.Element {
@@ -85,7 +85,7 @@ export default function Login(): JSX.Element {
     <div className="relative h-screen w-screen bg-[url('/images/AuthBackground.jpg')] bg-cover bg-fixed bg-center bg-no-repeat">
       <div className="flex h-screen w-screen items-center justify-center bg-black/50">
         <div className="sm:bg-opacity-90 max-w-md self-center rounded-3xl px-16 pt-5 pb-16 transition-colors duration-500 sm:bg-slate-950 lg:mt-2 lg:w-2/5">
-          <h2 className="mb-8 flex items-center justify-center text-4xl font-semibold text-white">
+          <h2 className="mb-8 flex items-center justify-center text-4xl font-semibold">
             {variant === 'login' ? 'Sign-in' : 'Sign-up'}
           </h2>
           <div className="flex flex-col gap-4">
@@ -125,7 +125,7 @@ export default function Login(): JSX.Element {
           </div>
           <div className="mt-10">
             <button
-              className="h-12 w-full rounded-md bg-blue-950 text-lg font-bold text-white"
+              className="h-12 w-full rounded-md bg-blue-950 text-lg font-bold"
               disabled={!password.length}
               onClick={onClick}
             >
@@ -134,14 +134,14 @@ export default function Login(): JSX.Element {
           </div>
           <div className="mt-8 flex flex-row items-center justify-center gap-4">
             <FcGoogle
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white transition hover:opacity-80"
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border bg-white transition hover:opacity-80"
               size={30}
               onClick={(): Promise<SignInResponse | undefined> =>
-                signIn('github', { callbackUrl: '/' })
+                signIn('google', { callbackUrl: '/' })
               }
             />
-            <FaFacebook
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white text-blue-700 transition hover:opacity-80"
+            <BsGithub
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border bg-white transition hover:opacity-80"
               size={30}
               onClick={(): Promise<SignInResponse | undefined> =>
                 signIn('github', { callbackUrl: '/' })
@@ -151,7 +151,7 @@ export default function Login(): JSX.Element {
           <p className="mt-12 flex items-center justify-center text-neutral-500">
             {variant === 'login' ? 'New in here' : 'Already Have An Account'}
             <button
-              className="ml-1 cursor-pointer text-white hover:underline"
+              className="ml-1 cursor-pointer hover:underline"
               onClick={toggleVariant}
             >
               {variant === 'login' ? 'Sign-up' : 'Sign-in'}

@@ -20,7 +20,7 @@ const DatePickerCustomButton: ForwardRefExoticComponent<
     { value, onClick }: DatePickerCustomButtonProps,
     ref: ForwardedRef<HTMLButtonElement>
   ): JSX.Element => (
-    <button onClick={onClick} ref={ref}>
+    <button onClick={onClick} ref={ref} className="cursor-pointer">
       {value}
     </button>
   )

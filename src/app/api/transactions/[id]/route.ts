@@ -1,11 +1,10 @@
+import { prisma } from '@/libs/prisma';
 import getCurrentUser from '@/utils/getCurrentUser';
-import { PrismaClient, type Transaction } from '@prisma/client';
+import { type Transaction } from '@prisma/client';
 
 interface TypeContext {
   params: Promise<{ id: string }>;
 }
-
-const prisma = new PrismaClient();
 
 export async function GET(
   _: Request,

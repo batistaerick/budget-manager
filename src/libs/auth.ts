@@ -5,7 +5,7 @@ import type { User } from '@prisma/client';
 import { compare } from 'bcryptjs';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import Facebook from 'next-auth/providers/facebook';
+import GitHub from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
 import type { SafeParseReturnType } from 'zod';
 
@@ -18,9 +18,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientId: process.env.AUTH_GOOGLE_ID ?? '',
       clientSecret: process.env.AUTH_GOOGLE_SECRET ?? '',
     }),
-    Facebook({
-      clientId: process.env.AUTH_FACEBOOK_ID ?? '',
-      clientSecret: process.env.AUTH_FACEBOOK_SECRET ?? '',
+    GitHub({
+      clientId: process.env.GITHUB_ID ?? '',
+      clientSecret: process.env.GITHUB_SECRET ?? '',
     }),
     Credentials({
       credentials: {
