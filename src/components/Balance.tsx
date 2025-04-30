@@ -13,20 +13,16 @@ export default function Balance({
   expenses,
   incomes,
 }: Readonly<BalanceProps>): JSX.Element {
-  function total(transactions: Transaction[] | undefined): number {
-    if (transactions) {
-      return transactions.reduce(
-        (sum: number, transaction: Transaction): number =>
-          sum + transaction.value,
-        0
-      );
-    }
-    return 0;
+  function total(transactions: Transaction[]): bigint {
+    return transactions.reduce(
+      (sum: bigint, { value }: Transaction): bigint => sum + BigInt(value),
+      0n
+    );
   }
 
-  const totalIncomes: number = useMemo((): number => total(incomes), [incomes]);
-  const totalExpenses: number = useMemo(
-    (): number => total(expenses),
+  const totalIncomes: bigint = useMemo((): bigint => total(incomes), [incomes]);
+  const totalExpenses: bigint = useMemo(
+    (): bigint => total(expenses),
     [expenses]
   );
 

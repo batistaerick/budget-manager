@@ -3,7 +3,7 @@ import type { JSX } from 'react';
 
 export interface MoneyProps {
   className?: string;
-  value?: number;
+  value?: bigint | number;
 }
 
 export default function Money({

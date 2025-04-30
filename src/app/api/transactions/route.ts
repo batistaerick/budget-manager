@@ -1,4 +1,4 @@
-import { prisma } from '@/libs/prisma';
+import prisma from '@/libs/prisma';
 import getCurrentUser from '@/utils/getCurrentUser';
 import {
   RepeatInterval,
@@ -26,7 +26,7 @@ export async function POST(request: Request): Promise<Response> {
         category,
         notes,
         date,
-        value: Number(value),
+        value: BigInt(value),
         createdAt: new Date(),
         transactionType: transactionType as TransactionType,
         repeats: repeats as RepeatInterval | null,
@@ -73,28 +73,35 @@ export async function PUT(request: Request): Promise<Response> {
 
 export async function GET(request: Request): Promise<Response> {
   try {
-    const { id }: User = await getCurrentUser();
+    const { id: userId }: User = await getCurrentUser();
     const url = new URL(request.url);
 
     const transactionType: TransactionType = url.searchParams.get(
       'type'
     ) as TransactionType;
-    const startDate: string = url.searchParams.get('startDate') as string;
-    const endDate: string = url.searchParams.get('endDate') as string;
+    const gte: Date = new Date(url.searchParams.get('startDate') as string);
+    const lte: Date = new Date(url.searchParams.get('endDate') as string);
 
     const transactions: Transaction[] | null =
       await prisma.transaction.findMany({
         where: {
-          userId: id,
+          userId,
           transactionType,
           OR: [
-            { date: { gte: new Date(startDate), lte: new Date(endDate) } },
             { repeats: RepeatInterval.MONTHLY },
+            { createdAt: { gte, lte } },
           ],
         },
       });
-    return new Response(JSON.stringify(transactions));
+    return new Response(
+      JSON.stringify(transactions, (_, value) =>
+        typeof value === 'bigint' ? Number(value) : value
+      )
+    );
   } catch (error: unknown) {
-    return new Response(JSON.stringify(error), { status: 500 });
+    return new Response(
+      error instanceof Error ? error.message : 'Internal Server Error',
+      { status: 500 }
+    );
   }
 }

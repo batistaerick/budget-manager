@@ -1,6 +1,6 @@
 import { signOut } from 'next-auth/react';
 import { redirect } from 'next/navigation';
-import type { JSX } from 'react';
+import type { ButtonHTMLAttributes, JSX } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FaHome } from 'react-icons/fa';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -23,36 +23,41 @@ export default function SideMenu({
     <div className="h-full w-full bg-slate-700/35 p-5">
       <p className="text-2xl font-semibold">Menu</p>
       <nav className="mt-10 flex flex-col items-start justify-start gap-3 text-lg">
-        <button
-          className="flex items-center justify-center gap-2"
-          onClick={(): void => onClick('/')}
-        >
+        <Button onClick={(): void => onClick('/')}>
           <FaHome size={20} />
           Home
-        </button>
-        <button
-          className="flex items-center justify-center gap-2"
-          onClick={(): void => onClick('/analytics')}
-        >
+        </Button>
+        <Button onClick={(): void => onClick('/analytics')}>
           <VscGraph size={20} />
           Analytics
-        </button>
-        <button className="flex items-center justify-center gap-2">
+        </Button>
+        <Button>
           <CgProfile size={20} />
           Profile
-        </button>
-        <button className="flex items-center justify-center gap-2">
+        </Button>
+        <Button>
           <IoSettingsOutline size={20} />
           Settings
-        </button>
-        <button
-          className="flex items-center justify-center gap-2"
-          onClick={async (): Promise<void> => await signOut()}
-        >
+        </Button>
+        <Button onClick={async (): Promise<void> => await signOut()}>
           <PiSignOutBold size={20} />
           Sign-out
-        </button>
+        </Button>
       </nav>
     </div>
+  );
+}
+
+function Button({
+  children,
+  onClick,
+}: Readonly<ButtonHTMLAttributes<HTMLButtonElement>>): JSX.Element {
+  return (
+    <button
+      onClick={onClick}
+      className="flex cursor-pointer items-center justify-center gap-2"
+    >
+      {children}
+    </button>
   );
 }

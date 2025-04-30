@@ -1,13 +1,13 @@
 'use client';
+
 import Input from '@/components/Input';
 import { postFetcher } from '@/libs/fetchers';
-import { signIn, useSession, type SignInResponse } from 'next-auth/react';
-import { redirect } from 'next/navigation';
+import { signIn, type SignInResponse } from 'next-auth/react';
 import {
   useCallback,
-  useEffect,
   useState,
   type ChangeEvent,
+  type FormEvent,
   type JSX,
   type KeyboardEvent,
 } from 'react';
@@ -20,13 +20,6 @@ export default function Login(): JSX.Element {
   const [password, setPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [variant, setVariant] = useState<string>('login');
-  const { status } = useSession();
-
-  useEffect((): void => {
-    if (status === 'authenticated') {
-      redirect('/');
-    }
-  });
 
   const toggleVariant: () => void = useCallback(
     (): void =>
@@ -44,7 +37,7 @@ export default function Login(): JSX.Element {
       redirect: false,
     });
 
-    if (response?.error) {
+    if (response.error) {
       setIsError(true);
     } else {
       window.location.reload();
@@ -61,7 +54,9 @@ export default function Login(): JSX.Element {
       .catch((error: unknown): void => console.error(error));
   }, [email, password, name, login]);
 
-  async function onClick(): Promise<void> {
+  async function onClick(event?: FormEvent): Promise<void> {
+    event?.preventDefault();
+
     if (variant === 'login') {
       await login();
     } else {
@@ -75,10 +70,6 @@ export default function Login(): JSX.Element {
     if (key === 'Enter') {
       await onClick();
     }
-  }
-
-  if (status === 'loading' || status === 'authenticated') {
-    return <div />;
   }
 
   return (
@@ -95,7 +86,9 @@ export default function Login(): JSX.Element {
                 label="Name"
                 type="text"
                 value={name}
-                onChange={({ currentTarget: { value } }) => setName(value)}
+                onChange={({
+                  currentTarget: { value },
+                }: ChangeEvent<HTMLInputElement>): void => setName(value)}
               />
             )}
             <div className={`${isError && 'rounded-md border border-red-400'}`}>
@@ -125,7 +118,7 @@ export default function Login(): JSX.Element {
           </div>
           <div className="mt-10">
             <button
-              className="h-12 w-full rounded-md bg-blue-950 text-lg font-bold"
+              className="h-12 w-full cursor-pointer rounded-md bg-blue-950 text-lg font-bold"
               disabled={!password.length}
               onClick={onClick}
             >
@@ -134,16 +127,16 @@ export default function Login(): JSX.Element {
           </div>
           <div className="mt-8 flex flex-row items-center justify-center gap-4">
             <FcGoogle
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border bg-white transition hover:opacity-80"
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white transition hover:opacity-80"
               size={30}
-              onClick={(): Promise<SignInResponse | undefined> =>
+              onClick={(): Promise<void> =>
                 signIn('google', { callbackUrl: '/' })
               }
             />
             <BsGithub
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border bg-white transition hover:opacity-80"
+              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition hover:opacity-80"
               size={30}
-              onClick={(): Promise<SignInResponse | undefined> =>
+              onClick={(): Promise<void> =>
                 signIn('github', { callbackUrl: '/' })
               }
             />

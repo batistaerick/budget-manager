@@ -1,10 +1,10 @@
 'use client';
 import NewTransaction from '@/components/NewTransaction';
+import SideMenu from '@/components/SideMenu';
 import clsx from 'clsx';
 import { useState, type JSX } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { VscRobot } from 'react-icons/vsc';
-import SideMenu from './SideMenu';
 
 export default function Header(): JSX.Element {
   const [isLeftOpen, setIsLeftOpen] = useState(false);
@@ -19,7 +19,7 @@ export default function Header(): JSX.Element {
     <div className="bg-[#070f52] px-4">
       {(isLeftOpen || isRightOpen) && (
         <button
-          className="fixed inset-0 z-10 cursor-default bg-black/50 transition-opacity"
+          className="fixed inset-0 z-10 cursor-pointer bg-black/50 transition-opacity"
           onClick={closeMenu}
         />
       )}

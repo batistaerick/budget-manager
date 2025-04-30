@@ -1,5 +1,5 @@
 import { auth } from '@/libs/auth';
-import { prisma } from '@/libs/prisma';
+import prisma from '@/libs/prisma';
 import type { User } from '@prisma/client';
 import type { Session } from 'next-auth';
 

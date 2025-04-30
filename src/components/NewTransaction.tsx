@@ -23,15 +23,7 @@ export default function NewTransaction({
 }: Readonly<NewTransactionProps>): JSX.Element {
   const [date, setDate] = useState<Date>(new Date());
   const [form, setForm] = useState<Partial<Transaction> | undefined>(
-    transaction ?? {
-      id: undefined,
-      value: undefined,
-      category: '',
-      notes: '',
-      date: new Date(),
-      transactionType: undefined,
-      repeats: undefined,
-    }
+    transaction ?? { category: '', notes: '', date: new Date() }
   );
   const { mutate } = useSWRConfig();
 
@@ -80,6 +72,8 @@ export default function NewTransaction({
       })
     );
   }
+
+  const isSaveDisabled: boolean = Boolean(!form?.value || !form.category);
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-slate-700/35 p-5 backdrop-blur-xs">
@@ -148,27 +142,22 @@ export default function NewTransaction({
             onChange={handleChange}
           >
             <option value="">Select a type</option>
-            <option value="DAILY">Daily</option>
             <option value="MONTHLY">Monthly</option>
           </select>
         </div>
         <div className="flex w-full items-center justify-center gap-2">
           <button
-            className="h-12 w-full rounded-md bg-neutral-700"
+            className="h-12 w-full cursor-pointer rounded-md bg-neutral-700"
             type="button"
             onClick={(): void => onClose()}
           >
             Cancel
           </button>
           <button
-            className="h-12 w-full rounded-md bg-neutral-700"
+            className={`${isSaveDisabled ? 'cursor-auto bg-neutral-800' : 'cursor-pointer bg-neutral-700'} h-12 w-full rounded-md`}
             type="submit"
             form="newTransactionForm"
-            disabled={
-              form?.value === 0 ||
-              form?.category === '' ||
-              form?.transactionType === undefined
-            }
+            disabled={isSaveDisabled}
           >
             Save
           </button>

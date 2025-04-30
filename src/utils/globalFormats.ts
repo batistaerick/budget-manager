@@ -22,7 +22,7 @@ export function formatDate(date: Date, language: string): string {
 }
 
 export function formatCurrency(
-  value: number | undefined,
+  value: bigint | number | undefined,
   language: string
 ): string | undefined {
   return value?.toLocaleString(getLocation(language), {

@@ -1,5 +1,4 @@
 import '@/app/globals.css';
-import Header from '@/components/Header';
 import { auth } from '@/libs/auth';
 import type { Metadata } from 'next';
 import type { Session } from 'next-auth';
@@ -36,7 +35,6 @@ export default async function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          {session && <Header />}
           {children}
         </body>
       </html>

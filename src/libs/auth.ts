@@ -1,8 +1,8 @@
-import { prisma } from '@/libs/prisma';
+import { comparePassword } from '@/libs/cyrpt';
+import prisma from '@/libs/prisma';
 import { emailSchema, passwordSchema } from '@/utils/validators';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { User } from '@prisma/client';
-import { compare } from 'bcryptjs';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import GitHub from 'next-auth/providers/github';
@@ -61,7 +61,7 @@ async function authorize(
   if (!user?.password) {
     throw new Error('Email does not exist');
   }
-  const isCorrectPassword: boolean = await compare(
+  const isCorrectPassword: boolean = await comparePassword(
     password.data,
     user.password
   );

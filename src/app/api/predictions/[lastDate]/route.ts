@@ -1,4 +1,4 @@
-import { prisma } from '@/libs/prisma';
+import prisma from '@/libs/prisma';
 import getCurrentUser from '@/utils/getCurrentUser';
 import {
   RepeatInterval,
@@ -54,45 +54,45 @@ export async function GET(
       (endDate.getFullYear() - startDate.getFullYear()) * 12 +
       (endDate.getMonth() - startDate.getMonth());
 
-    const totalMonthlyIncomes: number =
+    const totalMonthlyIncomes: bigint =
       incomeTransactions
         .filter(
           (transaction: Transaction): boolean =>
             transaction.repeats === 'MONTHLY'
         )
         .reduce(
-          (sum: number, transaction: Transaction): number =>
+          (sum: bigint, transaction: Transaction): bigint =>
             sum + transaction.value,
-          0
-        ) * (monthsDifference !== 0 ? monthsDifference : 1);
+          0n
+        ) * (monthsDifference !== 0 ? BigInt(monthsDifference) : 1n);
 
-    const totalIncome: number =
+    const totalIncome: bigint =
       incomeTransactions
         .filter((transaction: Transaction): boolean => !transaction.repeats)
-        .reduce((sum: number, transaction: Transaction): number => {
+        .reduce((sum: bigint, transaction: Transaction): bigint => {
           return sum + transaction.value;
-        }, 0) + totalMonthlyIncomes;
+        }, 0n) + totalMonthlyIncomes;
 
-    const totalMonthlyExpenses: number =
+    const totalMonthlyExpenses: bigint =
       expenseTransactions
         .filter(
           (transaction: Transaction): boolean =>
             transaction.repeats === 'MONTHLY'
         )
         .reduce(
-          (sum: number, transaction: Transaction): number =>
+          (sum: bigint, transaction: Transaction): bigint =>
             sum + transaction.value,
-          0
-        ) * (monthsDifference !== 0 ? monthsDifference : 1);
+          0n
+        ) * (monthsDifference !== 0 ? BigInt(monthsDifference) : 1n);
 
-    const totalExpense: number =
+    const totalExpense: bigint =
       expenseTransactions
         .filter((transaction: Transaction): boolean => !transaction.repeats)
-        .reduce((sum: number, transaction: Transaction): number => {
+        .reduce((sum: bigint, transaction: Transaction): bigint => {
           return sum + transaction.value;
-        }, 0) + totalMonthlyExpenses;
+        }, 0n) + totalMonthlyExpenses;
 
-    const netPrediction: number = totalIncome - totalExpense;
+    const netPrediction: bigint = totalIncome - totalExpense;
 
     return new Response(JSON.stringify({ netPrediction }));
   } catch (error: unknown) {

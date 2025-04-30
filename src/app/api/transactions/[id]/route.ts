@@ -1,4 +1,4 @@
-import { prisma } from '@/libs/prisma';
+import prisma from '@/libs/prisma';
 import getCurrentUser from '@/utils/getCurrentUser';
 import { type Transaction } from '@prisma/client';
 
