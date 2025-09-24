@@ -4,16 +4,16 @@ import { postFetcher, putFetcher } from '@/libs/fetchers';
 import type { Transaction } from '@prisma/client';
 import {
   useCallback,
-  useEffect,
   useState,
   type ChangeEvent,
+  type FormEvent,
   type JSX,
 } from 'react';
 import { FcCurrencyExchange, FcIdea, FcSurvey } from 'react-icons/fc';
 import { useSWRConfig } from 'swr';
 
 export interface NewTransactionProps {
-  transaction?: Transaction;
+  transaction?: Partial<Transaction>;
   onClose: () => void;
 }
 
@@ -23,27 +23,29 @@ export default function NewTransaction({
 }: Readonly<NewTransactionProps>): JSX.Element {
   const [date, setDate] = useState<Date>(new Date());
   const [form, setForm] = useState<Partial<Transaction> | undefined>(
-    transaction ?? { category: '', notes: '', date: new Date() }
+    transaction
   );
   const { mutate } = useSWRConfig();
 
-  useEffect((): void => {
-    setForm(
-      (prevForm: Partial<Transaction> | undefined): Partial<Transaction> => ({
-        ...prevForm,
-        date,
-      })
-    );
-  }, [date]);
+  const onSubmit: (event: FormEvent<Element>) => Promise<void> = useCallback(
+    async (event: FormEvent): Promise<void> => {
+      event.preventDefault();
 
-  const onSubmit = useCallback(
-    async (event: ChangeEvent<HTMLFormElement>): Promise<void> => {
       try {
-        event.preventDefault();
-        if (form?.id) {
-          await putFetcher<Partial<Transaction>>('/api/transactions', form);
+        console.log('BEFORE', form);
+        const finalForm: Partial<Transaction> = { ...form, date };
+        console.log('AFTER', finalForm);
+
+        if (finalForm?.id) {
+          await putFetcher<Partial<Transaction>>(
+            '/api/transactions',
+            finalForm
+          );
         } else {
-          await postFetcher<Partial<Transaction>>('/api/transactions', form);
+          await postFetcher<Partial<Transaction>>(
+            '/api/transactions',
+            finalForm
+          );
         }
       } catch (error: unknown) {
         console.error(error);

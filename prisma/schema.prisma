@@ -73,7 +73,7 @@ model Transaction {
   userId          String          @db.ObjectId
   category        String
   notes           String?
-  value           BigInt
+  value           Float
   installments    Int?
   transactionType TransactionType
   repeats         RepeatInterval?

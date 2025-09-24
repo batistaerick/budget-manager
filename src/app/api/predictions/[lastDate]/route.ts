@@ -62,7 +62,7 @@ export async function GET(
         )
         .reduce(
           (sum: bigint, transaction: Transaction): bigint =>
-            sum + transaction.value,
+            sum + BigInt(transaction.value),
           0n
         ) * (monthsDifference !== 0 ? BigInt(monthsDifference) : 1n);
 
@@ -70,7 +70,7 @@ export async function GET(
       incomeTransactions
         .filter((transaction: Transaction): boolean => !transaction.repeats)
         .reduce((sum: bigint, transaction: Transaction): bigint => {
-          return sum + transaction.value;
+          return sum + BigInt(transaction.value);
         }, 0n) + totalMonthlyIncomes;
 
     const totalMonthlyExpenses: bigint =
@@ -81,7 +81,7 @@ export async function GET(
         )
         .reduce(
           (sum: bigint, transaction: Transaction): bigint =>
-            sum + transaction.value,
+            sum + BigInt(transaction.value),
           0n
         ) * (monthsDifference !== 0 ? BigInt(monthsDifference) : 1n);
 
@@ -89,7 +89,7 @@ export async function GET(
       expenseTransactions
         .filter((transaction: Transaction): boolean => !transaction.repeats)
         .reduce((sum: bigint, transaction: Transaction): bigint => {
-          return sum + transaction.value;
+          return sum + BigInt(transaction.value);
         }, 0n) + totalMonthlyExpenses;
 
     const netPrediction: bigint = totalIncome - totalExpense;

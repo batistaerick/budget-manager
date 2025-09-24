@@ -2,7 +2,7 @@ import { hashPassword } from '@/libs/cyrpt';
 import prisma from '@/libs/prisma';
 import { UserRole, type User } from '@prisma/client';
 
-export async function POST(request: Request): Promise<Response | undefined> {
+export async function POST(request: Request): Promise<Response> {
   try {
     const { email, name, password } = await request.json();
 

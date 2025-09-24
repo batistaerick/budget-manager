@@ -7,7 +7,7 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import GitHub from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
-import type { SafeParseReturnType } from 'zod';
+import type { ZodSafeParseResult } from 'zod';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -42,11 +42,12 @@ async function authorize(
   if (!credentials.email || !credentials.password) {
     throw new Error('Email and password required');
   }
-  const email: SafeParseReturnType<string, string> = emailSchema.safeParse(
+  const email: ZodSafeParseResult<string> = emailSchema.safeParse(
     credentials.email
   );
-  const password: SafeParseReturnType<string, string> =
-    passwordSchema.safeParse(credentials.password);
+  const password: ZodSafeParseResult<string> = passwordSchema.safeParse(
+    credentials.password
+  );
 
   if (email.error) {
     throw new Error(email.error.message);

@@ -1,8 +1,10 @@
 import Money from '@/components/Money';
+import NewTransaction from '@/components/NewTransaction';
 import { deleteFetcher } from '@/libs/fetchers';
 import { formatDate } from '@/utils/globalFormats';
 import type { Transaction } from '@prisma/client';
-import type { JSX } from 'react';
+import clsx from 'clsx';
+import { useState, type JSX } from 'react';
 import { BiEdit } from 'react-icons/bi';
 import { FcFullTrash } from 'react-icons/fc';
 import type { KeyedMutator } from 'swr';
@@ -16,12 +18,16 @@ export default function FinancialMovements({
   transaction,
   mutateOnDelete,
 }: Readonly<FinancialMovementsProps>): JSX.Element {
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+
   async function deleteTransaction(): Promise<void> {
     await deleteFetcher(`/api/transactions/${transaction.id}`);
     await mutateOnDelete();
   }
 
-  function onEdit(): void {}
+  function onEditOrClose(): void {
+    setIsEditOpen((prev: boolean): boolean => !prev);
+  }
 
   function getDate(): string {
     if (transaction.repeats) {
@@ -40,7 +46,7 @@ export default function FinancialMovements({
         <BiEdit
           className="cursor-pointer text-slate-400 transition-colors duration-500 hover:text-slate-100"
           size={22}
-          onClick={onEdit}
+          onClick={onEditOrClose}
         />
         {transaction.category}
       </div>
@@ -53,6 +59,14 @@ export default function FinancialMovements({
           size={22}
           onClick={deleteTransaction}
         />
+      </div>
+      <div
+        className={clsx(
+          'fixed top-0 right-0 z-10 h-full w-[400px] transform bg-black shadow-lg transition-transform md:w-[500px]',
+          isEditOpen ? 'translate-x-0' : 'hidden translate-x-full'
+        )}
+      >
+        <NewTransaction onClose={onEditOrClose} transaction={transaction} />
       </div>
     </div>
   );

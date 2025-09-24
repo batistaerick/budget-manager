@@ -26,7 +26,7 @@ export async function POST(request: Request): Promise<Response> {
         category,
         notes,
         date,
-        value: BigInt(value),
+        value: Number(value),
         createdAt: new Date(),
         transactionType: transactionType as TransactionType,
         repeats: repeats as RepeatInterval | null,
@@ -57,14 +57,15 @@ export async function PUT(request: Request): Promise<Response> {
     const updatedTransaction: Transaction = await prisma.transaction.update({
       where: { id },
       data: {
-        category: category,
-        notes: notes,
-        value: value,
+        category,
+        notes,
+        value: Number(value),
         installments: installments ?? null,
         transactionType: transactionType as TransactionType,
         repeats: repeats as RepeatInterval | null,
       },
     });
+
     return new Response(JSON.stringify(updatedTransaction));
   } catch (error: unknown) {
     return new Response(JSON.stringify(error), { status: 500 });
@@ -93,11 +94,7 @@ export async function GET(request: Request): Promise<Response> {
           ],
         },
       });
-    return new Response(
-      JSON.stringify(transactions, (_, value) =>
-        typeof value === 'bigint' ? Number(value) : value
-      )
-    );
+    return new Response(JSON.stringify(transactions));
   } catch (error: unknown) {
     return new Response(
       error instanceof Error ? error.message : 'Internal Server Error',
