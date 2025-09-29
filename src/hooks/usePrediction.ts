@@ -13,8 +13,9 @@ export default function usePredictions(
   const lastMonth: string = getLocalDate(lastDayOfMonth);
 
   return useSWR(
-    `/api/predictions/${lastMonth}`,
-    getFetcher<{ netPrediction: number }>,
+    `/predictions/${lastMonth}`,
+    (path: string): Promise<{ netPrediction: number }> =>
+      getFetcher<{ netPrediction: number }>({ path }),
     {
       revalidateIfStale: false,
       revalidateOnFocus: false,

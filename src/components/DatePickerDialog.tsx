@@ -3,7 +3,6 @@ import DatePickerCustomButton from '@/components/DatePickerCustomButton';
 import { enUS } from 'date-fns/locale';
 import type { Dispatch, JSX, SetStateAction } from 'react';
 import DatePicker from 'react-datepicker';
-import { FcCalendar } from 'react-icons/fc';
 
 export interface DatePickerDialogProps {
   date: Date;
@@ -19,8 +18,7 @@ export default function DatePickerDialog({
   showMonthYearPicker,
 }: Readonly<DatePickerDialogProps>): JSX.Element {
   return (
-    <div className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-blue-950 p-2">
-      <FcCalendar size={25} />
+    <div className="flex items-center justify-center rounded-xl hover:text-gray-300">
       <DatePicker
         selected={date}
         onChange={(newDate: Date | null): void =>
@@ -30,6 +28,7 @@ export default function DatePickerDialog({
         showMonthYearPicker={showMonthYearPicker}
         customInput={<DatePickerCustomButton />}
         locale={enUS}
+        showPopperArrow={false}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import { signOut } from 'next-auth/react';
+import { logout } from '@/security/auth';
 import { redirect } from 'next/navigation';
 import type { ButtonHTMLAttributes, JSX } from 'react';
 import { CgProfile } from 'react-icons/cg';
@@ -39,7 +39,7 @@ export default function SideMenu({
           <IoSettingsOutline size={20} />
           Settings
         </Button>
-        <Button onClick={async (): Promise<void> => await signOut()}>
+        <Button onClick={logout}>
           <PiSignOutBold size={20} />
           Sign-out
         </Button>

@@ -1,19 +1,24 @@
-import { auth } from '@/libs/auth';
 import type { NextConfig } from 'next';
-import type { Session } from 'next-auth';
 import { type NextRequest, NextResponse } from 'next/server';
 
-export default async function middleware(
-  request: NextRequest
-): Promise<NextResponse<unknown>> {
-  const { pathname, origin } = request.nextUrl;
-  const session: Session | null = await auth();
+export default function middleware({
+  cookies,
+  nextUrl: { pathname, origin },
+}: NextRequest): NextResponse<unknown> {
+  const token: string | undefined = cookies.get('access_token')?.value;
+  const protectedRoutes: string[] = ['/'];
 
-  if (!session && ['/', '/analytics'].includes(pathname)) {
+  if (
+    !token &&
+    protectedRoutes.some(
+      (route: string): boolean =>
+        pathname.startsWith(route) && pathname !== '/auth'
+    )
+  ) {
     return NextResponse.redirect(new URL('/auth', origin));
   }
 
-  if (session && pathname === '/auth') {
+  if (token && pathname === '/auth') {
     return NextResponse.redirect(new URL('/', origin));
   }
   return NextResponse.next();

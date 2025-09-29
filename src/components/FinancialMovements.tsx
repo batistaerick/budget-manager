@@ -1,8 +1,8 @@
 import Money from '@/components/Money';
 import NewTransaction from '@/components/NewTransaction';
 import { deleteFetcher } from '@/libs/fetchers';
+import type { Transaction } from '@/types/transaction.type';
 import { formatDate } from '@/utils/globalFormats';
-import type { Transaction } from '@prisma/client';
 import clsx from 'clsx';
 import { useState, type JSX } from 'react';
 import { BiEdit } from 'react-icons/bi';
@@ -21,7 +21,7 @@ export default function FinancialMovements({
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
   async function deleteTransaction(): Promise<void> {
-    await deleteFetcher(`/api/transactions/${transaction.id}`);
+    await deleteFetcher({ path: `/transactions/${transaction.id}` });
     await mutateOnDelete();
   }
 
@@ -48,11 +48,11 @@ export default function FinancialMovements({
           size={22}
           onClick={onEditOrClose}
         />
-        {transaction.category}
+        {transaction.category.name}
       </div>
       <div className="flex items-center justify-center">{getDate()}</div>
       <div className="flex items-center justify-end gap-1">
-        <Money value={transaction.value} />
+        <Money value={transaction.totalValue} />
         <FcFullTrash
           data-testid="delete-icon"
           className="cursor-pointer"

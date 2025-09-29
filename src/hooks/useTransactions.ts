@@ -1,6 +1,7 @@
+import type { TransactionType } from '@/enums/transactionType.enum';
 import { getFetcher } from '@/libs/fetchers';
+import type { Transaction } from '@/types/transaction.type';
 import { getLocalDate } from '@/utils/globalFormats';
-import type { Transaction, TransactionType } from '@prisma/client';
 import useSWR, { type SWRResponse } from 'swr';
 
 interface DateProps {
@@ -22,12 +23,17 @@ export default function useTransactions(
     lastDayOfMonth.setDate(0);
     lastDayOfMonth.setHours(0, 0, 0, 0);
 
-    return `/api/transactions?type=${transactionType}&startDate=${getLocalDate(firstDayOfMonth)}&endDate=${getLocalDate(lastDayOfMonth)}`;
+    return `/transactions?transactionType=${transactionType}&startDate=${getLocalDate(firstDayOfMonth)}&endDate=${getLocalDate(lastDayOfMonth)}`;
   }
 
-  return useSWR(url(), getFetcher<Transaction[]>, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
+  return useSWR(
+    url(),
+    (path: string): Promise<Transaction[]> =>
+      getFetcher<Transaction[]>({ path }),
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
 }

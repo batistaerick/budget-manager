@@ -1,6 +1,6 @@
 'use client';
 import Money from '@/components/Money';
-import { type Transaction } from '@prisma/client';
+import type { Transaction } from '@/types/transaction.type';
 import { useMemo, type JSX } from 'react';
 import { FcBearish, FcBullish } from 'react-icons/fc';
 
@@ -15,7 +15,8 @@ export default function Balance({
 }: Readonly<BalanceProps>): JSX.Element {
   function total(transactions: Transaction[]): bigint {
     return transactions.reduce(
-      (sum: bigint, { value }: Transaction): bigint => sum + BigInt(value),
+      (sum: bigint, { totalValue }: Transaction): bigint =>
+        sum + BigInt(totalValue),
       0n
     );
   }

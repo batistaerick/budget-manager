@@ -1,8 +1,5 @@
 import '@/app/globals.css';
-import { auth } from '@/libs/auth';
 import type { Metadata } from 'next';
-import type { Session } from 'next-auth';
-import { SessionProvider } from 'next-auth/react';
 import type { NextFontWithVariable } from 'next/dist/compiled/@next/font';
 import { Geist, Geist_Mono } from 'next/font/google';
 import type { JSX, ReactNode } from 'react';
@@ -27,17 +24,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>): Promise<JSX.Element> {
-  const session: Session | null = await auth();
-
   return (
-    <SessionProvider session={session}>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          {children}
-        </body>
-      </html>
-    </SessionProvider>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
+      </body>
+    </html>
   );
 }

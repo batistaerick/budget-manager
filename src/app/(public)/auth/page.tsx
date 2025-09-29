@@ -1,8 +1,7 @@
 'use client';
 
 import Input from '@/components/Input';
-import { postFetcher } from '@/libs/fetchers';
-import { signIn, type SignInResponse } from 'next-auth/react';
+import { createUser, login } from '@/security/auth';
 import {
   useCallback,
   useState,
@@ -11,8 +10,6 @@ import {
   type JSX,
   type KeyboardEvent,
 } from 'react';
-import { BsGithub } from 'react-icons/bs';
-import { FcGoogle } from 'react-icons/fc';
 
 export default function Login(): JSX.Element {
   const [isError, setIsError] = useState<boolean>(false);
@@ -29,36 +26,21 @@ export default function Login(): JSX.Element {
     []
   );
 
-  const login: () => Promise<void> = useCallback(async (): Promise<void> => {
-    const response: SignInResponse | undefined = await signIn('credentials', {
-      email,
-      password,
-      callbackUrl: '/',
-      redirect: false,
-    });
-
-    if (response.error) {
-      setIsError(true);
-    } else {
-      window.location.reload();
-    }
-  }, [email, password]);
-
   const register: () => Promise<void> = useCallback(async (): Promise<void> => {
-    await postFetcher('/api/register', {
-      email,
-      name,
-      password,
-    })
-      .then(login)
-      .catch((error: unknown): void => console.error(error));
+    try {
+      await createUser({ email, password });
+      await login({ email, password });
+    } catch (error: unknown) {
+      console.error(error);
+      setIsError(true);
+    }
   }, [email, password, name, login]);
 
   async function onClick(event?: FormEvent): Promise<void> {
     event?.preventDefault();
 
     if (variant === 'login') {
-      await login();
+      await login({ email, password });
     } else {
       await register();
     }
@@ -126,7 +108,7 @@ export default function Login(): JSX.Element {
             </button>
           </div>
           <div className="mt-8 flex flex-row items-center justify-center gap-4">
-            <FcGoogle
+            {/* <FcGoogle
               className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white transition hover:opacity-80"
               size={30}
               onClick={(): Promise<void> =>
@@ -139,7 +121,7 @@ export default function Login(): JSX.Element {
               onClick={(): Promise<void> =>
                 signIn('github', { callbackUrl: '/' })
               }
-            />
+            /> */}
           </div>
           <p className="mt-12 flex items-center justify-center text-neutral-500">
             {variant === 'login' ? 'New in here' : 'Already Have An Account'}

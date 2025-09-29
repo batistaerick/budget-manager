@@ -12,6 +12,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 input[type='number'] {
+  appearance: textfield;
   -moz-appearance: textfield; /* Firefox */
 }
 
@@ -23,4 +24,60 @@ input[type='number'] {
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+}
+
+.react-datepicker {
+  background-color: #2a3150 !important;
+  border: none !important;
+  font-size: 1rem !important;
+  color: white !important;
+}
+
+.react-datepicker__header {
+  background-color: #2a3150 !important;
+  border-bottom: none !important;
+  color: white !important;
+}
+
+.react-datepicker__day {
+  color: white !important;
+}
+
+.react-datepicker__day-name {
+  color: white !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #2563eb !important;
+  color: black !important;
+  border-radius: 50% !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: #2563eb !important;
+  color: black !important;
+  border-radius: 50% !important;
+  font-weight: bold;
+}
+
+.react-datepicker__current-month {
+  color: white !important;
+}
+
+.react-datepicker__month-text--selected {
+  background-color: #2563eb !important;
+  color: black !important;
+  font-weight: bold;
+}
+
+.react-datepicker__month-text {
+  padding: 1rem !important;
+  border-radius: 100% !important;
+}
+
+.react-datepicker__month-text:hover {
+  background-color: #2563eb !important;
+  color: black !important;
+  font-weight: bold;
 }

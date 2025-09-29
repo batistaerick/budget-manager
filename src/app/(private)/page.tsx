@@ -1,10 +1,10 @@
 'use client';
 
 import Balance from '@/components/Balance';
-import DatePickerDialog from '@/components/DatePickerDialog';
+import Header from '@/components/Header';
 import Transactions from '@/components/Transactions';
+import { TransactionType } from '@/enums/transactionType.enum';
 import useTransactions from '@/hooks/useTransactions';
-import { TransactionType } from '@prisma/client';
 import { useState, type JSX } from 'react';
 
 export default function Home(): JSX.Element {
@@ -18,25 +18,24 @@ export default function Home(): JSX.Element {
     { startDate: date }
   );
 
+  console.log('HERE ', incomes);
+
   return (
-    <main className="flex flex-col items-center justify-center gap-2 p-4">
-      <DatePickerDialog
-        date={date}
-        setDate={setDate}
-        dateFormat="MMMM/yyyy"
-        showMonthYearPicker
-      />
-      <Balance incomes={incomes ?? []} expenses={expenses ?? []} />
-      <Transactions
-        transactions={incomes}
-        transactionsMutate={incomesMutate}
-        title="Incomes"
-      />
-      <Transactions
-        transactions={expenses}
-        transactionsMutate={expensesMutate}
-        title="Expenses"
-      />
-    </main>
+    <div className="flex h-screen flex-col">
+      <Header date={date} setDate={setDate} />
+      <main className="flex h-full w-full flex-col gap-2 px-2 py-3">
+        <Balance incomes={incomes ?? []} expenses={expenses ?? []} />
+        <Transactions
+          transactions={incomes}
+          transactionsMutate={incomesMutate}
+          title="Incomes"
+        />
+        <Transactions
+          transactions={expenses}
+          transactionsMutate={expensesMutate}
+          title="Expenses"
+        />
+      </main>
+    </div>
   );
 }

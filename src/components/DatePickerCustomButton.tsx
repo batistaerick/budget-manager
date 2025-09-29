@@ -7,6 +7,7 @@ import {
   type RefAttributes,
 } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
+import { FcCalendar } from 'react-icons/fc';
 
 interface DatePickerCustomButtonProps {
   value?: ReactNode;
@@ -20,7 +21,12 @@ const DatePickerCustomButton: ForwardRefExoticComponent<
     { value, onClick }: DatePickerCustomButtonProps,
     ref: ForwardedRef<HTMLButtonElement>
   ): JSX.Element => (
-    <button onClick={onClick} ref={ref} className="cursor-pointer">
+    <button
+      onClick={onClick}
+      ref={ref}
+      className="flex min-h-12 min-w-52 cursor-pointer items-center justify-center gap-2"
+    >
+      <FcCalendar size={25} />
       {value}
     </button>
   )

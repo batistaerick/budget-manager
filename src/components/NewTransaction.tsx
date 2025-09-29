@@ -1,7 +1,7 @@
 import DatePickerDialog from '@/components/DatePickerDialog';
 import Input from '@/components/Input';
 import { postFetcher, putFetcher } from '@/libs/fetchers';
-import type { Transaction } from '@prisma/client';
+import type { Transaction } from '@/types/transaction.type';
 import {
   useCallback,
   useState,
@@ -37,15 +37,9 @@ export default function NewTransaction({
         console.log('AFTER', finalForm);
 
         if (finalForm?.id) {
-          await putFetcher<Partial<Transaction>>(
-            '/api/transactions',
-            finalForm
-          );
+          await putFetcher<Partial<Transaction>>('/transactions', finalForm);
         } else {
-          await postFetcher<Partial<Transaction>>(
-            '/api/transactions',
-            finalForm
-          );
+          await postFetcher<Partial<Transaction>>('/transactions', finalForm);
         }
       } catch (error: unknown) {
         console.error(error);
@@ -79,7 +73,7 @@ export default function NewTransaction({
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-slate-700/35 p-5 backdrop-blur-xs">
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center rounded-full border border-gray-500 hover:border-gray-600">
         <DatePickerDialog date={date} setDate={setDate} />
       </div>
       <form
@@ -87,6 +81,35 @@ export default function NewTransaction({
         id="newTransactionForm"
         onSubmit={onSubmit}
       >
+        <div className="flex items-center justify-between">
+          <label className="text-zinc-300" htmlFor="transactionType">
+            Transaction Type
+          </label>
+          <select
+            id="transactionType"
+            className={`w-44 rounded-md border border-neutral-700 bg-neutral-700 p-3 ${form?.transactionType ? '' : 'text-zinc-400'} `}
+            value={form?.transactionType ?? ''}
+            onChange={handleChange}
+          >
+            <option value="">Select a type</option>
+            <option value="EXPENSE">Expense</option>
+            <option value="INCOME">Income</option>
+          </select>
+        </div>
+        <div className="flex items-center justify-between">
+          <label className="text-zinc-300" htmlFor="repeats">
+            Repeats
+          </label>
+          <select
+            id="repeats"
+            className={`w-44 rounded-md border border-neutral-700 bg-neutral-700 p-3 ${form?.repeats ? '' : 'text-zinc-400'} `}
+            value={form?.repeats ?? ''}
+            onChange={handleChange}
+          >
+            <option value="">Select a type</option>
+            <option value="MONTHLY">Monthly</option>
+          </select>
+        </div>
         <div>
           <FcCurrencyExchange className="mb-1" size={25} />
           <Input
@@ -117,35 +140,6 @@ export default function NewTransaction({
             value={form?.notes ?? ''}
             onChange={handleChange}
           />
-        </div>
-        <div className="flex items-center justify-between">
-          <label className="text-zinc-300" htmlFor="transactionType">
-            Transaction Type
-          </label>
-          <select
-            id="transactionType"
-            className={`w-44 rounded-md border border-neutral-700 bg-neutral-700 p-3 ${form?.transactionType ? '' : 'text-zinc-400'} `}
-            value={form?.transactionType ?? ''}
-            onChange={handleChange}
-          >
-            <option value="">Select a type</option>
-            <option value="EXPENSE">Expense</option>
-            <option value="INCOME">Income</option>
-          </select>
-        </div>
-        <div className="flex items-center justify-between">
-          <label className="text-zinc-300" htmlFor="repeats">
-            Repeats
-          </label>
-          <select
-            id="repeats"
-            className={`w-44 rounded-md border border-neutral-700 bg-neutral-700 p-3 ${form?.repeats ? '' : 'text-zinc-400'} `}
-            value={form?.repeats ?? ''}
-            onChange={handleChange}
-          >
-            <option value="">Select a type</option>
-            <option value="MONTHLY">Monthly</option>
-          </select>
         </div>
         <div className="flex w-full items-center justify-center gap-2">
           <button
