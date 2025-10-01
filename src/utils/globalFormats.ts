@@ -31,3 +31,7 @@ export function formatCurrency(
     style: 'currency',
   });
 }
+
+export function roundNumbersUp(value: number, divisor: number): number {
+  return Math.ceil((value / divisor) * 100) / 100;
+}

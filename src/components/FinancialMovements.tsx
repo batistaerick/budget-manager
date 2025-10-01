@@ -1,10 +1,11 @@
 import Money from '@/components/Money';
 import NewTransaction from '@/components/NewTransaction';
 import { deleteFetcher } from '@/libs/fetchers';
+import type { Installment } from '@/types/installment.type';
 import type { Transaction } from '@/types/transaction.type';
-import { formatDate } from '@/utils/globalFormats';
+import { formatDate, roundNumbersUp } from '@/utils/globalFormats';
 import clsx from 'clsx';
-import { useState, type JSX } from 'react';
+import { useMemo, useState, type JSX } from 'react';
 import { BiEdit } from 'react-icons/bi';
 import { FcFullTrash } from 'react-icons/fc';
 import type { KeyedMutator } from 'swr';
@@ -12,11 +13,13 @@ import type { KeyedMutator } from 'swr';
 export interface FinancialMovementsProps {
   transaction: Transaction;
   mutateOnDelete: KeyedMutator<Transaction[]>;
+  selectedDate: Date;
 }
 
 export default function FinancialMovements({
   transaction,
   mutateOnDelete,
+  selectedDate,
 }: Readonly<FinancialMovementsProps>): JSX.Element {
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
@@ -30,31 +33,62 @@ export default function FinancialMovements({
   }
 
   function getDate(): string {
-    if (transaction.repeats) {
+    if (transaction.repeats !== 'NONE') {
       const day: string = new Date(transaction.date)
         .getDate()
         .toString()
         .padStart(2, '0');
-      return `Day ${day} (Monthly)`;
+      return `Day ${day} (${transaction.repeats})`;
     }
-    return formatDate(transaction.date, 'en-US');
+    if (currentInstallment) {
+      return formatDate(currentInstallment.dueDate, 'en-US');
+    }
+    return formatDate(new Date(transaction.date), 'en-US');
   }
 
+  const currentInstallment: Installment | undefined = useMemo(
+    (): Installment | undefined =>
+      transaction.installments?.find(
+        (installment: Installment): boolean =>
+          new Date(selectedDate).getMonth() ===
+          new Date(installment.dueDate).getMonth()
+      ),
+    [transaction]
+  );
+
+  const calculateInstallmentAmount: number = useMemo((): number => {
+    if (transaction.installmentNumbers) {
+      return roundNumbersUp(
+        transaction.totalValue,
+        transaction.installmentNumbers
+      );
+    }
+    return transaction.totalValue;
+  }, [transaction]);
+
   return (
-    <div className="grid grid-cols-3 border-b-2 border-gray-500 text-lg">
+    <div className="grid grid-cols-4 border-b-2 border-gray-500 text-lg">
+      {isEditOpen && (
+        <button
+          className="fixed inset-0 z-10 backdrop-blur-xs transition-opacity"
+          onClick={onEditOrClose}
+        />
+      )}
       <div className="flex items-center justify-start gap-2">
         <BiEdit
           className="cursor-pointer text-slate-400 transition-colors duration-500 hover:text-slate-100"
           size={22}
           onClick={onEditOrClose}
         />
-        {transaction.category.name}
+        {transaction.category.name}{' '}
+        {transaction.installmentNumbers &&
+          `(${currentInstallment?.installmentNumber}th installment)`}
       </div>
+      <div>{transaction.notes}</div>
       <div className="flex items-center justify-center">{getDate()}</div>
       <div className="flex items-center justify-end gap-1">
-        <Money value={transaction.totalValue} />
+        <Money value={calculateInstallmentAmount} />
         <FcFullTrash
-          data-testid="delete-icon"
           className="cursor-pointer"
           size={22}
           onClick={deleteTransaction}

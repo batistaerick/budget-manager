@@ -5,10 +5,10 @@ import type { Installment } from '@/types/installment.type';
 export interface Transaction {
   id: string;
   category: Category;
-  notes: string;
+  notes?: string | null;
   totalValue: number;
-  installmentNumbers: number;
-  installments: Installment[];
+  installmentNumbers?: number | null;
+  installments?: Installment[] | null;
   repeats: RepeatInterval;
-  date: Date;
+  date: string;
 }

@@ -11,14 +11,12 @@ export default function Home(): JSX.Element {
   const [date, setDate] = useState<Date>(new Date());
   const { data: incomes, mutate: incomesMutate } = useTransactions(
     TransactionType.INCOME,
-    { startDate: date }
+    { startDate: date, endDate: date }
   );
   const { data: expenses, mutate: expensesMutate } = useTransactions(
     TransactionType.EXPENSE,
-    { startDate: date }
+    { startDate: date, endDate: date }
   );
-
-  console.log('HERE ', incomes);
 
   return (
     <div className="flex h-screen flex-col">
@@ -29,11 +27,13 @@ export default function Home(): JSX.Element {
           transactions={incomes}
           transactionsMutate={incomesMutate}
           title="Incomes"
+          selectedDate={date}
         />
         <Transactions
           transactions={expenses}
           transactionsMutate={expensesMutate}
           title="Expenses"
+          selectedDate={date}
         />
       </main>
     </div>

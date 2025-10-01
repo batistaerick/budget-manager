@@ -6,5 +6,5 @@ export interface Installment {
   installmentNumber: number;
   totalInstallments: number;
   amount: number;
-  dueDate: string;
+  dueDate: Date;
 }

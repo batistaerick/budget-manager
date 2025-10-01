@@ -67,7 +67,6 @@ export default function Header({
       >
         <SideMenu onClose={closeMenu} />
       </div>
-
       <div
         className={clsx(
           'fixed top-0 right-0 z-10 h-full w-[400px] transform bg-black shadow-lg transition-transform md:w-[500px]',
