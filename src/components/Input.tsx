@@ -1,4 +1,13 @@
-import { type InputHTMLAttributes, type JSX } from 'react';
+'use client';
+
+import {
+  useState,
+  type HTMLInputTypeAttribute,
+  type InputHTMLAttributes,
+  type JSX,
+} from 'react';
+import type { IconType } from 'react-icons';
+import { PiEyeDuotone, PiEyeSlashDuotone } from 'react-icons/pi';
 
 type InputProps = {
   label: string;
@@ -12,13 +21,26 @@ export default function Input({
   onKeyDown,
   onChange,
 }: Readonly<InputProps>): JSX.Element {
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+
+  const EyeIcon: IconType = isPasswordVisible
+    ? PiEyeDuotone
+    : PiEyeSlashDuotone;
+
+  function handleType(): HTMLInputTypeAttribute | undefined {
+    if (type === 'password' && isPasswordVisible) {
+      return 'text';
+    }
+    return type;
+  }
+
   return (
     <div className="relative">
       <input
         className="text-md peer block w-full appearance-none rounded-md bg-neutral-700 px-5 pt-5 pb-1 focus:ring-0"
         placeholder=" "
         id={id}
-        type={type}
+        type={handleType()}
         value={value}
         onKeyDown={onKeyDown}
         onChange={onChange}
@@ -29,6 +51,15 @@ export default function Input({
       >
         {label}
       </label>
+      {type === 'password' && (
+        <div className="absolute top-4 right-3">
+          <EyeIcon
+            className="cursor-pointer text-gray-950"
+            size={22}
+            onClick={(): void => setIsPasswordVisible(!isPasswordVisible)}
+          />
+        </div>
+      )}
     </div>
   );
 }
