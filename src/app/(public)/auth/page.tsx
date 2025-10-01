@@ -34,7 +34,7 @@ export default function Login(): JSX.Element {
       console.error(error);
       setIsError(true);
     }
-  }, [email, password, name, login]);
+  }, [email, password]);
 
   async function onClick(event?: FormEvent): Promise<void> {
     event?.preventDefault();

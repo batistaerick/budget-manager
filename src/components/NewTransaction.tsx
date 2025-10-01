@@ -42,7 +42,7 @@ export default function NewTransaction({
   );
   const { mutate } = useSWRConfig();
 
-  const onSubmit: (event: FormEvent<Element>) => Promise<void> = useCallback(
+  const onSubmit = useCallback(
     async (event: FormEvent): Promise<void> => {
       event.preventDefault();
 
@@ -57,7 +57,7 @@ export default function NewTransaction({
       };
 
       try {
-        if (form?.id) {
+        if (form.id) {
           await putFetcher<Partial<Transaction>>({
             path: '/transactions',
             body: payload,
@@ -95,7 +95,7 @@ export default function NewTransaction({
   function handleTransactionTypeChange({
     currentTarget: { value },
   }: ChangeEvent<HTMLSelectElement>): void {
-    setTransactionType((value as TransactionType) || undefined);
+    setTransactionType(value as TransactionType);
   }
 
   function handleOnClose(): void {
@@ -105,7 +105,7 @@ export default function NewTransaction({
   }
 
   const isSaveDisabled: boolean = Boolean(
-    !form?.totalValue || !form.category?.id
+    !form.totalValue || !form.category?.id
   );
 
   const isInstallmentsDisabled: boolean = Boolean(
@@ -129,7 +129,7 @@ export default function NewTransaction({
             <select
               id="repeats"
               className="w-full rounded-md border border-neutral-700 bg-neutral-700 p-3 text-zinc-300"
-              value={form?.repeats}
+              value={form.repeats}
               onChange={handleChange}
             >
               <option value={RepeatInterval.NONE}>None</option>
@@ -198,7 +198,7 @@ export default function NewTransaction({
             id="notes"
             label="Notes"
             type="text"
-            value={form?.notes ?? ''}
+            value={form.notes ?? ''}
             onChange={handleChange}
           />
         </div>
@@ -209,7 +209,7 @@ export default function NewTransaction({
             id="totalValue"
             label="Value"
             type="number"
-            value={form?.totalValue?.toString() ?? ''}
+            value={form.totalValue?.toString() ?? ''}
             onChange={handleChange}
           />
         </div>

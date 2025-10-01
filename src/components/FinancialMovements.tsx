@@ -53,7 +53,7 @@ export default function FinancialMovements({
           new Date(selectedDate).getMonth() ===
           new Date(installment.dueDate).getMonth()
       ),
-    [transaction]
+    [transaction, selectedDate]
   );
 
   const calculateInstallmentAmount: number = useMemo((): number => {
