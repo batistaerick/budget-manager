@@ -9,7 +9,7 @@ import {
 } from '@/utils/globalFormats.util';
 import { useMemo, useState, type JSX } from 'react';
 
-export default function Home(): JSX.Element {
+export default function HomePage(): JSX.Element {
   const [date, setDate] = useState<Date>(new Date());
 
   const monthRange: { startDate: Date; endDate: Date } = useMemo(

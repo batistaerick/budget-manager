@@ -1,3 +1,5 @@
+'use client';
+
 import { DatePickerDialog, Input, Tooltip } from '@/components';
 import { RepeatInterval, TransactionType } from '@/enums';
 import { useCategories } from '@/hooks';

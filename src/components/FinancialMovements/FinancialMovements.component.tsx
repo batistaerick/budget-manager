@@ -1,3 +1,5 @@
+'use client';
+
 import { Money, NewTransaction } from '@/components';
 import { deleteFetcher } from '@/libs/fetchers.lib';
 import type { Installment, Transaction } from '@/types';

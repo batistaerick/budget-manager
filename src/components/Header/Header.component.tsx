@@ -1,4 +1,5 @@
 'use client';
+
 import { NewTransaction, SideMenu, Tooltip } from '@/components';
 import clsx from 'clsx';
 import { useState, type Dispatch, type JSX, type SetStateAction } from 'react';
