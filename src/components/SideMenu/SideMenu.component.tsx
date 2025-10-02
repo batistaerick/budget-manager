@@ -1,4 +1,4 @@
-import { logout } from '@/security/auth';
+import { authenticationService } from '@/services';
 import { redirect } from 'next/navigation';
 import type { ButtonHTMLAttributes, JSX } from 'react';
 import { CgProfile } from 'react-icons/cg';
@@ -39,7 +39,7 @@ export default function SideMenu({
           <IoSettingsOutline size={20} />
           Settings
         </Button>
-        <Button onClick={logout}>
+        <Button onClick={authenticationService.logout}>
           <PiSignOutBold size={20} />
           Sign-out
         </Button>

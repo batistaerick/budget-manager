@@ -1,6 +1,5 @@
-import type { RepeatInterval } from '@/enums/repeatInterval.enum';
-import type { Category } from '@/types/category.type';
-import type { Installment } from '@/types/installment.type';
+import type { RepeatInterval } from '@/enums';
+import type { Category, Installment } from '@/types';
 
 export interface Transaction {
   id: string;

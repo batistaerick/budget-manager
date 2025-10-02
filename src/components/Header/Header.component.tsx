@@ -1,12 +1,10 @@
 'use client';
-import NewTransaction from '@/components/NewTransaction';
-import SideMenu from '@/components/SideMenu';
-import Tooltip from '@/components/Tooltip';
+import { NewTransaction, SideMenu, Tooltip } from '@/components';
 import clsx from 'clsx';
 import { useState, type Dispatch, type JSX, type SetStateAction } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { VscRobot } from 'react-icons/vsc';
-import DatePickerDialog from './DatePickerDialog';
+import DatePickerDialog from '../DatePickerDialog/DatePickerDialog.component';
 
 export interface HomeProps {
   date: Date;

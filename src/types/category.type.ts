@@ -1,4 +1,4 @@
-import type { TransactionType } from '@/enums/transactionType.enum';
+import type { TransactionType } from '@/enums';
 
 export interface Category {
   id: string;

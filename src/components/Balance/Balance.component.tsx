@@ -1,6 +1,6 @@
 'use client';
-import Money from '@/components/Money';
-import type { Transaction } from '@/types/transaction.type';
+import { Money } from '@/components';
+import type { Transaction } from '@/types';
 import { useMemo, type JSX } from 'react';
 import { FcBearish, FcBullish } from 'react-icons/fc';
 

@@ -1,3 +1,7 @@
+export interface DateRangeTransactions {
+  startDate: Date;
+  endDate: Date;
+}
 export function getLocation(language: string): 'en-US' | 'pt-BR' {
   return language === 'en' ? 'en-US' : 'pt-BR';
 }
@@ -34,4 +38,19 @@ export function formatCurrency(
 
 export function roundNumbersUp(value: number, divisor: number): number {
   return Math.ceil((value / divisor) * 100) / 100;
+}
+
+export function getStartOfTheMonthAndEndOfTheMonth(
+  date: Date
+): DateRangeTransactions {
+  const start = new Date(date);
+  start.setDate(1);
+  start.setHours(0, 0, 0, 0);
+
+  const end = new Date(date);
+  end.setMonth(end.getMonth() + 1);
+  end.setDate(0);
+  end.setHours(0, 0, 0, 0);
+
+  return { startDate: start, endDate: end };
 }

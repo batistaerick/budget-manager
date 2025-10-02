@@ -1,21 +1,29 @@
 'use client';
 
-import Balance from '@/components/Balance';
-import Header from '@/components/Header';
-import Transactions from '@/components/Transactions';
-import { TransactionType } from '@/enums/transactionType.enum';
-import useTransactions from '@/hooks/useTransactions';
-import { useState, type JSX } from 'react';
+import { Balance, Header, Transactions } from '@/components';
+import { TransactionType } from '@/enums';
+import { useTransactions } from '@/hooks';
+import {
+  getStartOfTheMonthAndEndOfTheMonth,
+  type DateRangeTransactions,
+} from '@/utils/globalFormats.util';
+import { useMemo, useState, type JSX } from 'react';
 
 export default function Home(): JSX.Element {
   const [date, setDate] = useState<Date>(new Date());
+
+  const monthRange: { startDate: Date; endDate: Date } = useMemo(
+    (): DateRangeTransactions => getStartOfTheMonthAndEndOfTheMonth(date),
+    [date]
+  );
+
   const { data: incomes, mutate: incomesMutate } = useTransactions(
     TransactionType.INCOME,
-    { startDate: date, endDate: date }
+    monthRange
   );
   const { data: expenses, mutate: expensesMutate } = useTransactions(
     TransactionType.EXPENSE,
-    { startDate: date, endDate: date }
+    monthRange
   );
 
   return (

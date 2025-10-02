@@ -1,7 +1,7 @@
 'use client';
 
-import FinancialMovements from '@/components/FinancialMovements';
-import type { Transaction } from '@/types/transaction.type';
+import { FinancialMovements } from '@/components';
+import type { Transaction } from '@/types';
 import type { JSX } from 'react';
 import type { KeyedMutator } from 'swr';
 

@@ -1,7 +1,7 @@
 'use client';
 
-import Input from '@/components/Input';
-import { createUser, login } from '@/security/auth';
+import { Input } from '@/components';
+import { authenticationService, userService } from '@/services';
 import {
   useCallback,
   useState,
@@ -28,8 +28,8 @@ export default function Login(): JSX.Element {
 
   const register: () => Promise<void> = useCallback(async (): Promise<void> => {
     try {
-      await createUser({ email, password });
-      await login({ email, password });
+      await userService.createUser({ email, password });
+      await authenticationService.login({ email, password });
     } catch (error: unknown) {
       console.error(error);
       setIsError(true);
@@ -40,7 +40,7 @@ export default function Login(): JSX.Element {
     event?.preventDefault();
 
     if (variant === 'login') {
-      await login({ email, password });
+      await authenticationService.login({ email, password });
     } else {
       await register();
     }

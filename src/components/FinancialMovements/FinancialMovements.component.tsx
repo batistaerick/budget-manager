@@ -1,9 +1,7 @@
-import Money from '@/components/Money';
-import NewTransaction from '@/components/NewTransaction';
-import { deleteFetcher } from '@/libs/fetchers';
-import type { Installment } from '@/types/installment.type';
-import type { Transaction } from '@/types/transaction.type';
-import { formatDate, roundNumbersUp } from '@/utils/globalFormats';
+import { Money, NewTransaction } from '@/components';
+import { deleteFetcher } from '@/libs/fetchers.lib';
+import type { Installment, Transaction } from '@/types';
+import { formatDate, roundNumbersUp } from '@/utils/globalFormats.util';
 import clsx from 'clsx';
 import { useMemo, useState, type JSX } from 'react';
 import { BiEdit } from 'react-icons/bi';

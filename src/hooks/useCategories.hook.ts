@@ -1,6 +1,6 @@
-import type { TransactionType } from '@/enums/transactionType.enum';
-import { getFetcher } from '@/libs/fetchers';
-import type { Category } from '@/types/category.type';
+import type { TransactionType } from '@/enums';
+import { getFetcher } from '@/libs/fetchers.lib';
+import type { Category } from '@/types';
 import useSWR, { type SWRResponse } from 'swr';
 
 export default function useCategories(

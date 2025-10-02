@@ -1,4 +1,4 @@
-import type { Transaction } from '@/types/transaction.type';
+import type { Transaction } from '@/types';
 
 export interface Installment {
   id: string;

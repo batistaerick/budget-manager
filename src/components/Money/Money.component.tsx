@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/utils/globalFormats';
+import { formatCurrency } from '@/utils/globalFormats.util';
 import type { JSX } from 'react';
 
 export interface MoneyProps {
