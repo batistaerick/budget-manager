@@ -6,6 +6,7 @@ import { useCategories } from '@/hooks';
 import { postFetcher, putFetcher } from '@/libs/fetchers.lib';
 import type { Category, Transaction } from '@/types';
 import { getLocalDate } from '@/utils/globalFormats.util';
+import clsx from 'clsx';
 import {
   useCallback,
   useState,
@@ -56,14 +57,12 @@ export default function NewTransaction({
 
       try {
         if (form.id) {
-          await putFetcher<Partial<Transaction>>({
-            path: '/transactions',
-            body: payload,
+          await putFetcher<Partial<Transaction>>('/transactions', {
+            body: JSON.stringify(payload),
           });
         } else {
-          await postFetcher<Partial<Transaction>>({
-            path: '/transactions',
-            body: payload,
+          await postFetcher<Partial<Transaction>>('/transactions', {
+            body: JSON.stringify(payload),
           });
         }
       } catch (error: unknown) {
@@ -213,14 +212,19 @@ export default function NewTransaction({
         </div>
         <div className="flex w-full items-center justify-center gap-2">
           <button
-            className="h-12 w-full cursor-pointer rounded-md bg-neutral-700"
+            className="h-12 w-full cursor-pointer rounded-md bg-blue-900 font-bold"
             type="button"
             onClick={handleOnClose}
           >
             Cancel
           </button>
           <button
-            className={`${isSaveDisabled ? 'cursor-auto bg-neutral-800' : 'cursor-pointer bg-neutral-700'} h-12 w-full rounded-md`}
+            className={clsx(
+              'h-12 w-full rounded-md font-bold',
+              isSaveDisabled
+                ? 'cursor-auto bg-blue-950'
+                : 'cursor-pointer bg-blue-900'
+            )}
             type="submit"
             form="newTransactionForm"
             disabled={isSaveDisabled}

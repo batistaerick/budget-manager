@@ -7,6 +7,7 @@ export { default as Input } from '@/components/Input/Input.component';
 export { default as LoginForm } from '@/components/LoginForm/LoginForm.component';
 export { default as Money } from '@/components/Money/Money.component';
 export { default as NewTransaction } from '@/components/NewTransaction/NewTransaction.component';
+export { default as ProfileForm } from '@/components/ProfileForm/ProfileForm.component';
 export { default as SideMenu } from '@/components/SideMenu/SideMenu.component';
 export { default as Tooltip } from '@/components/Tooltip/Tooltip.component';
 export { default as Transactions } from '@/components/Transactions/Transactions.component';

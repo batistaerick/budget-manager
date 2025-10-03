@@ -17,3 +17,30 @@ export const emailSchema: ZodString = z
   .max(254, 'Email must not exceed 254 characters');
 
 export type EmailType = z.infer<typeof emailSchema>;
+
+export function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+export function isValidPassword(password: string): boolean {
+  return /^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{7,}$/.test(password);
+}
+
+export function isValidUsername(username: string): boolean {
+  return /^[A-Za-z0-9-_]{1,30}$/.test(username);
+}
+
+export function arePasswordsEqual(
+  newPassword: string | undefined,
+  confirmPassword: string | undefined
+): boolean {
+  return newPassword === confirmPassword;
+}
+
+export function hasValueInside(data: object): boolean {
+  return (Object.keys(data) as (keyof typeof data)[]).some(
+    (key: never): never => {
+      return data[key] && String(data[key]).length !== 0;
+    }
+  );
+}

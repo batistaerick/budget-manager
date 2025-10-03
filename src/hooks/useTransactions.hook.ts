@@ -13,8 +13,7 @@ export default function useTransactions(
 ): SWRResponse<Transaction[], Error> {
   return useSWR(
     `/transactions?transactionType=${transactionType}&startDate=${getLocalDate(dates.startDate)}&endDate=${getLocalDate(dates.endDate)}`,
-    (path: string): Promise<Transaction[]> =>
-      getFetcher<Transaction[]>({ path }),
+    getFetcher<Transaction[]>,
     {
       revalidateIfStale: false,
       revalidateOnFocus: false,

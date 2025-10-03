@@ -2,6 +2,7 @@
 
 import { Input } from '@/components';
 import { authenticationService, userService } from '@/services';
+import clsx from 'clsx';
 import {
   useCallback,
   useState,
@@ -97,7 +98,12 @@ export default function LoginForm(): JSX.Element {
       </div>
       <div className="mt-10">
         <button
-          className="h-12 w-full rounded-md bg-blue-950 text-lg font-bold"
+          className={clsx(
+            'h-12 w-full rounded-md text-lg font-bold hover:bg-blue-950',
+            !password.length
+              ? 'bg-blue-950 text-gray-400'
+              : 'cursor-pointer bg-blue-900'
+          )}
           disabled={!password.length}
           onClick={onClick}
         >

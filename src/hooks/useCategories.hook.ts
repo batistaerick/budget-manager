@@ -8,7 +8,7 @@ export default function useCategories(
 ): SWRResponse<Category[], Error> {
   return useSWR(
     transactionType ? `/categories/type/${transactionType}` : null,
-    (path: string): Promise<Category[]> => getFetcher<Category[]>({ path }),
+    getFetcher<Category[]>,
     {
       revalidateIfStale: false,
       revalidateOnFocus: false,

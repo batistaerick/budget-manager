@@ -31,11 +31,11 @@ export default function SideMenu({
           <VscGraph size={20} />
           Analytics
         </Button>
-        <Button>
+        <Button onClick={(): void => onClick('/profile')}>
           <CgProfile size={20} />
           Profile
         </Button>
-        <Button>
+        <Button onClick={(): void => onClick('/settings')}>
           <IoSettingsOutline size={20} />
           Settings
         </Button>

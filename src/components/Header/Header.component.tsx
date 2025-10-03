@@ -1,16 +1,25 @@
 'use client';
 
-import { NewTransaction, SideMenu, Tooltip } from '@/components';
+import { DatePickerDialog, Tooltip } from '@/components';
 import clsx from 'clsx';
+import dynamic from 'next/dynamic';
 import { useState, type Dispatch, type JSX, type SetStateAction } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { VscRobot } from 'react-icons/vsc';
-import DatePickerDialog from '../DatePickerDialog/DatePickerDialog.component';
 
 export interface HomeProps {
   date: Date;
   setDate: Dispatch<SetStateAction<Date>>;
 }
+
+const SideMenu = dynamic(
+  () => import('@/components/SideMenu/SideMenu.component'),
+  { ssr: false }
+);
+const NewTransaction = dynamic(
+  () => import('@/components/NewTransaction/NewTransaction.component'),
+  { ssr: false }
+);
 
 export default function Header({
   date,
