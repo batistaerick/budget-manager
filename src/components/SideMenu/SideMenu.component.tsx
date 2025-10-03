@@ -20,42 +20,42 @@ export default function SideMenu({
   }
 
   return (
-    <div className="h-full w-full bg-slate-700/35 p-5">
-      <p className="text-2xl font-semibold">Menu</p>
-      <nav className="mt-10 flex flex-col items-start justify-start gap-3 text-lg">
-        <Button onClick={(): void => onClick('/')}>
-          <FaHome size={20} />
+    <div className="h-full w-full max-w-xs bg-slate-900/95 p-6 shadow-xl backdrop-blur-sm">
+      <p className="mb-8 text-3xl font-bold text-white">Menu</p>
+      <nav className="flex flex-col gap-3 text-lg">
+        <MenuButton onClick={(): void => onClick('/')}>
+          <FaHome size={22} />
           Home
-        </Button>
-        <Button onClick={(): void => onClick('/analytics')}>
-          <VscGraph size={20} />
+        </MenuButton>
+        <MenuButton onClick={(): void => onClick('/analytics')}>
+          <VscGraph size={22} />
           Analytics
-        </Button>
-        <Button onClick={(): void => onClick('/profile')}>
-          <CgProfile size={20} />
+        </MenuButton>
+        <MenuButton onClick={(): void => onClick('/profile')}>
+          <CgProfile size={22} />
           Profile
-        </Button>
-        <Button onClick={(): void => onClick('/settings')}>
-          <IoSettingsOutline size={20} />
+        </MenuButton>
+        <MenuButton onClick={(): void => onClick('/settings')}>
+          <IoSettingsOutline size={22} />
           Settings
-        </Button>
-        <Button onClick={authenticationService.logout}>
-          <PiSignOutBold size={20} />
-          Sign-out
-        </Button>
+        </MenuButton>
+        <MenuButton onClick={authenticationService.logout}>
+          <PiSignOutBold size={22} />
+          Sign Out
+        </MenuButton>
       </nav>
     </div>
   );
 }
 
-function Button({
+function MenuButton({
   children,
   onClick,
 }: Readonly<ButtonHTMLAttributes<HTMLButtonElement>>): JSX.Element {
   return (
     <button
       onClick={onClick}
-      className="flex cursor-pointer items-center justify-center gap-2"
+      className="flex w-full cursor-pointer items-center gap-3 rounded-lg px-4 py-2 text-white transition-colors duration-200 hover:bg-blue-600/30 focus:ring-2 focus:ring-blue-500 focus:outline-none active:bg-blue-600/50"
     >
       {children}
     </button>

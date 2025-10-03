@@ -1,8 +1,10 @@
 'use client';
 
 import { DatePickerDialog, Tooltip } from '@/components';
+import { useProfileImage } from '@/hooks';
 import clsx from 'clsx';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { useState, type Dispatch, type JSX, type SetStateAction } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { VscRobot } from 'react-icons/vsc';
@@ -25,6 +27,8 @@ export default function Header({
   date,
   setDate,
 }: Readonly<HomeProps>): JSX.Element {
+  const { data: profileImage } = useProfileImage();
+
   const [isLeftOpen, setIsLeftOpen] = useState(false);
   const [isRightOpen, setIsRightOpen] = useState(false);
 
@@ -43,13 +47,27 @@ export default function Header({
       )}
       <header className="flex justify-between py-3 shadow-md">
         <Tooltip tip="Menu" placement="right">
-          <VscRobot
-            size={50}
-            className="cursor-pointer rounded-md p-1 hover:text-gray-400"
-            onClick={(): void =>
-              setIsLeftOpen((prev: boolean): boolean => !prev)
-            }
-          />
+          {profileImage ? (
+            <div className="relative h-12 w-12 cursor-pointer overflow-hidden rounded-full">
+              <Image
+                src={URL.createObjectURL(profileImage)}
+                onClick={(): void =>
+                  setIsLeftOpen((prev: boolean): boolean => !prev)
+                }
+                className="object-cover"
+                alt="Profile"
+                fill
+              />
+            </div>
+          ) : (
+            <VscRobot
+              size={50}
+              className="cursor-pointer rounded-md p-1 hover:text-gray-400"
+              onClick={(): void =>
+                setIsLeftOpen((prev: boolean): boolean => !prev)
+              }
+            />
+          )}
         </Tooltip>
         <DatePickerDialog
           date={date}

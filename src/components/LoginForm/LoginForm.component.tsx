@@ -56,8 +56,8 @@ export default function LoginForm(): JSX.Element {
 
   return (
     <>
-      <h2 className="mb-8 text-center text-4xl font-semibold">
-        {variant === 'login' ? 'Sign-in' : 'Sign-up'}
+      <h2 className="mb-8 text-center text-3xl font-bold text-white">
+        {variant === 'login' ? 'Sign In' : 'Sign Up'}
       </h2>
       <div className="flex flex-col gap-4">
         {variant === 'register' && (
@@ -71,7 +71,7 @@ export default function LoginForm(): JSX.Element {
             }: ChangeEvent<HTMLInputElement>): void => setName(value)}
           />
         )}
-        <div className={isError ? 'rounded-md border border-red-400' : ''}>
+        <div className={clsx('rounded-md', isError && 'border border-red-400')}>
           <Input
             id="email"
             label="Email"
@@ -83,7 +83,7 @@ export default function LoginForm(): JSX.Element {
             onKeyDown={onKeyDown}
           />
         </div>
-        <div className={isError ? 'rounded-md border border-red-400' : ''}>
+        <div className={clsx('rounded-md', isError && 'border border-red-400')}>
           <Input
             id="password"
             label="Password"
@@ -96,27 +96,29 @@ export default function LoginForm(): JSX.Element {
           />
         </div>
       </div>
-      <div className="mt-10">
+      <div className="mt-8">
         <button
           className={clsx(
-            'h-12 w-full rounded-md text-lg font-bold hover:bg-blue-950',
+            'h-12 w-full rounded-md text-lg font-bold text-white transition-all duration-300',
             !password.length
-              ? 'cursor-not-allowed bg-blue-950 text-gray-400'
-              : 'cursor-pointer bg-blue-900'
+              ? 'cursor-not-allowed bg-gray-700'
+              : 'cursor-pointer bg-blue-600 hover:bg-blue-700'
           )}
           disabled={!password.length}
           onClick={onClick}
         >
-          {variant === 'login' ? 'Login' : 'Sign-up'}
+          {variant === 'login' ? 'Login' : 'Sign Up'}
         </button>
       </div>
-      <p className="mt-8 text-center text-neutral-500">
-        {variant === 'login' ? 'New here?' : 'Already have an account?'}
+      <p className="mt-6 text-center text-gray-300">
+        {variant === 'login'
+          ? "Don't have an account?"
+          : 'Already have an account?'}
         <button
-          className="ml-1 cursor-pointer hover:underline"
+          className="ml-1 cursor-pointer font-semibold text-blue-400 hover:underline"
           onClick={toggleVariant}
         >
-          {variant === 'login' ? 'Sign-up' : 'Sign-in'}
+          {variant === 'login' ? 'Sign Up' : 'Sign In'}
         </button>
       </p>
     </>
