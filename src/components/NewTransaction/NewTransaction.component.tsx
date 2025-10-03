@@ -222,7 +222,7 @@ export default function NewTransaction({
             className={clsx(
               'h-12 w-full rounded-md font-bold',
               isSaveDisabled
-                ? 'cursor-auto bg-blue-950'
+                ? 'cursor-not-allowed bg-blue-950'
                 : 'cursor-pointer bg-blue-900'
             )}
             type="submit"

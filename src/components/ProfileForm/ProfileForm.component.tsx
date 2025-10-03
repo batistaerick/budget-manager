@@ -18,7 +18,7 @@ interface UpdatedUser {
   confirmPassword: string;
 }
 
-export default function Profile(): JSX.Element {
+export default function ProfileForm(): JSX.Element {
   const [updatedUser, setUpdatedUser] = useState<UpdatedUser>({
     name: '',
     password: '',
@@ -33,21 +33,19 @@ export default function Profile(): JSX.Element {
 
   async function onSubmit(event: ChangeEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
-
     try {
       const { name, password, confirmPassword } = updatedUser;
 
       if (updatedImage) {
         const imageFile: File = new File([updatedImage], 'image.jpeg', {
           type: updatedImage.type,
-          lastModified: new Date().getTime(),
+          lastModified: Date.now(),
         });
         const formData = new FormData();
         formData.append('file', imageFile, imageFile.name);
-
         await postFetcher<FormData>('/user-image', { body: formData });
       }
-      if (updatedUser.name || updatedUser.password) {
+      if (name || password) {
         if (!arePasswordsEqual(password, confirmPassword)) {
           throw new Error('differentPasswords');
         }
@@ -55,12 +53,11 @@ export default function Profile(): JSX.Element {
           body: JSON.stringify({ name, password }),
         });
       }
-
       setUpdatedUser({ name: '', password: '', confirmPassword: '' });
       await mutateImage();
       await mutateUser();
       push('/');
-    } catch (error: unknown) {
+    } catch (error) {
       console.error(error);
       setUnauthorized(true);
     }
@@ -70,10 +67,7 @@ export default function Profile(): JSX.Element {
     currentTarget: { value, id },
   }: ChangeEvent<HTMLInputElement>): void {
     setUpdatedUser(
-      (prevUpdatedUser: UpdatedUser): UpdatedUser => ({
-        ...prevUpdatedUser,
-        [id]: value,
-      })
+      (prev: UpdatedUser): UpdatedUser => ({ ...prev, [id]: value })
     );
   }
 
@@ -84,117 +78,105 @@ export default function Profile(): JSX.Element {
     file && setUpdatedImage(file);
   }
 
-  const isSaveButtonDisabled: boolean = useMemo<boolean>(
+  function handleUserImageRender(): JSX.Element {
+    if (updatedImage) {
+      return (
+        <Image
+          src={URL.createObjectURL(updatedImage)}
+          alt="Profile"
+          fill
+          className="object-cover"
+        />
+      );
+    }
+    if (profileImage) {
+      return (
+        <Image
+          src={URL.createObjectURL(profileImage)}
+          alt="Profile"
+          fill
+          className="object-cover"
+        />
+      );
+    }
+    return (
+      <div className="flex h-full w-full items-center justify-center text-gray-400">
+        Choose Image
+      </div>
+    );
+  }
+
+  const isSaveButtonDisabled: boolean = useMemo(
     (): boolean =>
       !arePasswordsEqual(updatedUser.password, updatedUser.confirmPassword) ||
       !hasValueInside({ ...updatedUser, updatedImage }),
     [updatedImage, updatedUser]
   );
 
-  console.log('HERE', profileImage);
-
   return (
-    <div className="flex gap-10 sm:flex sm:space-y-0">
-      <div className="flex w-full flex-col items-center gap-5">
-        <label
-          className={clsx(
-            'h-40 w-40 cursor-pointer rounded-full transition duration-500',
-            updatedImage || profileImage
-              ? 'bg-none'
-              : 'bg-slate-400 hover:bg-slate-500'
-          )}
-        >
-          <input
-            className="hidden"
-            id="image"
-            type="file"
-            accept="image/png, image/jpeg"
-            onChange={handleChangeImage}
-          />
-          {updatedImage && (
-            <Image
-              src={URL.createObjectURL(updatedImage)}
-              className="size-full rounded-full object-cover"
-              width={0}
-              height={0}
-              alt="Choose your image"
-            />
-          )}
-          {!updatedImage && profileImage && (
-            <Image
-              src={URL.createObjectURL(profileImage)}
-              className="size-full rounded-full object-cover"
-              width={0}
-              height={0}
-              alt="Choose your image"
-            />
-          )}
-          {!updatedImage && !profileImage && (
-            <span className="flex size-full items-center justify-center">
-              Choose your image
-            </span>
-          )}
-        </label>
-        <div>
-          {currentUser?.name && (
-            <div>&#128515; {`Hi ${currentUser?.name}`}</div>
-          )}
-          <div>{currentUser?.email}</div>
-        </div>
+    <div className="flex flex-col items-center gap-6">
+      <label className="relative h-40 w-40 cursor-pointer overflow-hidden rounded-full border-4 border-gray-700 bg-gray-800 transition-all hover:border-blue-500 hover:shadow-lg">
+        <input
+          type="file"
+          accept="image/png, image/jpeg"
+          className="hidden"
+          onChange={handleChangeImage}
+        />
+        {handleUserImageRender()}
+      </label>
+      <div className="text-center">
+        {currentUser?.name && (
+          <h2 className="text-xl font-semibold text-white">
+            Hello, {currentUser.name} 👋
+          </h2>
+        )}
+        {currentUser?.email && (
+          <p className="text-gray-400">{currentUser.email}</p>
+        )}
       </div>
       <form
-        className="flex w-[350px] flex-col gap-5 sm:w-[400px]"
-        id="updateUserForm"
         onSubmit={onSubmit}
+        className="w-full max-w-md space-y-4 rounded-xl bg-gray-800/90 p-6 shadow-md backdrop-blur-md"
       >
         <Input
-          id="firstName"
+          id="name"
           label="Name"
           type="text"
-          value={updatedUser?.name}
+          value={updatedUser.name}
           onChange={handleChange}
         />
-        <div
-          className={clsx(unauthorized && 'rounded-md border border-red-400')}
-        >
-          <Input
-            id="password"
-            label="Password"
-            type="password"
-            value={updatedUser?.password}
-            onChange={handleChange}
-          />
-        </div>
-        <div
-          className={clsx(unauthorized && 'rounded-md border border-red-400')}
-        >
-          <Input
-            id="confirmPassword"
-            label="Confirm Password"
-            type="password"
-            value={updatedUser?.confirmPassword}
-            onChange={handleChange}
-          />
-        </div>
-        {unauthorized && <div className="text-white">Unauthorized</div>}
-        <div className="flex w-[350px] items-center justify-center gap-3 sm:w-[400px]">
+        <Input
+          id="password"
+          label="Password"
+          type="password"
+          value={updatedUser.password}
+          onChange={handleChange}
+        />
+        <Input
+          id="confirmPassword"
+          label="Confirm Password"
+          type="password"
+          value={updatedUser.confirmPassword}
+          onChange={handleChange}
+        />
+        {unauthorized && <p className="text-sm text-red-400">Unauthorized</p>}
+        <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
           <button
-            className="h-12 w-full cursor-pointer rounded-md bg-blue-900 text-lg font-bold hover:bg-blue-950"
             type="button"
-            onClick={(): void => push('/')}
+            onClick={() => push('/')}
+            className="flex-1 cursor-pointer rounded-lg bg-gray-700 py-3 text-lg font-medium text-white transition hover:bg-gray-600"
           >
             Cancel
           </button>
           <button
-            className={clsx(
-              'h-12 w-full rounded-md text-lg font-bold',
-              isSaveButtonDisabled
-                ? 'bg-blue-950 text-gray-400'
-                : 'cursor-pointer bg-blue-900 hover:bg-blue-950'
-            )}
-            disabled={isSaveButtonDisabled}
             type="submit"
-            form="updateUserForm"
+            disabled={isSaveButtonDisabled}
+            className={clsx(
+              'flex-1 rounded-lg py-3 text-lg font-medium transition',
+              isSaveButtonDisabled
+                ? 'cursor-not-allowed bg-gray-600 text-gray-400'
+                : 'cursor-pointer bg-gray-700 text-white hover:bg-gray-600'
+            )}
           >
             Save
           </button>

@@ -3,12 +3,14 @@ import type { Authentication } from '@/types';
 
 export const authenticationService = {
   login: async ({ email, password }: Authentication): Promise<void> => {
-    await postFetcher({ path: '/auth/login', body: { email, password } });
+    await postFetcher('/auth/login', {
+      body: JSON.stringify({ email, password }),
+    });
     setTimeout((): void => window.location.reload(), 500);
   },
 
   logout: async (): Promise<void> => {
-    await postFetcher({ path: '/auth/logout' });
+    await postFetcher('/auth/logout');
     setTimeout((): void => window.location.reload(), 500);
   },
 };

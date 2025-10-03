@@ -101,7 +101,7 @@ export default function LoginForm(): JSX.Element {
           className={clsx(
             'h-12 w-full rounded-md text-lg font-bold hover:bg-blue-950',
             !password.length
-              ? 'bg-blue-950 text-gray-400'
+              ? 'cursor-not-allowed bg-blue-950 text-gray-400'
               : 'cursor-pointer bg-blue-900'
           )}
           disabled={!password.length}
