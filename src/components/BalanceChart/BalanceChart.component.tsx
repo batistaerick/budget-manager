@@ -14,7 +14,7 @@ export default function BalanceChart({
   incomes,
 }: Readonly<BalanceChartProps>): JSX.Element {
   return (
-    <div className="flex w-full cursor-default flex-col gap-2 rounded-xl bg-slate-700/90 p-4">
+    <div className="flex w-full cursor-default flex-col gap-2 rounded-xl bg-slate-700/90 p-3">
       {expenses.length === 0 ? (
         <div className="flex h-40 items-center justify-center text-gray-300">
           <span>No expense data available</span>

@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  Balance,
-  BalanceChart,
-  DatePickerDialog,
-  Transactions,
-} from '@/components';
+import { Balance, BalanceChart, Transactions } from '@/components';
 import { TransactionType } from '@/enums';
 import { useTransactions } from '@/hooks';
 import {
@@ -34,18 +29,15 @@ export default function Body(): JSX.Element {
   return (
     <div className="flex flex-col gap-2 px-2 py-3">
       <div className="flex h-full w-full flex-col justify-between gap-2 lg:flex-row">
-        <Balance incomes={incomes ?? []} expenses={expenses ?? []} />
-        <div className="flex items-center justify-center rounded-xl bg-slate-700/90">
-          <DatePickerDialog
-            date={date}
-            setDate={setDate}
-            dateFormat="MMMM/yyyy"
-            showMonthYearPicker
-          />
-        </div>
+        <Balance
+          incomes={incomes ?? []}
+          expenses={expenses ?? []}
+          date={date}
+          setDate={setDate}
+        />
         <BalanceChart incomes={incomes ?? []} expenses={expenses ?? []} />
       </div>
-      <div className="flex h-full gap-2">
+      <div className="flex h-full w-full gap-2">
         <Transactions
           transactions={incomes}
           transactionsMutate={incomesMutate}

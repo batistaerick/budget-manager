@@ -1,17 +1,21 @@
 'use client';
-import { Money } from '@/components';
+import { DatePickerDialog, Money } from '@/components';
 import type { Transaction } from '@/types';
-import { useMemo, type JSX } from 'react';
+import { useMemo, type Dispatch, type JSX, type SetStateAction } from 'react';
 import { FcBearish, FcBullish } from 'react-icons/fc';
 
 interface BalanceProps {
   expenses: Transaction[];
   incomes: Transaction[];
+  date: Date;
+  setDate: Dispatch<SetStateAction<Date>>;
 }
 
 export default function Balance({
   expenses,
   incomes,
+  date,
+  setDate,
 }: Readonly<BalanceProps>): JSX.Element {
   function total(transactions: Transaction[]): bigint {
     return transactions.reduce(
@@ -29,12 +33,22 @@ export default function Balance({
 
   return (
     <div className="flex w-full cursor-default flex-col justify-between gap-2 rounded-xl bg-slate-700/90 p-3">
-      <div className="flex w-1/2 flex-col justify-between">
-        <span>Total</span>
-        <Money
-          className="text-left text-3xl"
-          value={totalIncomes - totalExpenses}
-        />
+      <div className="flex w-full justify-between">
+        <div>
+          <span>Total</span>
+          <Money
+            className="text-left text-3xl"
+            value={totalIncomes - totalExpenses}
+          />
+        </div>
+        <div className="flex items-center rounded-full border border-gray-500 hover:border-gray-600">
+          <DatePickerDialog
+            date={date}
+            setDate={setDate}
+            dateFormat="MMMM/yyyy"
+            showMonthYearPicker
+          />
+        </div>
       </div>
       <div className="flex justify-between text-sm">
         <div className="text-left">
