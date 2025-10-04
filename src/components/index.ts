@@ -5,6 +5,7 @@ export { default as DatePickerCustomButton } from '@/components/DatePickerCustom
 export { default as DatePickerDialog } from '@/components/DatePickerDialog/DatePickerDialog.component';
 export { default as FinancialMovements } from '@/components/FinancialMovements/FinancialMovements.component';
 export { default as Header } from '@/components/Header/Header.component';
+export { default as HeaderCell } from '@/components/HeaderCell/HeaderCell.component';
 export { default as Input } from '@/components/Input/Input.component';
 export { default as LoginForm } from '@/components/LoginForm/LoginForm.component';
 export { default as Money } from '@/components/Money/Money.component';
