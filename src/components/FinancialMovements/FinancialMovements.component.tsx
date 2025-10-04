@@ -24,7 +24,7 @@ export default function FinancialMovements({
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
   async function deleteTransaction(): Promise<void> {
-    await deleteFetcher({ path: `/transactions/${transaction.id}` });
+    await deleteFetcher(`/transactions/${transaction.id}`);
     await mutateOnDelete();
   }
 
@@ -76,16 +76,18 @@ export default function FinancialMovements({
       )}
       <div className="flex items-center justify-start gap-2">
         <BiEdit
-          className="cursor-pointer text-slate-400 transition-colors duration-500 hover:text-slate-100"
+          className="cursor-pointer text-slate-300 transition-colors duration-500 hover:text-slate-500"
           size={22}
           onClick={onEditOrClose}
         />
-        {transaction.category.name}{' '}
-        {transaction.installmentNumbers &&
-          `(${currentInstallment?.installmentNumber}th installment)`}
+        <span className="truncate">
+          {transaction.category.name}{' '}
+          {transaction.installmentNumbers &&
+            `(${currentInstallment?.installmentNumber}/${transaction.installmentNumbers})`}
+        </span>
       </div>
-      <div>{transaction.notes}</div>
-      <div className="flex items-center justify-center">{getDate()}</div>
+      <div className="truncate">{transaction.notes}</div>
+      {getDate()}
       <div className="flex items-center justify-end gap-1">
         <Money value={calculateInstallmentAmount} />
         <FcFullTrash

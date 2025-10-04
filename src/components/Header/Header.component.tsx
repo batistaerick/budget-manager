@@ -1,18 +1,13 @@
 'use client';
 
-import { DatePickerDialog, Tooltip } from '@/components';
+import { Tooltip } from '@/components';
 import { useProfileImage } from '@/hooks';
 import clsx from 'clsx';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { useState, type Dispatch, type JSX, type SetStateAction } from 'react';
+import { useState, type JSX } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { VscRobot } from 'react-icons/vsc';
-
-export interface HomeProps {
-  date: Date;
-  setDate: Dispatch<SetStateAction<Date>>;
-}
 
 const SideMenu = dynamic(
   () => import('@/components/SideMenu/SideMenu.component'),
@@ -23,10 +18,7 @@ const NewTransaction = dynamic(
   { ssr: false }
 );
 
-export default function Header({
-  date,
-  setDate,
-}: Readonly<HomeProps>): JSX.Element {
+export default function Header(): JSX.Element {
   const { data: profileImage } = useProfileImage();
 
   const [isLeftOpen, setIsLeftOpen] = useState(false);
@@ -69,12 +61,6 @@ export default function Header({
             />
           )}
         </Tooltip>
-        <DatePickerDialog
-          date={date}
-          setDate={setDate}
-          dateFormat="MMMM/yyyy"
-          showMonthYearPicker
-        />
         <Tooltip tip="New transaction" placement="left">
           <AiOutlinePlus
             className="cursor-pointer rounded-md p-1 hover:text-gray-400"

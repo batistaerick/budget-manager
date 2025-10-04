@@ -6,7 +6,7 @@ export default function middleware({
   nextUrl: { pathname, origin },
 }: NextRequest): NextResponse<unknown> {
   const token: string | undefined = cookies.get('access_token')?.value;
-  const protectedRoutes: string[] = ['/'];
+  const protectedRoutes: string[] = ['/', '/profile'];
 
   if (
     !token &&
@@ -24,4 +24,4 @@ export default function middleware({
   return NextResponse.next();
 }
 
-export const config: NextConfig = { matcher: ['/', '/auth'] };
+export const config: NextConfig = { matcher: ['/', '/profile', '/auth'] };

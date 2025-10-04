@@ -24,6 +24,20 @@ input[type='number'] {
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+  ::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: none;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: cornflowerblue;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: cornflowerblue;
+  }
 }
 
 .react-datepicker {

@@ -125,7 +125,7 @@ export default function NewTransaction({
             <MdEventRepeat className="text-amber-900" size={25} />
             <select
               id="repeats"
-              className="w-full rounded-md border border-neutral-700 bg-neutral-700 p-3 text-zinc-300"
+              className="w-full rounded-md border border-neutral-700 bg-neutral-700 p-3 text-zinc-300 focus:outline-none"
               value={form.repeats}
               onChange={handleChange}
             >
@@ -142,7 +142,7 @@ export default function NewTransaction({
             <GrTransaction className="text-green-700" size={25} />
             <select
               id="transactionType"
-              className="w-full rounded-md border border-neutral-700 bg-neutral-700 p-3 text-zinc-300"
+              className="w-full rounded-md border border-neutral-700 bg-neutral-700 p-3 text-zinc-300 focus:outline-none"
               value={transactionType}
               onChange={handleTransactionTypeChange}
             >
@@ -157,7 +157,7 @@ export default function NewTransaction({
             <FcIdea size={25} />
             <select
               id="category"
-              className="w-full rounded-md border border-neutral-700 bg-neutral-700 p-3 text-zinc-300"
+              className="w-full rounded-md border border-neutral-700 bg-neutral-700 p-3 text-zinc-300 focus:outline-none"
               value={form.category?.id}
               onChange={handleChange}
               disabled={!categories?.length}

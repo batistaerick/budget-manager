@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/x-charts": "^8.13.1",
     "apexcharts": "^5.3.5",
     "clsx": "^2.1.1",
     "next": "15.5.4",

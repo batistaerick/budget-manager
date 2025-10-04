@@ -19,14 +19,14 @@ export default function Transactions({
   selectedDate,
 }: Readonly<SingleTransactionProps>): JSX.Element {
   return (
-    <div className="h-full w-full rounded-xl bg-blue-950/90 px-3">
+    <div className="w-full rounded-xl bg-blue-950/90 px-3">
       <div className="my-2 grid grid-cols-4 text-lg">
         <div className="flex items-center">{title}</div>
         <div className="flex items-center justify-center">Notes</div>
         <div className="flex items-center justify-center">Date</div>
         <div className="flex items-center justify-end">Value</div>
       </div>
-      <div className="no-scrollbar space-y-2 overflow-y-auto">
+      <div className="no-scrollbar h-[35rem] space-y-2 overflow-y-auto">
         {transactions?.map(
           (transaction: Transaction): JSX.Element => (
             <FinancialMovements

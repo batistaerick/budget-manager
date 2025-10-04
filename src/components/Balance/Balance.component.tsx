@@ -28,15 +28,13 @@ export default function Balance({
   );
 
   return (
-    <div className="flex w-full cursor-default flex-col gap-2 rounded-xl bg-slate-700/90 p-3">
-      <div className="flex w-1/2 items-center justify-between">
-        <div>
-          Total
-          <Money
-            className="text-left text-3xl"
-            value={totalIncomes - totalExpenses}
-          />
-        </div>
+    <div className="flex w-full cursor-default flex-col justify-between gap-2 rounded-xl bg-slate-700/90 p-3">
+      <div className="flex w-1/2 flex-col justify-between">
+        <span>Total</span>
+        <Money
+          className="text-left text-3xl"
+          value={totalIncomes - totalExpenses}
+        />
       </div>
       <div className="flex justify-between text-sm">
         <div className="text-left">
