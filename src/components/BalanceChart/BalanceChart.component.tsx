@@ -15,16 +15,22 @@ export default function BalanceChart({
 }: Readonly<BalanceChartProps>): JSX.Element {
   return (
     <div className="flex w-full cursor-default flex-col gap-2 rounded-xl bg-slate-700/90 p-3">
-      {expenses.length === 0 ? (
-        <div className="flex h-40 items-center justify-center text-gray-300">
-          <span>No expense data available</span>
-        </div>
-      ) : (
-        <div className="flex">
+      <div className="flex">
+        {expenses.length !== 0 ? (
           <PieChartTransactions transactions={expenses} typography="Expenses" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-gray-300">
+            <span>No expense data available</span>
+          </div>
+        )}
+        {incomes.length !== 0 ? (
           <PieChartTransactions transactions={incomes} typography="Incomes" />
-        </div>
-      )}
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-gray-300">
+            <span>No expense data available</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

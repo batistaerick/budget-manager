@@ -105,7 +105,7 @@ export default function Transactions({
           toggleSort={toggleSort}
         />
       </div>
-      <div className="h-[35rem] space-y-2 overflow-y-auto">
+      <div className="h-52 space-y-2 overflow-y-auto sm:h-[35rem]">
         {sortedTransactions.map(
           (transaction: Transaction): JSX.Element => (
             <FinancialMovements

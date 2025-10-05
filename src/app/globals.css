@@ -95,3 +95,7 @@ input[type='number'] {
   color: black !important;
   font-weight: bold;
 }
+
+.MuiPieArc-root {
+  stroke: transparent !important;
+}

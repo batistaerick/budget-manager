@@ -37,7 +37,7 @@ export default function Body(): JSX.Element {
         />
         <BalanceChart incomes={incomes ?? []} expenses={expenses ?? []} />
       </div>
-      <div className="flex h-full w-full gap-2">
+      <div className="flex h-full w-full flex-col gap-2 sm:flex-row">
         <Transactions
           transactions={incomes}
           transactionsMutate={incomesMutate}

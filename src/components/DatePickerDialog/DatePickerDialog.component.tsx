@@ -19,7 +19,7 @@ export default function DatePickerDialog({
   showMonthYearPicker,
 }: Readonly<DatePickerDialogProps>): JSX.Element {
   return (
-    <div className="flex items-center justify-center rounded-xl hover:text-gray-300">
+    <div className="flex items-center justify-center rounded-xl">
       <DatePicker
         selected={date}
         onChange={(newDate: Date | null): void =>
@@ -27,7 +27,7 @@ export default function DatePickerDialog({
         }
         dateFormat={dateFormat ?? 'dd/MMMM/yyyy'}
         showMonthYearPicker={showMonthYearPicker}
-        customInput={<DatePickerCustomButton />}
+        customInput={<DatePickerCustomButton setDate={setDate} />}
         locale={enUS}
         showPopperArrow={false}
       />
