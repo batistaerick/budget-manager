@@ -7,13 +7,7 @@ import { postFetcher, putFetcher } from '@/libs/fetchers.lib';
 import type { Category, Transaction } from '@/types';
 import { getLocalDate } from '@/utils/globalFormats.util';
 import clsx from 'clsx';
-import {
-  useCallback,
-  useState,
-  type ChangeEvent,
-  type FormEvent,
-  type JSX,
-} from 'react';
+import { useState, type ChangeEvent, type FormEvent, type JSX } from 'react';
 import { BsFillCreditCard2BackFill } from 'react-icons/bs';
 import { FcCurrencyExchange, FcIdea, FcSurvey } from 'react-icons/fc';
 import { GrTransaction } from 'react-icons/gr';
@@ -21,7 +15,7 @@ import { MdEventRepeat } from 'react-icons/md';
 import { useSWRConfig } from 'swr';
 
 export interface NewTransactionProps {
-  transaction?: Partial<Transaction>;
+  transaction?: Transaction;
   onClose: () => void;
 }
 
@@ -32,7 +26,9 @@ export default function NewTransaction({
   const [form, setForm] = useState<Partial<Transaction>>(
     transaction ?? { repeats: RepeatInterval.NONE }
   );
-  const [date, setDate] = useState<Date>(new Date());
+  const [date, setDate] = useState<Date>(
+    new Date(transaction?.date ?? new Date())
+  );
   const [transactionType, setTransactionType] = useState<TransactionType | ''>(
     form.category?.transactionType ?? ''
   );
@@ -41,39 +37,34 @@ export default function NewTransaction({
   );
   const { mutate } = useSWRConfig();
 
-  const onSubmit = useCallback(
-    async (event: FormEvent): Promise<void> => {
-      event.preventDefault();
+  async function onSubmit(event: FormEvent): Promise<void> {
+    event.preventDefault();
 
-      const payload: Partial<Transaction> = {
-        notes: form.notes ?? '',
-        totalValue: Number(form.totalValue),
-        installmentNumbers: form.installmentNumbers ?? null,
-        installments: form.installments ?? null,
-        repeats: form.repeats ?? RepeatInterval.NONE,
-        category: form.category,
-        date: getLocalDate(date).replaceAll('-', '/'),
-      };
+    const body: string = JSON.stringify({
+      id: form.id,
+      notes: form.notes,
+      totalValue: Number(form.totalValue),
+      installmentNumbers: form.installmentNumbers ?? null,
+      installments: form.installments ?? null,
+      repeats: form.repeats ?? RepeatInterval.NONE,
+      category: form.category,
+      date: getLocalDate(date).replaceAll('-', '/'),
+    });
 
-      try {
-        if (form.id) {
-          await putFetcher<Partial<Transaction>>('/transactions', {
-            body: JSON.stringify(payload),
-          });
-        } else {
-          await postFetcher<Partial<Transaction>>('/transactions', {
-            body: JSON.stringify(payload),
-          });
-        }
-      } catch (error: unknown) {
-        console.error(error);
+    try {
+      if (!form.id) {
+        await postFetcher<Transaction>('/transactions', { body });
+      } else {
+        await putFetcher<Transaction>('/transactions', { body });
       }
+    } catch (error: unknown) {
+      console.error(error);
+    } finally {
       await mutate((): true => true);
       setForm({ repeats: RepeatInterval.NONE });
       setTransactionType('');
-    },
-    [form, mutate, date]
-  );
+    }
+  }
 
   function handleChange({
     currentTarget: { value, id },
@@ -113,7 +104,7 @@ export default function NewTransaction({
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-slate-700/35 p-5 backdrop-blur-xs">
       <div className="flex items-center justify-center rounded-full border border-gray-500 hover:border-gray-600">
-        <DatePickerDialog date={date} setDate={setDate} />
+        <DatePickerDialog date={date} setDate={setDate} arrows />
       </div>
       <form
         className="flex h-full w-full flex-col gap-5 rounded-lg"
@@ -131,9 +122,6 @@ export default function NewTransaction({
             >
               <option value={RepeatInterval.NONE}>None</option>
               <option value={RepeatInterval.MONTHLY}>Monthly</option>
-              <option value={RepeatInterval.WEEKLY}>Weekly</option>
-              <option value={RepeatInterval.DAILY}>Daily</option>
-              <option value={RepeatInterval.YEARLY}>Yearly</option>
             </select>
           </div>
         </Tooltip>

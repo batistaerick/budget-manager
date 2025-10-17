@@ -1,6 +1,6 @@
 'use client';
 
-import { Balance, BalanceChart, Transactions } from '@/components';
+import { Balance, Charts, Transactions } from '@/components';
 import { TransactionType } from '@/enums';
 import { useTransactions } from '@/hooks';
 import {
@@ -35,7 +35,12 @@ export default function Body(): JSX.Element {
           date={date}
           setDate={setDate}
         />
-        <BalanceChart incomes={incomes ?? []} expenses={expenses ?? []} />
+        <Charts
+          expenses={expenses ?? []}
+          incomes={incomes ?? []}
+          startDate={date}
+          endDate={date}
+        />
       </div>
       <div className="flex h-full w-full flex-col gap-2 sm:flex-row">
         <Transactions

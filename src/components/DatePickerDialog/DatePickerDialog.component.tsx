@@ -10,10 +10,12 @@ export interface DatePickerDialogProps {
   setDate: Dispatch<SetStateAction<Date>>;
   dateFormat?: string;
   showMonthYearPicker?: boolean;
+  arrows?: boolean;
 }
 
 export default function DatePickerDialog({
   date,
+  arrows,
   setDate,
   dateFormat,
   showMonthYearPicker,
@@ -27,7 +29,9 @@ export default function DatePickerDialog({
         }
         dateFormat={dateFormat ?? 'dd/MMMM/yyyy'}
         showMonthYearPicker={showMonthYearPicker}
-        customInput={<DatePickerCustomButton setDate={setDate} />}
+        customInput={
+          <DatePickerCustomButton arrows={arrows} setDate={setDate} />
+        }
         locale={enUS}
         showPopperArrow={false}
       />

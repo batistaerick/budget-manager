@@ -1,22 +1,12 @@
 'use client';
 
-import { Tooltip } from '@/components';
+import { NewTransaction, SideMenu, Tooltip } from '@/components';
 import { useProfileImage } from '@/hooks';
 import clsx from 'clsx';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useState, type JSX } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { VscRobot } from 'react-icons/vsc';
-
-const SideMenu = dynamic(
-  () => import('@/components/SideMenu/SideMenu.component'),
-  { ssr: false }
-);
-const NewTransaction = dynamic(
-  () => import('@/components/NewTransaction/NewTransaction.component'),
-  { ssr: false }
-);
 
 export default function Header(): JSX.Element {
   const { data: profileImage } = useProfileImage();
@@ -73,19 +63,19 @@ export default function Header(): JSX.Element {
       </header>
       <div
         className={clsx(
-          'fixed top-0 left-0 z-10 h-full w-72 transform bg-black shadow-lg transition-transform',
-          isLeftOpen ? 'translate-x-0' : '-translate-x-full'
+          'fixed top-0 left-0 z-10 h-full w-72 transform bg-black shadow-lg transition-transform duration-300',
+          isLeftOpen ? 'visible translate-x-0' : 'invisible -translate-x-full'
         )}
       >
-        <SideMenu onClose={closeMenu} />
+        {isLeftOpen && <SideMenu onClose={closeMenu} />}
       </div>
       <div
         className={clsx(
-          'fixed top-0 right-0 z-10 h-full w-[400px] transform bg-black shadow-lg transition-transform md:w-[500px]',
-          isRightOpen ? 'translate-x-0' : 'translate-x-full'
+          'fixed top-0 right-0 z-10 h-full w-[400px] transform bg-black shadow-lg transition-transform duration-300 md:w-[500px]',
+          isRightOpen ? 'visible translate-x-0' : 'invisible translate-x-full'
         )}
       >
-        <NewTransaction onClose={closeMenu} />
+        {isRightOpen && <NewTransaction onClose={closeMenu} />}
       </div>
     </div>
   );

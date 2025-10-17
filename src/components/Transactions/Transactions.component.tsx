@@ -3,7 +3,7 @@
 import { FinancialMovements, HeaderCell } from '@/components';
 import type { Transaction } from '@/types';
 import type { JSX } from 'react';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { KeyedMutator } from 'swr';
 
 type SortKey = 'category' | 'notes' | 'date' | 'value';
@@ -15,6 +15,7 @@ interface SingleTransactionProps {
   selectedDate: Date;
   title: string;
 }
+
 export default function Transactions({
   transactions,
   transactionsMutate,
@@ -35,42 +36,62 @@ export default function Transactions({
     }
   }
 
+  const createTransactionComparator = useCallback(
+    (sortKey: SortKey, sortOrder: SortOrder) => {
+      function getAmount(t: Transaction): number {
+        return t.installmentNumbers
+          ? Number(t.installments?.[0]?.amount ?? 0)
+          : Number(t.totalValue);
+      }
+
+      return (a: Transaction, b: Transaction): number => {
+        let A: string | number = '';
+        let B: string | number = '';
+
+        switch (sortKey) {
+          case 'category':
+            A = (a.category?.name ?? '').toLowerCase();
+            B = (b.category?.name ?? '').toLowerCase();
+            break;
+          case 'notes':
+            A = (a.notes ?? '').toLowerCase();
+            B = (b.notes ?? '').toLowerCase();
+            break;
+          case 'date':
+            A = Date.parse(a.date);
+            B = Date.parse(b.date);
+            break;
+          case 'value':
+            A = getAmount(a);
+            B = getAmount(b);
+            break;
+          default:
+            return 0;
+        }
+        let comparison: number = 0;
+
+        if (A < B) {
+          comparison = -1;
+        } else if (A > B) {
+          comparison = 1;
+        }
+        return sortOrder === 'asc' ? comparison : -comparison;
+      };
+    },
+    []
+  );
+
+  const transactionComparator: (a: Transaction, b: Transaction) => number =
+    useCallback(createTransactionComparator(sortKey, sortOrder), [
+      sortKey,
+      sortOrder,
+    ]);
+
   const sortedTransactions: Transaction[] = useMemo((): Transaction[] => {
-    if (!transactions) {
+    if (!transactions || transactions.length === 0) {
       return [];
     }
-    return transactions.sort((a: Transaction, b: Transaction): 1 | -1 | 0 => {
-      let A: string | number = '';
-      let B: string | number = '';
-
-      if (sortKey === 'category') {
-        A = (a.category?.name ?? '').toLowerCase();
-        B = (b.category?.name ?? '').toLowerCase();
-      } else if (sortKey === 'notes') {
-        A = (a.notes ?? '').toLowerCase();
-        B = (b.notes ?? '').toLowerCase();
-      } else if (sortKey === 'date') {
-        A = new Date(a.date).getTime();
-        B = new Date(b.date).getTime();
-      } else if (sortKey === 'value') {
-        function getAmount(t: Transaction): number {
-          return t.installmentNumbers
-            ? Number(t.installments?.[0]?.amount ?? 0)
-            : Number(t.totalValue);
-        }
-
-        A = getAmount(a);
-        B = getAmount(b);
-      }
-
-      if (A < B) {
-        return sortOrder === 'asc' ? -1 : 1;
-      }
-      if (A > B) {
-        return sortOrder === 'asc' ? 1 : -1;
-      }
-      return 0;
-    });
+    return transactions.slice().sort(transactionComparator);
   }, [transactions, sortKey, sortOrder]);
 
   return (
@@ -97,13 +118,15 @@ export default function Transactions({
           sortOrder={sortOrder}
           toggleSort={toggleSort}
         />
-        <HeaderCell
-          label="Value"
-          keyName="value"
-          sortKey={sortKey}
-          sortOrder={sortOrder}
-          toggleSort={toggleSort}
-        />
+        <div className="flex w-full justify-end">
+          <HeaderCell
+            label="Value"
+            keyName="value"
+            sortKey={sortKey}
+            sortOrder={sortOrder}
+            toggleSort={toggleSort}
+          />
+        </div>
       </div>
       <div className="h-52 space-y-2 overflow-y-auto sm:h-[35rem]">
         {sortedTransactions.map(

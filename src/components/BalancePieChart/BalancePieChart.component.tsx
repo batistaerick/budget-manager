@@ -10,15 +10,19 @@ interface PieChartDataType {
   label: string;
 }
 
-interface PieChartProps {
+interface BalancePieChartProps {
   transactions: Transaction[];
-  typography?: string;
+  typography: string;
+  height?: number;
+  width?: number;
 }
 
-export default function PieChartTransactions({
+export default function BalancePieChart({
   transactions,
   typography,
-}: Readonly<PieChartProps>): JSX.Element {
+  height = 180,
+  width = 180,
+}: Readonly<BalancePieChartProps>): JSX.Element {
   function groupByCategory(): PieChartDataType[] {
     return Object.values(
       transactions.reduce(
@@ -41,7 +45,7 @@ export default function PieChartTransactions({
           }
           return accumulator;
         },
-        {} as Record<string, PieChartDataType>
+        {}
       )
     );
   }
@@ -67,17 +71,21 @@ export default function PieChartTransactions({
     '#823cc1',
   ];
 
-  return (
+  return transactions.length ? (
     <div className="flex w-full flex-col items-center justify-center gap-2">
       {typography}
       <PieChart
         className="chart-container"
         colors={darkColors}
         series={[{ data: groupedTransactions }]}
-        width={150}
-        height={150}
+        height={height}
+        width={width}
         slotProps={{ legend: { hidden: true } } as ChartsLegendSlotProps}
       />
+    </div>
+  ) : (
+    <div className="flex h-full w-full items-center justify-center text-gray-300">
+      <span>No transaction data available</span>
     </div>
   );
 }

@@ -98,11 +98,13 @@ export default function FinancialMovements({
       </div>
       <div
         className={clsx(
-          'fixed top-0 right-0 z-10 h-full w-[400px] transform bg-black shadow-lg transition-transform md:w-[500px]',
-          isEditOpen ? 'translate-x-0' : 'hidden translate-x-full'
+          'fixed top-0 right-0 z-10 h-full w-[400px] transform bg-black shadow-lg transition-transform duration-300 md:w-[500px]',
+          isEditOpen ? 'visible translate-x-0' : 'invisible translate-x-full'
         )}
       >
-        <NewTransaction onClose={onEditOrClose} transaction={transaction} />
+        {isEditOpen && (
+          <NewTransaction onClose={onEditOrClose} transaction={transaction} />
+        )}
       </div>
     </div>
   );

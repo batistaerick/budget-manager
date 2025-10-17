@@ -32,7 +32,7 @@ export default function Balance({
   );
 
   return (
-    <div className="flex w-full cursor-default flex-col justify-between gap-2 rounded-xl bg-slate-700/90 p-3">
+    <div className="flex w-full cursor-default flex-col justify-between gap-2 rounded-xl bg-slate-700/90 p-2">
       <div className="flex w-full justify-between">
         <div>
           <span>Total</span>
@@ -47,6 +47,7 @@ export default function Balance({
             setDate={setDate}
             dateFormat="MMMM/yyyy"
             showMonthYearPicker
+            arrows
           />
         </div>
       </div>
