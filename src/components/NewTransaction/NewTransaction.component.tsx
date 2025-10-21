@@ -1,6 +1,6 @@
 'use client';
 
-import { DatePickerDialog, Input, Tooltip } from '@/components';
+import { DatePickerDialog, Input, SelectWithTooltip } from '@/components';
 import { RepeatInterval, TransactionType } from '@/enums';
 import { useCategories } from '@/hooks';
 import { postFetcher, putFetcher } from '@/libs/fetchers.lib';
@@ -111,60 +111,46 @@ export default function NewTransaction({
         id="newTransactionForm"
         onSubmit={onSubmit}
       >
-        <Tooltip placement="bottom" tip="Does it repeat?">
-          <div className="flex flex-col gap-1">
-            <MdEventRepeat className="text-amber-900" size={25} />
-            <select
-              id="repeats"
-              className="w-full rounded-md border border-neutral-700 bg-neutral-700 p-3 text-zinc-300 focus:outline-none"
-              value={form.repeats}
-              onChange={handleChange}
-            >
-              <option value={RepeatInterval.NONE}>None</option>
-              <option value={RepeatInterval.MONTHLY}>Monthly</option>
-            </select>
-          </div>
-        </Tooltip>
-        <Tooltip placement="bottom" tip="Transaction Type">
-          <div className="flex flex-col gap-1">
-            <GrTransaction className="text-green-700" size={25} />
-            <select
-              id="transactionType"
-              className="w-full rounded-md border border-neutral-700 bg-neutral-700 p-3 text-zinc-300 focus:outline-none"
-              value={transactionType}
-              onChange={handleTransactionTypeChange}
-            >
-              <option value="">Select a transaction type</option>
-              <option value="EXPENSE">Expense</option>
-              <option value="INCOME">Income</option>
-            </select>
-          </div>
-        </Tooltip>
-        <Tooltip placement="bottom" tip="Transaction category">
-          <div className="flex flex-col gap-1">
-            <FcIdea size={25} />
-            <select
-              id="category"
-              className="w-full rounded-md border border-neutral-700 bg-neutral-700 p-3 text-zinc-300 focus:outline-none"
-              value={form.category?.id}
-              onChange={handleChange}
-              disabled={!categories?.length}
-            >
-              <option value="">Select a category</option>
-              {categories
-                ?.sort((a: Category, b: Category): number =>
-                  a.name.localeCompare(b.name)
-                )
-                .map(
-                  (category: Category): JSX.Element => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  )
-                )}
-            </select>
-          </div>
-        </Tooltip>
+        <SelectWithTooltip
+          id="repeats"
+          tooltip="Does it repeat?"
+          icon={<MdEventRepeat className="text-amber-900" size={25} />}
+          value={form.repeats}
+          onChange={handleChange}
+          options={[
+            { label: 'None', value: RepeatInterval.NONE },
+            { label: 'Monthly', value: RepeatInterval.MONTHLY },
+          ]}
+        />
+        <SelectWithTooltip
+          id="transactionType"
+          tooltip="Transaction Type"
+          icon={<GrTransaction className="text-green-700" size={25} />}
+          value={transactionType}
+          onChange={handleTransactionTypeChange}
+          options={[
+            { label: 'Select a transaction type', value: '' },
+            { label: 'Expense', value: 'EXPENSE' },
+            { label: 'Income', value: 'INCOME' },
+          ]}
+        />
+        <SelectWithTooltip
+          id="category"
+          tooltip="Transaction category"
+          icon={<FcIdea size={25} />}
+          value={form.category?.id || ''}
+          onChange={handleChange}
+          options={[
+            { label: 'Select a category', value: '' },
+            ...(categories
+              ?.sort((a: Category, b: Category): number =>
+                a.name.localeCompare(b.name)
+              )
+              .map(({ name, id }: Category) => ({ label: name, value: id })) ??
+              []),
+          ]}
+          disabled={!categories?.length}
+        />
         {isInstallmentsDisabled && (
           <div className="flex flex-col gap-1">
             <BsFillCreditCard2BackFill className="text-purple-600" size={25} />

@@ -87,9 +87,9 @@ export default function FinancialMovements({
         </span>
       </div>
       <div className="truncate">{transaction.notes}</div>
-      {getDate()}
+      <div className="truncate">{getDate()}</div>
       <div className="flex items-center justify-end gap-1">
-        <Money value={calculateInstallmentAmount} />
+        <Money className="truncate" value={calculateInstallmentAmount} />
         <FcFullTrash
           className="cursor-pointer"
           size={22}

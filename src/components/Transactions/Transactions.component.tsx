@@ -128,7 +128,10 @@ export default function Transactions({
           />
         </div>
       </div>
-      <div className="h-52 space-y-2 overflow-y-auto sm:h-[35rem]">
+      <div
+        className="space-y-2 overflow-y-auto"
+        style={{ height: 'calc(100vh - 390px)' }}
+      >
         {sortedTransactions.map(
           (transaction: Transaction): JSX.Element => (
             <FinancialMovements

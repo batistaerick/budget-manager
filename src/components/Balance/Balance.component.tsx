@@ -1,8 +1,16 @@
 'use client';
+
 import { DatePickerDialog, Money } from '@/components';
 import type { Transaction } from '@/types';
 import { useMemo, type Dispatch, type JSX, type SetStateAction } from 'react';
 import { FcBearish, FcBullish } from 'react-icons/fc';
+
+function total(transactions: Transaction[]): number {
+  return transactions.reduce(
+    (sum: number, { totalValue }: Transaction): number => sum + totalValue,
+    0
+  );
+}
 
 interface BalanceProps {
   expenses: Transaction[];
@@ -17,17 +25,9 @@ export default function Balance({
   date,
   setDate,
 }: Readonly<BalanceProps>): JSX.Element {
-  function total(transactions: Transaction[]): bigint {
-    return transactions.reduce(
-      (sum: bigint, { totalValue }: Transaction): bigint =>
-        sum + BigInt(totalValue),
-      0n
-    );
-  }
-
-  const totalIncomes: bigint = useMemo((): bigint => total(incomes), [incomes]);
-  const totalExpenses: bigint = useMemo(
-    (): bigint => total(expenses),
+  const totalIncomes: number = useMemo((): number => total(incomes), [incomes]);
+  const totalExpenses: number = useMemo(
+    (): number => total(expenses),
     [expenses]
   );
 

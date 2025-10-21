@@ -43,9 +43,9 @@ function expandTransaction(
   if (transaction.repeats === RepeatInterval.MONTHLY) {
     const results: ExpandTransaction[] = [];
     let current: Date = startOfMonth(
-      new Date(transaction.date) < startDate
-        ? startDate
-        : new Date(transaction.date)
+      new Date(
+        Math.max(new Date(transaction.date).getTime(), startDate.getTime())
+      )
     );
 
     while (current <= endDate) {
