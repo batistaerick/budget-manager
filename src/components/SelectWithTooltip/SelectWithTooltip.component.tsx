@@ -26,7 +26,7 @@ export default function SelectWithTooltip({
   disabled = false,
 }: Readonly<SelectWithTooltipProps>): JSX.Element {
   return (
-    <Tooltip placement="bottom" tip={tooltip}>
+    <Tooltip placement="bottom" tooltip={tooltip}>
       <div className="flex flex-col gap-1">
         {icon}
         <select

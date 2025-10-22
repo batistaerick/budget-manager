@@ -28,7 +28,7 @@ export default function Header(): JSX.Element {
         />
       )}
       <header className="flex justify-between py-3 shadow-md">
-        <Tooltip tip="Menu" placement="right">
+        <Tooltip tooltip="Menu" placement="right">
           {profileImage ? (
             <div className="relative h-12 w-12 cursor-pointer overflow-hidden rounded-full">
               <Image
@@ -51,7 +51,7 @@ export default function Header(): JSX.Element {
             />
           )}
         </Tooltip>
-        <Tooltip tip="New transaction" placement="left">
+        <Tooltip tooltip="New transaction" placement="left">
           <AiOutlinePlus
             className="cursor-pointer rounded-md p-1 hover:text-gray-400"
             size={50}

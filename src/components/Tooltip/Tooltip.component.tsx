@@ -3,31 +3,33 @@
 import clsx from 'clsx';
 import { type JSX, type ReactNode } from 'react';
 
-interface TooltipProps {
-  tip: string;
+export interface TooltipProps {
+  tooltip: string;
   placement?: 'top' | 'bottom' | 'left' | 'right';
   children: ReactNode;
 }
 
 export default function Tooltip({
-  tip,
-  placement,
+  tooltip,
+  placement = 'right',
   children,
 }: Readonly<TooltipProps>): JSX.Element {
   const tooltipClasses: string = clsx(
-    'invisible absolute z-50 rounded-full bg-sky-950 px-3 py-1 text-sm text-white opacity-0 transition-opacity duration-300 group-hover:visible group-hover:opacity-100',
+    'absolute z-50 rounded-md bg-sky-950 px-2 py-1 text-xs text-white whitespace-nowrap',
+    'opacity-0 group-hover:opacity-100 transition-opacity duration-200',
+    'pointer-events-none',
     {
-      'bottom-full left-1/2 -translate-x-1/2 mt-0 mb-2': placement === 'top',
-      'top-full left-1/2 -translate-x-1/2 mt-2': placement === 'bottom',
+      'bottom-full left-1/2 -translate-x-1/2 mb-1': placement === 'top',
+      'top-full left-1/2 -translate-x-1/2 mt-1': placement === 'bottom',
       'left-full top-1/2 -translate-y-1/2 ml-2': placement === 'right',
       'right-full top-1/2 -translate-y-1/2 mr-2': placement === 'left',
     }
   );
 
   return (
-    <div className="group relative">
+    <div className="group relative inline-flex items-center">
       {children}
-      <span className={tooltipClasses}>{tip}</span>
+      <span className={tooltipClasses}>{tooltip}</span>
     </div>
   );
 }

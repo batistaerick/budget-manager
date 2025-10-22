@@ -1,6 +1,7 @@
+import { MenuButton } from '@/components';
 import { authenticationService } from '@/services';
 import { redirect } from 'next/navigation';
-import type { ButtonHTMLAttributes, JSX } from 'react';
+import type { JSX } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FaHome } from 'react-icons/fa';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -45,19 +46,5 @@ export default function SideMenu({
         </MenuButton>
       </nav>
     </div>
-  );
-}
-
-function MenuButton({
-  children,
-  onClick,
-}: Readonly<ButtonHTMLAttributes<HTMLButtonElement>>): JSX.Element {
-  return (
-    <button
-      onClick={onClick}
-      className="flex w-full cursor-pointer items-center gap-3 rounded-lg px-4 py-2 text-white transition-colors duration-200 hover:bg-blue-600/30 focus:ring-2 focus:ring-blue-500 focus:outline-none active:bg-blue-600/50"
-    >
-      {children}
-    </button>
   );
 }
