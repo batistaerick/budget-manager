@@ -1,4 +1,3 @@
-import '@/app/globals.css';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { ButtonHTMLAttributes, JSX } from 'react';
 import { FiLogOut, FiSettings, FiUser } from 'react-icons/fi';

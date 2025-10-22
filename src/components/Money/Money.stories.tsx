@@ -1,4 +1,3 @@
-import '@/app/globals.css';
 import type { Meta, StoryObj } from '@storybook/react';
 import Money from './Money.component';
 
