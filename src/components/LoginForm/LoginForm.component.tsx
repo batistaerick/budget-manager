@@ -31,8 +31,8 @@ export default function LoginForm(): JSX.Element {
     try {
       await userService.createUser({ email, password });
       await authenticationService.login({ email, password });
-    } catch (err) {
-      console.error(err);
+    } catch (error: unknown) {
+      console.error(error);
       setIsError(true);
     }
   }, [email, password]);

@@ -57,7 +57,7 @@ export default function ProfileForm(): JSX.Element {
       await mutateImage();
       await mutateUser();
       push('/');
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error);
       setUnauthorized(true);
     }

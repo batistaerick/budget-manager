@@ -32,6 +32,7 @@ const eslintConfig = [
       'no-nested-ternary': 'warn',
       'no-unused-vars': 'warn',
       'no-useless-return': 'warn',
+      'no-unsafe-declaration-merging': 'warn',
     },
   }),
   ...storybook.configs['flat/recommended'],

@@ -9,9 +9,9 @@ import {
 import type { IconType } from 'react-icons';
 import { PiEyeDuotone, PiEyeSlashDuotone } from 'react-icons/pi';
 
-type InputProps = {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
-} & InputHTMLAttributes<HTMLInputElement>;
+}
 
 export default function Input({
   id,
@@ -54,6 +54,7 @@ export default function Input({
       {type === 'password' && (
         <div className="absolute top-4 right-3">
           <EyeIcon
+            data-testid="eye-icon"
             className="cursor-pointer text-gray-950"
             size={22}
             onClick={(): void => setIsPasswordVisible(!isPasswordVisible)}

@@ -52,10 +52,10 @@ export default function NewTransaction({
     });
 
     try {
-      if (!form.id) {
-        await postFetcher<Transaction>('/transactions', { body });
-      } else {
+      if (form.id) {
         await putFetcher<Transaction>('/transactions', { body });
+      } else {
+        await postFetcher<Transaction>('/transactions', { body });
       }
     } catch (error: unknown) {
       console.error(error);

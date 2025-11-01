@@ -15,7 +15,7 @@ import {
   IoIosArrowDroprightCircle,
 } from 'react-icons/io';
 
-interface DatePickerCustomButtonProps {
+export interface DatePickerCustomButtonProps {
   setDate: Dispatch<SetStateAction<Date>>;
   onClick?: () => void;
   arrows?: boolean;
@@ -31,16 +31,19 @@ const DatePickerCustomButton: ForwardRefExoticComponent<
   ): JSX.Element => (
     <div className="flex items-center justify-center md:min-w-72">
       {arrows && (
-        <IoIosArrowDropleftCircle
-          className="hidden cursor-pointer text-slate-200 hover:text-slate-400 md:block"
-          size={30}
+        <button
           onClick={(): void =>
             setDate(
               (prevDate: Date): Date =>
                 new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1)
             )
           }
-        />
+        >
+          <IoIosArrowDropleftCircle
+            className="hidden cursor-pointer text-slate-200 hover:text-slate-400 md:block"
+            size={30}
+          />
+        </button>
       )}
       <button
         onClick={onClick}
@@ -51,16 +54,19 @@ const DatePickerCustomButton: ForwardRefExoticComponent<
         {value}
       </button>
       {arrows && (
-        <IoIosArrowDroprightCircle
-          className="hidden cursor-pointer text-slate-200 hover:text-slate-400 md:block"
-          size={30}
+        <button
           onClick={(): void =>
             setDate(
               (prevDate: Date): Date =>
                 new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1)
             )
           }
-        />
+        >
+          <IoIosArrowDroprightCircle
+            className="hidden cursor-pointer text-slate-200 hover:text-slate-400 md:block"
+            size={30}
+          />
+        </button>
       )}
     </div>
   )

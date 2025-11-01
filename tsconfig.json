@@ -22,7 +22,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".storybook/**/*"
+    ".storybook/**/*",
+    "jest.config.js",
+    "jest.setup.js"
   ],
   "exclude": ["node_modules"]
 }
