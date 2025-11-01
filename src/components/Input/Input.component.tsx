@@ -54,6 +54,7 @@ export default function Input({
       {type === 'password' && (
         <div className="absolute top-4 right-3">
           <EyeIcon
+            data-testid="eye-icon"
             className="cursor-pointer text-gray-950"
             size={22}
             onClick={(): void => setIsPasswordVisible(!isPasswordVisible)}

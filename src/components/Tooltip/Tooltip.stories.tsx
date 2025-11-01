@@ -19,7 +19,6 @@ const meta: Meta<typeof Tooltip> = {
 export default meta;
 type Story = StoryObj<typeof Tooltip>;
 
-// Default tooltip
 export const Default: Story = {
   args: { tooltip: 'This is a tooltip!' },
   render: (args: TooltipProps): JSX.Element => (
@@ -31,7 +30,6 @@ export const Default: Story = {
   ),
 };
 
-// Bottom placement
 export const Bottom: Story = {
   args: { tooltip: 'Tooltip at the bottom', placement: 'bottom' },
   render: (args: TooltipProps): JSX.Element => (
@@ -43,7 +41,6 @@ export const Bottom: Story = {
   ),
 };
 
-// Left placement
 export const Left: Story = {
   args: { tooltip: 'Tooltip on the left', placement: 'left' },
   render: (args: TooltipProps): JSX.Element => (
@@ -55,7 +52,6 @@ export const Left: Story = {
   ),
 };
 
-// Right placement
 export const Top: Story = {
   args: { tooltip: 'Tooltip on the top', placement: 'top' },
   render: (args: TooltipProps): JSX.Element => (

@@ -26,9 +26,9 @@ export default function SelectWithTooltip({
   disabled = false,
 }: Readonly<SelectWithTooltipProps>): JSX.Element {
   return (
-    <Tooltip placement="bottom" tooltip={tooltip}>
-      <div className="flex flex-col gap-1">
-        {icon}
+    <div className="flex flex-col gap-1">
+      {icon}
+      <Tooltip placement="top" tooltip={tooltip}>
         <select
           id={id}
           className="w-full rounded-md border border-neutral-700 bg-neutral-700 p-3 text-zinc-300 focus:outline-none disabled:opacity-50"
@@ -44,7 +44,7 @@ export default function SelectWithTooltip({
             )
           )}
         </select>
-      </div>
-    </Tooltip>
+      </Tooltip>
+    </div>
   );
 }

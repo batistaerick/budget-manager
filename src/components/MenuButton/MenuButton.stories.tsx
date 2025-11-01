@@ -13,14 +13,12 @@ const meta: Meta<typeof MenuButton> = {
 export default meta;
 type Story = StoryObj<typeof MenuButton>;
 
-// Default button
 export const Default: Story = {
   render: (
     args: Readonly<ButtonHTMLAttributes<HTMLButtonElement>>
   ): JSX.Element => <MenuButton {...args}>Default Button</MenuButton>,
 };
 
-// With icon on the left
 export const WithIcon: Story = {
   render: (
     args: Readonly<ButtonHTMLAttributes<HTMLButtonElement>>
@@ -32,7 +30,6 @@ export const WithIcon: Story = {
   ),
 };
 
-// With user profile label
 export const Profile: Story = {
   render: (
     args: Readonly<ButtonHTMLAttributes<HTMLButtonElement>>
@@ -44,7 +41,6 @@ export const Profile: Story = {
   ),
 };
 
-// Logout action
 export const Logout: Story = {
   render: (
     args: Readonly<ButtonHTMLAttributes<HTMLButtonElement>>

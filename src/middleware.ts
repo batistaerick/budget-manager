@@ -17,7 +17,6 @@ export default function middleware({
   ) {
     return NextResponse.redirect(new URL('/auth', origin));
   }
-
   if (token && pathname === '/auth') {
     return NextResponse.redirect(new URL('/', origin));
   }
