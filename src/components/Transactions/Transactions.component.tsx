@@ -95,7 +95,7 @@ export default function Transactions({
   }, [transactions, sortKey, sortOrder]);
 
   return (
-    <div className="w-full rounded-xl bg-blue-950/90 px-3 py-3">
+    <div className="w-full rounded bg-blue-950/90 px-3 py-3">
       <div className="mb-2 grid grid-cols-4 place-items-start">
         <HeaderCell
           label={title}
@@ -130,7 +130,7 @@ export default function Transactions({
       </div>
       <div
         className="space-y-2 overflow-y-auto"
-        style={{ height: 'calc(100vh - 390px)' }}
+        style={{ height: 'calc(100vh - 382px)' }}
       >
         {sortedTransactions.map(
           (transaction: Transaction): JSX.Element => (

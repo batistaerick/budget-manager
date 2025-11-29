@@ -27,7 +27,7 @@ export default function Body(): JSX.Element {
   );
 
   return (
-    <div className="flex h-full flex-col gap-2 px-2 py-3">
+    <div className="flex h-full flex-col gap-2 p-2">
       <div className="flex w-full flex-col justify-between gap-2 lg:flex-row">
         <Balance
           incomes={incomes ?? []}

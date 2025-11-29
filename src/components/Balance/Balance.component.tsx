@@ -32,7 +32,7 @@ export default function Balance({
   );
 
   return (
-    <div className="flex w-full cursor-default flex-col justify-between gap-2 rounded-xl bg-slate-700/90 p-2">
+    <div className="flex w-full cursor-default flex-col justify-between gap-2 rounded bg-slate-700/90 p-2">
       <div className="flex w-full justify-between">
         <div>
           <span>Total</span>

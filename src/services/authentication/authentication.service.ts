@@ -6,7 +6,6 @@ class AuthenticationService {
     await postFetcher('/auth/login', {
       body: JSON.stringify({ email, password }),
     });
-    setTimeout((): void => globalThis.location.reload(), 500);
   }
 
   async logout(): Promise<void> {

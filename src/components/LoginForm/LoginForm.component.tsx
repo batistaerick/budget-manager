@@ -3,6 +3,7 @@
 import { Input } from '@/components';
 import { authenticationService, userService } from '@/services';
 import clsx from 'clsx';
+import { redirect } from 'next/navigation';
 import {
   useCallback,
   useState,
@@ -44,6 +45,7 @@ export default function LoginForm(): JSX.Element {
     } else {
       await register();
     }
+    redirect('/');
   }
 
   async function onKeyDown({
@@ -100,9 +102,9 @@ export default function LoginForm(): JSX.Element {
         <button
           className={clsx(
             'h-12 w-full rounded-md text-lg font-bold text-white transition-all duration-300',
-            !password.length
-              ? 'cursor-not-allowed bg-gray-700'
-              : 'cursor-pointer bg-blue-600 hover:bg-blue-700'
+            password.length
+              ? 'cursor-pointer bg-blue-600 hover:bg-blue-700'
+              : 'cursor-not-allowed bg-gray-700'
           )}
           disabled={!password.length}
           onClick={onClick}

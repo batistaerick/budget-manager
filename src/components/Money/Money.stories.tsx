@@ -19,10 +19,6 @@ export const LargeNumber: Story = {
   args: { value: 9876543.21, className: 'text-2xl text-blue-600' },
 };
 
-export const BigIntValue: Story = {
-  args: { value: 1234567890123n, className: 'text-xl text-purple-500' },
-};
-
 export const Empty: Story = {
   args: { value: undefined, className: 'text-gray-400' },
 };

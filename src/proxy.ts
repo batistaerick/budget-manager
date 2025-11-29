@@ -1,7 +1,6 @@
-import type { NextConfig } from 'next';
 import { type NextRequest, NextResponse } from 'next/server';
 
-export default function middleware({
+export default function proxy({
   cookies,
   nextUrl: { pathname, origin },
 }: NextRequest): NextResponse<unknown> {
@@ -23,4 +22,4 @@ export default function middleware({
   return NextResponse.next();
 }
 
-export const config: NextConfig = { matcher: ['/', '/profile', '/auth'] };
+export const config = { matcher: ['/', '/profile', '/auth'] };

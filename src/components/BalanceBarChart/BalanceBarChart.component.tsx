@@ -88,27 +88,31 @@ export default function BalanceBarChart({
     const months: string[] = generateMonthsInRange(startDate, endDate);
     const monthly: Record<string, MonthlyBalance> = {};
 
-    months.forEach((m: string): void => {
+    for (const m of months) {
       monthly[m] = { month: m, income: 0, expense: 0 };
-    });
-    incomes.forEach((transaction: Transaction): void => {
-      expandTransaction(transaction, startDate, endDate).forEach(
-        ({ month, amount }: ExpandTransaction): void => {
-          if (monthly[month]) {
-            monthly[month].income += amount;
-          }
+    }
+    for (const income of incomes) {
+      for (const { amount, month } of expandTransaction(
+        income,
+        startDate,
+        endDate
+      )) {
+        if (monthly[month]) {
+          monthly[month].income += amount;
         }
-      );
-    });
-    expenses.forEach((transaction: Transaction): void => {
-      expandTransaction(transaction, startDate, endDate).forEach(
-        ({ month, amount }: ExpandTransaction): void => {
-          if (monthly[month]) {
-            monthly[month].expense += amount;
-          }
+      }
+    }
+    for (const expense of expenses) {
+      for (const { amount, month } of expandTransaction(
+        expense,
+        startDate,
+        endDate
+      )) {
+        if (monthly[month]) {
+          monthly[month].expense += amount;
         }
-      );
-    });
+      }
+    }
     return Object.values(monthly);
   }, [expenses, incomes, startDate, endDate]);
 
