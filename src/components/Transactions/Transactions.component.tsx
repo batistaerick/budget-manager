@@ -3,7 +3,7 @@
 import { FinancialMovements, HeaderCell } from '@/components';
 import type { Transaction } from '@/types';
 import type { JSX } from 'react';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { KeyedMutator } from 'swr';
 
 type SortKey = 'category' | 'notes' | 'date' | 'value';
@@ -36,15 +36,20 @@ export default function Transactions({
     }
   }
 
-  const createTransactionComparator = useCallback(
-    (sortKey: SortKey, sortOrder: SortOrder) => {
-      function getAmount(t: Transaction): number {
-        return t.installmentNumbers
-          ? Number(t.installments?.[0]?.amount ?? 0)
-          : Number(t.totalValue);
-      }
+  const sortedTransactions: Transaction[] = useMemo((): Transaction[] => {
+    if (!transactions || transactions.length === 0) {
+      return [];
+    }
 
-      return (a: Transaction, b: Transaction): number => {
+    function getAmount(transaction: Transaction): number {
+      return transaction.installmentNumbers
+        ? Number(transaction.installments?.[0]?.amount ?? 0)
+        : Number(transaction.totalValue);
+    }
+
+    return transactions
+      .slice()
+      .sort((a: Transaction, b: Transaction): number => {
         let A: string | number = '';
         let B: string | number = '';
 
@@ -68,30 +73,15 @@ export default function Transactions({
           default:
             return 0;
         }
-        let comparison: number = 0;
 
         if (A < B) {
-          comparison = -1;
-        } else if (A > B) {
-          comparison = 1;
+          return sortOrder === 'asc' ? -1 : 1;
         }
-        return sortOrder === 'asc' ? comparison : -comparison;
-      };
-    },
-    []
-  );
-
-  const transactionComparator: (a: Transaction, b: Transaction) => number =
-    useCallback(createTransactionComparator(sortKey, sortOrder), [
-      sortKey,
-      sortOrder,
-    ]);
-
-  const sortedTransactions: Transaction[] = useMemo((): Transaction[] => {
-    if (!transactions || transactions.length === 0) {
-      return [];
-    }
-    return transactions.slice().sort(transactionComparator);
+        if (A > B) {
+          return sortOrder === 'asc' ? 1 : -1;
+        }
+        return 0;
+      });
   }, [transactions, sortKey, sortOrder]);
 
   return (

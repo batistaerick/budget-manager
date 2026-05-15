@@ -1,18 +1,6 @@
 import '@/app/globals.css';
 import type { Metadata } from 'next';
-import type { NextFontWithVariable } from 'next/dist/compiled/@next/font';
-import { Geist, Geist_Mono } from 'next/font/google';
 import type { JSX, ReactNode } from 'react';
-
-const geistSans: NextFontWithVariable = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono: NextFontWithVariable = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
 
 export const metadata: Metadata = {
   title: 'Budget Manager',
@@ -26,9 +14,7 @@ export default function RootLayout({
 }>): JSX.Element {
   return (
     <html className="h-full" lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-gradient-to-br from-[#032258] via-[#2a1c33] to-[#18313f] antialiased`}
-      >
+      <body className="min-h-screen bg-gradient-to-br from-[#032258] via-[#2a1c33] to-[#18313f] antialiased">
         {children}
       </body>
     </html>

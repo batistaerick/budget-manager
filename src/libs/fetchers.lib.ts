@@ -1,7 +1,10 @@
-const BASE_URL: string | undefined = process.env.NEXT_PUBLIC_API_URL;
+function getBaseUrl(): string {
+  const baseUrl: string | undefined = process.env.NEXT_PUBLIC_API_URL;
 
-if (!BASE_URL) {
-  throw new Error('NEXT_PUBLIC_API_URL is not defined');
+  if (!baseUrl) {
+    throw new Error('NEXT_PUBLIC_API_URL is not defined');
+  }
+  return baseUrl;
 }
 
 async function fetcher<T>(
@@ -18,7 +21,7 @@ async function fetcher<T>(
   if (!headersInit && !(config.body instanceof FormData)) {
     headersInit = { 'Content-Type': 'application/json' };
   }
-  const response = await fetch(BASE_URL + path, {
+  const response = await fetch(getBaseUrl() + path, {
     method,
     credentials,
     headers: headersInit,
@@ -32,11 +35,11 @@ async function fetcher<T>(
   if (response.status === 204) {
     return undefined as unknown as T;
   }
-  return response.json();
+  return (await response.json()) as T;
 }
 
 export async function getBlobFetcher(path: string): Promise<Blob> {
-  const response = await fetch(BASE_URL + path, {
+  const response = await fetch(getBaseUrl() + path, {
     method: 'GET',
     credentials: 'include',
   });

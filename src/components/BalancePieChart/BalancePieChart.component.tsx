@@ -23,40 +23,37 @@ export default function BalancePieChart({
   height = 180,
   width = 180,
 }: Readonly<BalancePieChartProps>): JSX.Element {
-  function groupByCategory(): PieChartDataType[] {
-    return Object.values(
-      transactions.reduce(
-        (
-          accumulator: Record<string, PieChartDataType>,
-          {
-            category: { name },
-            totalValue,
-            installments,
-            installmentNumbers,
-          }: Transaction
-        ): Record<string, PieChartDataType> => {
-          if (!accumulator[name]) {
-            accumulator[name] = { id: name, label: name, value: 0 };
-          }
-          if (installmentNumbers && installments) {
-            accumulator[name].value += Number(installments[0].amount);
-          } else {
-            accumulator[name].value += Number(totalValue);
-          }
-          return accumulator;
-        },
-        {}
-      )
-    );
-  }
+  const groupedTransactions: PieChartDataType[] =
+    useMemo((): PieChartDataType[] => {
+      const grouped = Object.values(
+        transactions.reduce(
+          (
+            accumulator: Record<string, PieChartDataType>,
+            {
+              category: { name },
+              totalValue,
+              installments,
+              installmentNumbers,
+            }: Transaction
+          ): Record<string, PieChartDataType> => {
+            if (!accumulator[name]) {
+              accumulator[name] = { id: name, label: name, value: 0 };
+            }
+            if (installmentNumbers && installments) {
+              accumulator[name].value += Number(installments[0].amount);
+            } else {
+              accumulator[name].value += Number(totalValue);
+            }
+            return accumulator;
+          },
+          {}
+        )
+      );
 
-  const groupedTransactions: PieChartDataType[] = useMemo(
-    (): PieChartDataType[] =>
-      groupByCategory().sort(
+      return grouped.sort(
         (a: PieChartDataType, b: PieChartDataType): number => b.value - a.value
-      ),
-    [transactions]
-  );
+      );
+    }, [transactions]);
 
   const darkColors: string[] = [
     '#433cae',

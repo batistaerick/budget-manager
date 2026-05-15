@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import type { ChangeEvent } from 'react';
 import { LuDroplet, LuUsers } from 'react-icons/lu';
 import SelectWithTooltip from './SelectWithTooltip.component';

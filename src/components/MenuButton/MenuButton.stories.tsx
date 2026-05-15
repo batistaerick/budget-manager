@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import type { ButtonHTMLAttributes, JSX } from 'react';
 import { FiLogOut, FiSettings, FiUser } from 'react-icons/fi';
 import MenuButton from './MenuButton.component';

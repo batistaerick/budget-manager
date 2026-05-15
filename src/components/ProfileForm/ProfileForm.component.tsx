@@ -75,7 +75,9 @@ export default function ProfileForm(): JSX.Element {
     currentTarget: { files },
   }: ChangeEvent<HTMLInputElement>): void {
     const file: File | undefined = files?.[0];
-    file && setUpdatedImage(file);
+    if (file) {
+      setUpdatedImage(file);
+    }
   }
 
   function handleUserImageRender(): JSX.Element {

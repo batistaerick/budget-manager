@@ -46,15 +46,12 @@ export default function FinancialMovements({
     return formatDate(new Date(transaction.date), 'en-US');
   }
 
-  const currentInstallment: Installment | undefined = useMemo(
-    (): Installment | undefined =>
-      transaction.installments?.find(
-        (installment: Installment): boolean =>
-          new Date(selectedDate).getMonth() ===
-          new Date(installment.dueDate).getMonth()
-      ),
-    [transaction, selectedDate]
-  );
+  const currentInstallment: Installment | undefined =
+    transaction.installments?.find(
+      (installment: Installment): boolean =>
+        new Date(selectedDate).getMonth() ===
+        new Date(installment.dueDate).getMonth()
+    );
 
   const calculateInstallmentAmount: number = useMemo((): number => {
     if (transaction.installmentNumbers) {

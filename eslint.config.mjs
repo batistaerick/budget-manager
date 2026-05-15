@@ -1,23 +1,23 @@
-import { FlatCompat } from '@eslint/eslintrc';
+import next from 'eslint-config-next';
 import storybook from 'eslint-plugin-storybook';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import tseslint from 'typescript-eslint';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const compat = new FlatCompat({ baseDirectory: __dirname });
 
-const eslintConfig = [
-  ...compat.config({
-    extends: [
-      'next/core-web-vitals',
-      'next/typescript',
-      'plugin:@typescript-eslint/recommended',
-    ],
-    parserOptions: {
-      project: './tsconfig.json',
+const eslintConfig = tseslint.config(
+  ...next,
+  ...tseslint.configs.recommended,
+  {
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: __dirname,
+      },
     },
-    plugins: ['@typescript-eslint'],
     rules: {
       '@typescript-eslint/consistent-type-imports': 'warn',
       '@typescript-eslint/max-params': 'warn',
@@ -26,16 +26,26 @@ const eslintConfig = [
       '@typescript-eslint/no-unnecessary-condition': 'warn',
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/require-await': 'warn',
+      '@typescript-eslint/no-unsafe-declaration-merging': 'warn',
+    },
+  },
+  {
+    rules: {
       'import/no-unresolved': 'error',
       'no-console': ['warn', { allow: ['error'] }],
       'no-else-return': 'warn',
       'no-nested-ternary': 'warn',
       'no-unused-vars': 'warn',
       'no-useless-return': 'warn',
-      'no-unsafe-declaration-merging': 'warn',
     },
-  }),
-  ...storybook.configs['flat/recommended'],
-];
+  },
+  {
+    files: ['*.js'],
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  ...storybook.configs['flat/recommended']
+);
 
 export default eslintConfig;

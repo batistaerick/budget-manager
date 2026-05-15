@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import type { JSX } from 'react';
 import Tooltip, { type TooltipProps } from './Tooltip.component';
 
