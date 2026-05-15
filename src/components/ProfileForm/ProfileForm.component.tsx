@@ -10,7 +10,14 @@ import {
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState, type ChangeEvent, type JSX } from 'react';
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+  type JSX,
+} from 'react';
 
 interface UpdatedUser {
   name: string;
@@ -31,7 +38,27 @@ export default function ProfileForm(): JSX.Element {
   const { data: profileImage, mutate: mutateImage } = useProfileImage();
   const { push } = useRouter();
 
-  async function onSubmit(event: ChangeEvent<HTMLFormElement>): Promise<void> {
+  const profileImageUrl: string | undefined = useMemo(():
+    | string
+    | undefined => {
+    if (updatedImage) {
+      return URL.createObjectURL(updatedImage);
+    }
+    if (profileImage) {
+      return URL.createObjectURL(profileImage);
+    }
+    return undefined;
+  }, [profileImage, updatedImage]);
+
+  useEffect((): (() => void) | undefined => {
+    if (!profileImageUrl) {
+      return undefined;
+    }
+
+    return (): void => URL.revokeObjectURL(profileImageUrl);
+  }, [profileImageUrl]);
+
+  async function onSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     try {
       const { name, password, confirmPassword } = updatedUser;
@@ -81,20 +108,10 @@ export default function ProfileForm(): JSX.Element {
   }
 
   function handleUserImageRender(): JSX.Element {
-    if (updatedImage) {
+    if (profileImageUrl) {
       return (
         <Image
-          src={URL.createObjectURL(updatedImage)}
-          alt="Profile"
-          fill
-          className="object-cover"
-        />
-      );
-    }
-    if (profileImage) {
-      return (
-        <Image
-          src={URL.createObjectURL(profileImage)}
+          src={profileImageUrl}
           alt="Profile"
           fill
           className="object-cover"

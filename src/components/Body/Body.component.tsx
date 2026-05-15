@@ -38,8 +38,8 @@ export default function Body(): JSX.Element {
         <Charts
           expenses={expenses ?? []}
           incomes={incomes ?? []}
-          startDate={date}
-          endDate={date}
+          startDate={monthRange.startDate}
+          endDate={monthRange.endDate}
         />
       </div>
       <div className="flex w-full flex-1 flex-col gap-2 lg:flex-row">

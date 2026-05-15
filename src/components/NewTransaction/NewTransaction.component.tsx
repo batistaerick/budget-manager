@@ -44,7 +44,9 @@ export default function NewTransaction({
       id: form.id,
       notes: form.notes,
       totalValue: Number(form.totalValue),
-      installmentNumbers: form.installmentNumbers ?? null,
+      installmentNumbers: form.installmentNumbers
+        ? Number(form.installmentNumbers)
+        : null,
       installments: form.installments ?? null,
       repeats: form.repeats ?? RepeatInterval.NONE,
       category: form.category,
@@ -57,12 +59,15 @@ export default function NewTransaction({
       } else {
         await postFetcher<Transaction>('/transactions', { body });
       }
-    } catch (error: unknown) {
-      console.error(error);
-    } finally {
-      await mutate((): true => true);
+      await mutate(
+        (key: unknown): boolean =>
+          typeof key === 'string' && key.startsWith('/transactions')
+      );
       setForm({ repeats: RepeatInterval.NONE });
       setTransactionType('');
+      onClose();
+    } catch (error: unknown) {
+      console.error(error);
     }
   }
 
@@ -84,6 +89,13 @@ export default function NewTransaction({
     currentTarget: { value },
   }: ChangeEvent<HTMLSelectElement>): void {
     setTransactionType(value as TransactionType);
+    setForm(
+      (prevForm: Partial<Transaction>): Partial<Transaction> => ({
+        ...prevForm,
+        category: undefined,
+        installmentNumbers: undefined,
+      })
+    );
   }
 
   function handleOnClose(): void {
@@ -98,7 +110,7 @@ export default function NewTransaction({
 
   const isInstallmentsDisabled: boolean = Boolean(
     form.repeats === RepeatInterval.NONE &&
-      transactionType === TransactionType.EXPENSE
+    transactionType === TransactionType.EXPENSE
   );
 
   return (

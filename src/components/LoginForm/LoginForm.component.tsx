@@ -3,7 +3,7 @@
 import { Input } from '@/components';
 import { authenticationService, userService } from '@/services';
 import clsx from 'clsx';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import {
   useCallback,
   useState,
@@ -14,6 +14,7 @@ import {
 } from 'react';
 
 export default function LoginForm(): JSX.Element {
+  const { push } = useRouter();
   const [isError, setIsError] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,23 +30,25 @@ export default function LoginForm(): JSX.Element {
   );
 
   const register: () => Promise<void> = useCallback(async (): Promise<void> => {
+    await userService.createUser({ email, name, password });
+    await authenticationService.login({ email, password });
+  }, [email, name, password]);
+
+  async function onClick(event?: FormEvent): Promise<void> {
+    event?.preventDefault();
+    setIsError(false);
+
     try {
-      await userService.createUser({ email, password });
-      await authenticationService.login({ email, password });
+      if (variant === 'login') {
+        await authenticationService.login({ email, password });
+      } else {
+        await register();
+      }
+      push('/');
     } catch (error: unknown) {
       console.error(error);
       setIsError(true);
     }
-  }, [email, password]);
-
-  async function onClick(event?: FormEvent): Promise<void> {
-    event?.preventDefault();
-    if (variant === 'login') {
-      await authenticationService.login({ email, password });
-    } else {
-      await register();
-    }
-    redirect('/');
   }
 
   async function onKeyDown({

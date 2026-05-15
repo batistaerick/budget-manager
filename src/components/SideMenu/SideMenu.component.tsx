@@ -1,10 +1,11 @@
+'use client';
+
 import { MenuButton } from '@/components';
 import { authenticationService } from '@/services';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import type { JSX } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FaHome } from 'react-icons/fa';
-import { IoSettingsOutline } from 'react-icons/io5';
 import { PiSignOutBold } from 'react-icons/pi';
 import { VscGraph } from 'react-icons/vsc';
 
@@ -15,9 +16,11 @@ interface SideMenuProps {
 export default function SideMenu({
   onClose,
 }: Readonly<SideMenuProps>): JSX.Element {
+  const { push } = useRouter();
+
   function onClick(path: string): void {
     onClose();
-    redirect(path);
+    push(path);
   }
 
   return (
@@ -35,10 +38,6 @@ export default function SideMenu({
         <MenuButton onClick={(): void => onClick('/profile')}>
           <CgProfile size={22} />
           Profile
-        </MenuButton>
-        <MenuButton onClick={(): void => onClick('/settings')}>
-          <IoSettingsOutline size={22} />
-          Settings
         </MenuButton>
         <MenuButton onClick={authenticationService.logout}>
           <PiSignOutBold size={22} />

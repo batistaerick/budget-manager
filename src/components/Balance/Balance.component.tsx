@@ -2,12 +2,38 @@
 
 import { DatePickerDialog, Money } from '@/components';
 import type { Transaction } from '@/types';
+import { roundNumbersUp } from '@/utils/globalFormats.util';
 import { useMemo, type Dispatch, type JSX, type SetStateAction } from 'react';
 import { FcBearish, FcBullish } from 'react-icons/fc';
 
-function total(transactions: Transaction[]): number {
+function getTransactionAmount(transaction: Transaction, date: Date): number {
+  const currentInstallment = transaction.installments?.find(
+    ({ dueDate }): boolean => {
+      const installmentDate = new Date(dueDate);
+
+      return (
+        installmentDate.getMonth() === date.getMonth() &&
+        installmentDate.getFullYear() === date.getFullYear()
+      );
+    }
+  );
+
+  if (currentInstallment) {
+    return Number(currentInstallment.amount);
+  }
+  if (transaction.installmentNumbers) {
+    return roundNumbersUp(
+      transaction.totalValue,
+      transaction.installmentNumbers
+    );
+  }
+  return transaction.totalValue;
+}
+
+function total(transactions: Transaction[], date: Date): number {
   return transactions.reduce(
-    (sum: number, { totalValue }: Transaction): number => sum + totalValue,
+    (sum: number, transaction: Transaction): number =>
+      sum + getTransactionAmount(transaction, date),
     0
   );
 }
@@ -25,10 +51,13 @@ export default function Balance({
   date,
   setDate,
 }: Readonly<BalanceProps>): JSX.Element {
-  const totalIncomes: number = useMemo((): number => total(incomes), [incomes]);
+  const totalIncomes: number = useMemo(
+    (): number => total(incomes, date),
+    [date, incomes]
+  );
   const totalExpenses: number = useMemo(
-    (): number => total(expenses),
-    [expenses]
+    (): number => total(expenses, date),
+    [date, expenses]
   );
 
   return (

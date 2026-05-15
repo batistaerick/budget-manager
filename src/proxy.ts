@@ -5,7 +5,7 @@ export default function proxy({
   nextUrl: { pathname, origin },
 }: NextRequest): NextResponse<unknown> {
   const token: string | undefined = cookies.get('access_token')?.value;
-  const protectedRoutes: string[] = ['/', '/profile'];
+  const protectedRoutes: string[] = ['/', '/profile', '/analytics'];
 
   if (
     !token &&
@@ -22,4 +22,6 @@ export default function proxy({
   return NextResponse.next();
 }
 
-export const config = { matcher: ['/', '/profile', '/auth'] };
+export const config = {
+  matcher: ['/', '/profile/:path*', '/analytics/:path*', '/auth'],
+};
