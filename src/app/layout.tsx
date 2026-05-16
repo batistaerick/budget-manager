@@ -14,7 +14,10 @@ export default function RootLayout({
 }>): JSX.Element {
   return (
     <html className="h-full" lang="en">
-      <body className="min-h-screen bg-gradient-to-br from-[#032258] via-[#2a1c33] to-[#18313f] antialiased">
+      <body
+        className="min-h-screen bg-gradient-to-br from-[#032258] via-[#2a1c33] to-[#18313f] antialiased"
+        suppressHydrationWarning
+      >
         {children}
       </body>
     </html>

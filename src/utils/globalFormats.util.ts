@@ -66,3 +66,18 @@ export function getStartOfTheMonthAndEndOfTheMonth(
 
   return { startDate: start, endDate: end };
 }
+
+export function getStartOfMonth(date: Date): Date {
+  const start = new Date(date);
+  start.setDate(1);
+  start.setHours(0, 0, 0, 0);
+  return start;
+}
+
+export function getEndOfMonth(date: Date): Date {
+  const end = new Date(date);
+  end.setMonth(end.getMonth() + 1);
+  end.setDate(0);
+  end.setHours(23, 59, 59, 999);
+  return end;
+}

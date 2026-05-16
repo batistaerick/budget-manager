@@ -110,6 +110,23 @@ export async function getBlobFetcher(path: string): Promise<Blob> {
   return response.blob();
 }
 
+export async function getOptionalBlobFetcher(
+  path: string
+): Promise<Blob | undefined> {
+  const response = await fetch(getBaseUrl() + path, {
+    method: 'GET',
+    credentials: 'include',
+  });
+  if (response.status === 404) {
+    return undefined;
+  }
+  if (!response.ok) {
+    const text: string = await response.text();
+    throw new Error(`HTTP ${response.status}: ${text}`);
+  }
+  return response.blob();
+}
+
 export async function getFetcher<T>(
   path: string,
   config?: RequestInit
