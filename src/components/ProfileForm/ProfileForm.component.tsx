@@ -2,7 +2,11 @@
 
 import { Input } from '@/components';
 import { useCurrentUser, useProfileImage } from '@/hooks';
-import { postFetcher, putFetcher } from '@/libs/fetchers.lib';
+import {
+  deleteFetcher,
+  postFetcher,
+  putFetcher,
+} from '@/libs/fetchers.lib';
 import {
   arePasswordsEqual,
   hasValueInside,
@@ -34,6 +38,7 @@ export default function ProfileForm(): JSX.Element {
   });
   const [updatedImage, setUpdatedImage] = useState<Blob>();
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [isDeletingImage, setIsDeletingImage] = useState<boolean>(false);
 
   const { data: currentUser, mutate: mutateUser } = useCurrentUser();
   const { data: profileImage, mutate: mutateImage } = useProfileImage();
@@ -133,6 +138,27 @@ export default function ProfileForm(): JSX.Element {
     }
   }
 
+  async function handleDeleteImage(): Promise<void> {
+    setErrorMessage('');
+
+    if (updatedImage && !profileImage) {
+      setUpdatedImage(undefined);
+      return;
+    }
+
+    try {
+      setIsDeletingImage(true);
+      await deleteFetcher('/user-image');
+      setUpdatedImage(undefined);
+      await mutateImage(undefined, { revalidate: false });
+    } catch (error: unknown) {
+      console.error(error);
+      setErrorMessage('Unable to delete profile image.');
+    } finally {
+      setIsDeletingImage(false);
+    }
+  }
+
   function handleUserImageRender(): JSX.Element {
     if (profileImageUrl) {
       return (
@@ -157,18 +183,31 @@ export default function ProfileForm(): JSX.Element {
       !hasValueInside({ ...updatedUser, updatedImage }),
     [updatedImage, updatedUser]
   );
+  const canDeleteImage: boolean = Boolean(profileImage || updatedImage);
 
   return (
     <div className="flex flex-col items-center gap-6">
-      <label className="relative h-40 w-40 cursor-pointer overflow-hidden rounded-full border-4 border-gray-700 bg-gray-800 transition-all hover:border-blue-500 hover:shadow-lg">
-        <input
-          type="file"
-          accept="image/png, image/jpeg"
-          className="hidden"
-          onChange={handleChangeImage}
-        />
-        {handleUserImageRender()}
-      </label>
+      <div className="flex flex-col items-center gap-3">
+        <label className="relative h-40 w-40 cursor-pointer overflow-hidden rounded-full border-4 border-gray-700 bg-gray-800 transition-all hover:border-blue-500 hover:shadow-lg">
+          <input
+            type="file"
+            accept="image/png, image/jpeg"
+            className="hidden"
+            onChange={handleChangeImage}
+          />
+          {handleUserImageRender()}
+        </label>
+        {canDeleteImage && (
+          <button
+            type="button"
+            onClick={handleDeleteImage}
+            disabled={isDeletingImage}
+            className="cursor-pointer rounded-md bg-red-900/70 px-4 py-2 text-sm font-medium text-red-100 transition hover:bg-red-800 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400"
+          >
+            {isDeletingImage ? 'Deleting...' : 'Delete image'}
+          </button>
+        )}
+      </div>
       <div className="text-center">
         {currentUser?.name && (
           <h2 className="text-xl font-semibold text-white">
