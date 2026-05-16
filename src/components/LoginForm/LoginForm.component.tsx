@@ -2,6 +2,7 @@
 
 import { Input } from '@/components';
 import { authenticationService, userService } from '@/services';
+import { isValidEmail, isValidPassword } from '@/validations/validators.util';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import {
@@ -20,6 +21,9 @@ export default function LoginForm(): JSX.Element {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [variant, setVariant] = useState<'login' | 'register'>('login');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const submitLabel = variant === 'login' ? 'Login' : 'Sign Up';
 
   const toggleVariant: () => void = useCallback(
     (): void =>
@@ -37,8 +41,26 @@ export default function LoginForm(): JSX.Element {
   async function onClick(event?: FormEvent): Promise<void> {
     event?.preventDefault();
     setIsError(false);
+    setErrorMessage('');
+
+    if (!isValidEmail(email)) {
+      setIsError(true);
+      setErrorMessage('Enter a valid email address.');
+      return;
+    }
+    if (variant === 'register' && !isValidPassword(password)) {
+      setIsError(true);
+      setErrorMessage(
+        'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.'
+      );
+      return;
+    }
+    if (isSubmitting) {
+      return;
+    }
 
     try {
+      setIsSubmitting(true);
       if (variant === 'login') {
         await authenticationService.login({ email, password });
       } else {
@@ -48,6 +70,13 @@ export default function LoginForm(): JSX.Element {
     } catch (error: unknown) {
       console.error(error);
       setIsError(true);
+      setErrorMessage(
+        variant === 'login'
+          ? 'Unable to sign in with those credentials.'
+          : 'Unable to create your account.'
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -100,19 +129,20 @@ export default function LoginForm(): JSX.Element {
             onKeyDown={onKeyDown}
           />
         </div>
+        {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}
       </div>
       <div className="mt-8">
         <button
           className={clsx(
             'h-12 w-full rounded-md text-lg font-bold text-white transition-all duration-300',
-            password.length
+            password.length && !isSubmitting
               ? 'cursor-pointer bg-blue-600 hover:bg-blue-700'
               : 'cursor-not-allowed bg-gray-700'
           )}
-          disabled={!password.length}
+          disabled={!password.length || isSubmitting}
           onClick={onClick}
         >
-          {variant === 'login' ? 'Login' : 'Sign Up'}
+          {isSubmitting ? 'Please wait...' : submitLabel}
         </button>
       </div>
       <p className="mt-6 text-center text-gray-300">

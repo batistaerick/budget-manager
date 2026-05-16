@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useState, type JSX } from 'react';
 import DatePickerDialog, {
-  DatePickerDialogProps,
+  type DatePickerDialogProps,
 } from './DatePickerDialog.component';
 
 jest.mock('@/components', () => ({
@@ -26,10 +26,10 @@ function Wrapper({
   dateFormat,
   showMonthYearPicker,
 }: Partial<Omit<DatePickerDialogProps, 'setDate'>> = {}): JSX.Element {
-  const [date, setDate] = useState<Date>(new Date());
+  const [, setDate] = useState<Date>(new Date());
   return (
     <DatePickerDialog
-      date={date}
+      date={new Date()}
       setDate={setDate}
       arrows={arrows}
       dateFormat={dateFormat}

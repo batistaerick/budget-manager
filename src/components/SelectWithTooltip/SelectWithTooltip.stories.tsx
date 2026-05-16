@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import type { ChangeEvent } from 'react';
+import { fn } from 'storybook/test';
 import { LuDroplet, LuUsers } from 'react-icons/lu';
 import SelectWithTooltip from './SelectWithTooltip.component';
 
@@ -15,12 +15,6 @@ const mockOptions: Option[] = [
   { label: 'Option 4', value: 4 },
 ];
 
-const mockOnChange = ({
-  target: { value },
-}: ChangeEvent<HTMLSelectElement>): void => {
-  console.log('Selected value:', value);
-};
-
 const meta: Meta<typeof SelectWithTooltip> = {
   title: 'Components/Select With Tooltip',
   component: SelectWithTooltip,
@@ -30,7 +24,7 @@ const meta: Meta<typeof SelectWithTooltip> = {
     options: mockOptions,
     tooltip: 'Choose an option from the list.',
     icon: <LuDroplet className="size-5 text-zinc-400" />,
-    onChange: mockOnChange,
+    onChange: fn(),
     value: 'one',
     disabled: false,
   },

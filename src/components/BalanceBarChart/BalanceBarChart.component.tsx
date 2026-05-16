@@ -97,9 +97,7 @@ export default function BalanceBarChart({
         startDate,
         endDate
       )) {
-        if (monthly[month]) {
-          monthly[month].income += amount;
-        }
+        monthly[month].income += amount;
       }
     }
     for (const expense of expenses) {
@@ -108,9 +106,7 @@ export default function BalanceBarChart({
         startDate,
         endDate
       )) {
-        if (monthly[month]) {
-          monthly[month].expense += amount;
-        }
+        monthly[month].expense += amount;
       }
     }
     return Object.values(monthly);

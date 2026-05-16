@@ -22,10 +22,29 @@ export default function FinancialMovements({
   selectedDate,
 }: Readonly<FinancialMovementsProps>): JSX.Element {
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   async function deleteTransaction(): Promise<void> {
-    await deleteFetcher(`/transactions/${transaction.id}`);
-    await mutateOnDelete();
+    setErrorMessage('');
+
+    if (!isConfirmingDelete) {
+      setIsConfirmingDelete(true);
+      return;
+    }
+
+    try {
+      setIsDeleting(true);
+      await deleteFetcher(`/transactions/${transaction.id}`);
+      await mutateOnDelete();
+    } catch (error: unknown) {
+      console.error(error);
+      setErrorMessage('Unable to delete.');
+    } finally {
+      setIsDeleting(false);
+      setIsConfirmingDelete(false);
+    }
   }
 
   function onEditOrClose(): void {
@@ -87,11 +106,35 @@ export default function FinancialMovements({
       <div className="truncate">{getDate()}</div>
       <div className="flex items-center justify-end gap-1">
         <Money className="truncate" value={calculateInstallmentAmount} />
-        <FcFullTrash
+        {errorMessage && (
+          <span className="truncate text-xs text-red-300">{errorMessage}</span>
+        )}
+        {isConfirmingDelete && (
+          <button
+            className="rounded bg-red-900 px-2 py-1 text-xs font-semibold text-white"
+            disabled={isDeleting}
+            onClick={deleteTransaction}
+          >
+            {isDeleting ? 'Deleting...' : 'Confirm'}
+          </button>
+        )}
+        <button
+          aria-label={
+            isConfirmingDelete ? 'Cancel delete transaction' : 'Delete transaction'
+          }
           className="cursor-pointer"
-          size={22}
-          onClick={deleteTransaction}
-        />
+          disabled={isDeleting}
+          onClick={(): void => {
+            if (isConfirmingDelete) {
+              setIsConfirmingDelete(false);
+              return;
+            }
+            void deleteTransaction();
+          }}
+          type="button"
+        >
+          <FcFullTrash size={22} />
+        </button>
       </div>
       <div
         className={clsx(

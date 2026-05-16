@@ -14,6 +14,4 @@ const meta: Meta<typeof SideMenu> = {
 export default meta;
 type Story = StoryObj<typeof SideMenu>;
 
-export const Default: Story = {
-  args: { onClose: () => console.log('Menu closed') },
-};
+export const Default: Story = {};

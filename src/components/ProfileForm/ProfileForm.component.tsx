@@ -6,6 +6,7 @@ import { postFetcher, putFetcher } from '@/libs/fetchers.lib';
 import {
   arePasswordsEqual,
   hasValueInside,
+  isValidPassword,
 } from '@/validations/validators.util';
 import clsx from 'clsx';
 import Image from 'next/image';
@@ -32,7 +33,7 @@ export default function ProfileForm(): JSX.Element {
     confirmPassword: '',
   });
   const [updatedImage, setUpdatedImage] = useState<Blob>();
-  const [unauthorized, setUnauthorized] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const { data: currentUser, mutate: mutateUser } = useCurrentUser();
   const { data: profileImage, mutate: mutateImage } = useProfileImage();
@@ -60,6 +61,8 @@ export default function ProfileForm(): JSX.Element {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
+    setErrorMessage('');
+
     try {
       const { name, password, confirmPassword } = updatedUser;
 
@@ -76,17 +79,40 @@ export default function ProfileForm(): JSX.Element {
         if (!arePasswordsEqual(password, confirmPassword)) {
           throw new Error('differentPasswords');
         }
+        if (password && !isValidPassword(password)) {
+          throw new Error('weakPassword');
+        }
+
+        const payload: Partial<Pick<UpdatedUser, 'name' | 'password'>> = {};
+        if (name.trim()) {
+          payload.name = name.trim();
+        }
+        if (password) {
+          payload.password = password;
+        }
+
         await putFetcher('/users', {
-          body: JSON.stringify({ name, password }),
+          body: JSON.stringify(payload),
         });
       }
       setUpdatedUser({ name: '', password: '', confirmPassword: '' });
+      setUpdatedImage(undefined);
       await mutateImage();
       await mutateUser();
       push('/');
     } catch (error: unknown) {
       console.error(error);
-      setUnauthorized(true);
+      if (error instanceof Error && error.message === 'differentPasswords') {
+        setErrorMessage('Passwords must match.');
+        return;
+      }
+      if (error instanceof Error && error.message === 'weakPassword') {
+        setErrorMessage(
+          'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.'
+        );
+        return;
+      }
+      setErrorMessage('Unable to save profile changes.');
     }
   }
 
@@ -178,7 +204,7 @@ export default function ProfileForm(): JSX.Element {
           value={updatedUser.confirmPassword}
           onChange={handleChange}
         />
-        {unauthorized && <p className="text-sm text-red-400">Unauthorized</p>}
+        {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}
         <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
           <button
             type="button"

@@ -27,6 +27,7 @@ const eslintConfig = tseslint.config(
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/require-await': 'warn',
       '@typescript-eslint/no-unsafe-declaration-merging': 'warn',
+      'no-unused-vars': 'off',
     },
   },
   {
@@ -35,7 +36,7 @@ const eslintConfig = tseslint.config(
       'no-console': ['warn', { allow: ['error'] }],
       'no-else-return': 'warn',
       'no-nested-ternary': 'warn',
-      'no-unused-vars': 'warn',
+      'no-unused-vars': 'off',
       'no-useless-return': 'warn',
     },
   },

@@ -1,2 +1,3 @@
-export const redirect = (path: string): void =>
-  console.log(`Mock redirect to: ${path}`);
+import { fn } from 'storybook/test';
+
+export const redirect = fn();

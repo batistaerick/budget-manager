@@ -7,6 +7,42 @@ function getBaseUrl(): string {
   return baseUrl;
 }
 
+function getCookieValue(name: string): string | undefined {
+  if (typeof document === 'undefined') {
+    return undefined;
+  }
+
+  return document.cookie
+    .split('; ')
+    .find((cookie: string): boolean => cookie.startsWith(`${name}=`))
+    ?.split('=')
+    .slice(1)
+    .join('=');
+}
+
+function buildHeaders(
+  method: string,
+  body: BodyInit | null | undefined,
+  headers?: HeadersInit
+): Headers {
+  const result = new Headers(headers);
+
+  if (!result.has('Content-Type') && !(body instanceof FormData)) {
+    result.set('Content-Type', 'application/json');
+  }
+
+  if (method !== 'GET' && method !== 'HEAD') {
+    result.set('X-Requested-With', 'XMLHttpRequest');
+
+    const csrfToken = getCookieValue('csrf_token');
+    if (csrfToken && !result.has('X-CSRF-Token')) {
+      result.set('X-CSRF-Token', decodeURIComponent(csrfToken));
+    }
+  }
+
+  return result;
+}
+
 async function fetcher<T>(
   path: string,
   {
@@ -16,11 +52,7 @@ async function fetcher<T>(
     ...config
   }: RequestInit = {}
 ): Promise<T> {
-  let headersInit: HeadersInit | undefined = headers;
-
-  if (!headersInit && !(config.body instanceof FormData)) {
-    headersInit = { 'Content-Type': 'application/json' };
-  }
+  const headersInit: Headers = buildHeaders(method, config.body, headers);
   const response = await fetch(getBaseUrl() + path, {
     method,
     credentials,

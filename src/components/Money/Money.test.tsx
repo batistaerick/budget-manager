@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import Money from './Money.component';
 
 jest.mock('@/utils/globalFormats.util', () => ({
-  formatCurrency: jest.fn((value: number | bigint, locale: string): string => {
-    if (value === undefined || value === null) return '$0.00';
+  formatCurrency: jest.fn((value: number | undefined, locale: string): string => {
+    if (value === undefined) return '$0.00';
     return `${locale === 'en' ? '$' : ''}${Number(value).toFixed(2)}`;
   }),
 }));

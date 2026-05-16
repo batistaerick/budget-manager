@@ -36,17 +36,44 @@ export default function NewTransaction({
     transactionType as TransactionType
   );
   const { mutate } = useSWRConfig();
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function onSubmit(event: FormEvent): Promise<void> {
     event.preventDefault();
+    setErrorMessage('');
+
+    const totalValue = Number(form.totalValue);
+    const installmentNumbers = Number(form.installmentNumbers);
+
+    if (!Number.isFinite(totalValue) || totalValue <= 0) {
+      setErrorMessage('Value must be greater than zero.');
+      return;
+    }
+    if (!form.category?.id) {
+      setErrorMessage('Select a category.');
+      return;
+    }
+    if (
+      isInstallmentsEnabled &&
+      form.installmentNumbers &&
+      (!Number.isInteger(installmentNumbers) || installmentNumbers <= 1)
+    ) {
+      setErrorMessage('Installments must be a whole number greater than one.');
+      return;
+    }
+    if (isSubmitting) {
+      return;
+    }
 
     const body: string = JSON.stringify({
       id: form.id,
-      notes: form.notes,
-      totalValue: Number(form.totalValue),
-      installmentNumbers: form.installmentNumbers
-        ? Number(form.installmentNumbers)
-        : null,
+      notes: form.notes?.trim() || null,
+      totalValue,
+      installmentNumbers:
+        isInstallmentsEnabled && form.installmentNumbers
+          ? installmentNumbers
+          : null,
       installments: form.installments ?? null,
       repeats: form.repeats ?? RepeatInterval.NONE,
       category: form.category,
@@ -54,6 +81,7 @@ export default function NewTransaction({
     });
 
     try {
+      setIsSubmitting(true);
       if (form.id) {
         await putFetcher<Transaction>('/transactions', { body });
       } else {
@@ -68,6 +96,9 @@ export default function NewTransaction({
       onClose();
     } catch (error: unknown) {
       console.error(error);
+      setErrorMessage('Unable to save transaction.');
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -104,13 +135,13 @@ export default function NewTransaction({
     onClose();
   }
 
-  const isSaveDisabled: boolean = Boolean(
-    !form.totalValue || !form.category?.id
-  );
-
-  const isInstallmentsDisabled: boolean = Boolean(
+  const isInstallmentsEnabled: boolean = Boolean(
     form.repeats === RepeatInterval.NONE &&
     transactionType === TransactionType.EXPENSE
+  );
+  const totalValue = Number(form.totalValue);
+  const isSaveDisabled: boolean = Boolean(
+    !Number.isFinite(totalValue) || totalValue <= 0 || !form.category?.id
   );
 
   return (
@@ -155,7 +186,8 @@ export default function NewTransaction({
           options={[
             { label: 'Select a category', value: '' },
             ...(categories
-              ?.sort((a: Category, b: Category): number =>
+              ?.slice()
+              .sort((a: Category, b: Category): number =>
                 a.name.localeCompare(b.name)
               )
               .map(({ name, id }: Category) => ({ label: name, value: id })) ??
@@ -163,13 +195,15 @@ export default function NewTransaction({
           ]}
           disabled={!categories?.length}
         />
-        {isInstallmentsDisabled && (
+        {isInstallmentsEnabled && (
           <div className="flex flex-col gap-1">
             <BsFillCreditCard2BackFill className="text-purple-600" size={25} />
             <Input
               id="installmentNumbers"
               label="Number of installments"
               type="number"
+              min={2}
+              step={1}
               value={form.installmentNumbers?.toString() ?? ''}
               onChange={handleChange}
             />
@@ -192,10 +226,13 @@ export default function NewTransaction({
             id="totalValue"
             label="Value"
             type="number"
+            min={0.01}
+            step={0.01}
             value={form.totalValue?.toString() ?? ''}
             onChange={handleChange}
           />
         </div>
+        {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}
         <div className="flex w-full items-center justify-center gap-2">
           <button
             className="h-12 w-full cursor-pointer rounded-md bg-blue-900 font-bold"
@@ -207,15 +244,15 @@ export default function NewTransaction({
           <button
             className={clsx(
               'h-12 w-full rounded-md font-bold',
-              isSaveDisabled
+              isSaveDisabled || isSubmitting
                 ? 'cursor-not-allowed bg-blue-950'
                 : 'cursor-pointer bg-blue-900'
             )}
             type="submit"
             form="newTransactionForm"
-            disabled={isSaveDisabled}
+            disabled={isSaveDisabled || isSubmitting}
           >
-            Save
+            {isSubmitting ? 'Saving...' : 'Save'}
           </button>
         </div>
       </form>

@@ -55,8 +55,8 @@ export default function Transactions({
 
         switch (sortKey) {
           case 'category':
-            A = (a.category?.name ?? '').toLowerCase();
-            B = (b.category?.name ?? '').toLowerCase();
+            A = a.category.name.toLowerCase();
+            B = b.category.name.toLowerCase();
             break;
           case 'notes':
             A = (a.notes ?? '').toLowerCase();

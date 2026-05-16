@@ -1,3 +1,5 @@
+import { fn } from 'storybook/test';
+
 export const authenticationService = {
-  logout: (): void => console.log('Mock logout'),
+  logout: fn(),
 };

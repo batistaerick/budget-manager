@@ -4,7 +4,7 @@ import { NewTransaction, SideMenu, Tooltip } from '@/components';
 import { useProfileImage } from '@/hooks';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { useState, type JSX } from 'react';
+import { useEffect, useMemo, useState, type JSX } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { VscRobot } from 'react-icons/vsc';
 
@@ -13,6 +13,19 @@ export default function Header(): JSX.Element {
 
   const [isLeftOpen, setIsLeftOpen] = useState(false);
   const [isRightOpen, setIsRightOpen] = useState(false);
+  const profileImageUrl: string | undefined = useMemo(
+    (): string | undefined =>
+      profileImage ? URL.createObjectURL(profileImage) : undefined,
+    [profileImage]
+  );
+
+  useEffect((): (() => void) | undefined => {
+    if (!profileImageUrl) {
+      return undefined;
+    }
+
+    return (): void => URL.revokeObjectURL(profileImageUrl);
+  }, [profileImageUrl]);
 
   function closeMenu(): void {
     setIsLeftOpen(false);
@@ -29,10 +42,10 @@ export default function Header(): JSX.Element {
       )}
       <header className="flex justify-between py-3 shadow-md">
         <Tooltip tooltip="Menu" placement="right">
-          {profileImage ? (
+          {profileImageUrl ? (
             <div className="relative h-12 w-12 cursor-pointer overflow-hidden rounded-full">
               <Image
-                src={URL.createObjectURL(profileImage)}
+                src={profileImageUrl}
                 onClick={(): void =>
                   setIsLeftOpen((prev: boolean): boolean => !prev)
                 }

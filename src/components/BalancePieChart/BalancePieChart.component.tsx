@@ -28,19 +28,19 @@ export default function BalancePieChart({
       const grouped = Object.values(
         transactions.reduce(
           (
-            accumulator: Record<string, PieChartDataType>,
+            accumulator: Partial<Record<string, PieChartDataType>>,
             {
               category: { name },
               totalValue,
               installments,
               installmentNumbers,
             }: Transaction
-          ): Record<string, PieChartDataType> => {
+          ): Partial<Record<string, PieChartDataType>> => {
             if (!accumulator[name]) {
               accumulator[name] = { id: name, label: name, value: 0 };
             }
             if (installmentNumbers && installments) {
-              accumulator[name].value += Number(installments[0].amount);
+              accumulator[name].value += Number(installments[0]?.amount ?? 0);
             } else {
               accumulator[name].value += Number(totalValue);
             }
@@ -48,6 +48,8 @@ export default function BalancePieChart({
           },
           {}
         )
+      ).filter(
+        (transaction): transaction is PieChartDataType => Boolean(transaction)
       );
 
       return grouped.sort(

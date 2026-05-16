@@ -19,11 +19,11 @@ export const emailSchema: ZodString = z
 export type EmailType = z.infer<typeof emailSchema>;
 
 export function isValidEmail(email: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  return emailSchema.safeParse(email).success;
 }
 
 export function isValidPassword(password: string): boolean {
-  return /^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{7,}$/.test(password);
+  return passwordSchema.safeParse(password).success;
 }
 
 export function isValidUsername(username: string): boolean {
@@ -38,9 +38,7 @@ export function arePasswordsEqual(
 }
 
 export function hasValueInside(data: object): boolean {
-  return (Object.keys(data) as (keyof typeof data)[]).some(
-    (key: never): never => {
-      return data[key] && String(data[key]).length !== 0;
-    }
+  return Object.values(data).some(
+    (value: unknown): boolean => Boolean(value) && String(value).length !== 0
   );
 }
