@@ -7,6 +7,7 @@ import type { JSX } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FaHome } from 'react-icons/fa';
 import { PiSignOutBold } from 'react-icons/pi';
+import { RiSafe2Line } from 'react-icons/ri';
 import { VscGraph } from 'react-icons/vsc';
 
 interface SideMenuProps {
@@ -34,6 +35,10 @@ export default function SideMenu({
         <MenuButton onClick={(): void => onClick('/analytics')}>
           <VscGraph size={22} />
           Analytics
+        </MenuButton>
+        <MenuButton onClick={(): void => onClick('/savings')}>
+          <RiSafe2Line size={22} />
+          Savings
         </MenuButton>
         <MenuButton onClick={(): void => onClick('/profile')}>
           <CgProfile size={22} />

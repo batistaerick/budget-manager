@@ -71,9 +71,14 @@ export default function FinancialMovements({
 
   const currentInstallment: Installment | undefined =
     transaction.installments?.find(
-      (installment: Installment): boolean =>
-        new Date(selectedDate).getMonth() ===
-        parseApiDate(installment.dueDate).getMonth()
+      (installment: Installment): boolean => {
+        const installmentDate = parseApiDate(installment.dueDate);
+
+        return (
+          selectedDate.getMonth() === installmentDate.getMonth() &&
+          selectedDate.getFullYear() === installmentDate.getFullYear()
+        );
+      }
     );
 
   const calculateInstallmentAmount: number = useMemo((): number => {

@@ -34,12 +34,17 @@ function expandTransaction(
   endDate: Date
 ): ExpandTransaction[] {
   if (transaction.installments && transaction.installments.length > 0) {
-    return transaction.installments.map(
-      ({ amount, dueDate }: Installment): ExpandTransaction => ({
-        month: format(startOfMonth(parseApiDate(dueDate)), 'MMM yyyy'),
-        amount: Number(amount),
+    return transaction.installments
+      .filter(({ dueDate }: Installment): boolean => {
+        const parsedDueDate = parseApiDate(dueDate);
+        return parsedDueDate >= startDate && parsedDueDate <= endDate;
       })
-    );
+      .map(
+        ({ amount, dueDate }: Installment): ExpandTransaction => ({
+          month: format(startOfMonth(parseApiDate(dueDate)), 'MMM yyyy'),
+          amount: Number(amount),
+        })
+      );
   }
   if (transaction.repeats === RepeatInterval.MONTHLY) {
     const results: ExpandTransaction[] = [];
@@ -87,7 +92,7 @@ export default function BalanceBarChart({
 }: Readonly<BalanceBarChartProps>): JSX.Element {
   const chartData: MonthlyBalance[] = useMemo((): MonthlyBalance[] => {
     const months: string[] = generateMonthsInRange(startDate, endDate);
-    const monthly: Record<string, MonthlyBalance> = {};
+    const monthly: Partial<Record<string, MonthlyBalance>> = {};
 
     for (const m of months) {
       monthly[m] = { month: m, income: 0, expense: 0 };
@@ -98,6 +103,9 @@ export default function BalanceBarChart({
         startDate,
         endDate
       )) {
+        if (!monthly[month]) {
+          continue;
+        }
         monthly[month].income += amount;
       }
     }
@@ -107,10 +115,15 @@ export default function BalanceBarChart({
         startDate,
         endDate
       )) {
+        if (!monthly[month]) {
+          continue;
+        }
         monthly[month].expense += amount;
       }
     }
-    return Object.values(monthly);
+    return Object.values(monthly).filter(
+      (balance): balance is MonthlyBalance => Boolean(balance)
+    );
   }, [expenses, incomes, startDate, endDate]);
 
   return (

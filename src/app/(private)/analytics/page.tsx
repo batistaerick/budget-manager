@@ -6,9 +6,9 @@ import {
   DatePickerDialog,
   Money,
 } from '@/components';
-import { TransactionType } from '@/enums';
-import { useTransactions } from '@/hooks';
-import type { Transaction } from '@/types';
+import { SavingLocation, TransactionType } from '@/enums';
+import { useSavings, useTransactions } from '@/hooks';
+import type { Saving, Transaction } from '@/types';
 import {
   getEndOfMonth,
   getStartOfMonth,
@@ -38,6 +38,14 @@ interface TrendInput {
   incomes: Transaction[];
   startDate: Date;
 }
+
+const savingLocationLabels: Record<SavingLocation, string> = {
+  [SavingLocation.CASH]: 'Cash',
+  [SavingLocation.CHECKING_ACCOUNT]: 'Checking',
+  [SavingLocation.SAVINGS_ACCOUNT]: 'Savings',
+  [SavingLocation.INVESTMENT]: 'Investments',
+  [SavingLocation.OTHER]: 'Other',
+};
 
 function getTopCategories(
   transactions: Transaction[],
@@ -93,6 +101,34 @@ function getMonthlyTrend({
   return results;
 }
 
+function getSavingsTotal(savings: Saving[]): number {
+  return savings.reduce(
+    (total: number, saving: Saving): number => total + saving.amount,
+    0
+  );
+}
+
+function getSavingsByLocation(
+  savings: Saving[]
+): Record<SavingLocation, number> {
+  return savings.reduce(
+    (
+      totals: Record<SavingLocation, number>,
+      saving: Saving
+    ): Record<SavingLocation, number> => ({
+      ...totals,
+      [saving.location]: totals[saving.location] + saving.amount,
+    }),
+    {
+      [SavingLocation.CASH]: 0,
+      [SavingLocation.CHECKING_ACCOUNT]: 0,
+      [SavingLocation.SAVINGS_ACCOUNT]: 0,
+      [SavingLocation.INVESTMENT]: 0,
+      [SavingLocation.OTHER]: 0,
+    }
+  );
+}
+
 export default function AnalyticsPage(): JSX.Element {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
@@ -107,6 +143,10 @@ export default function AnalyticsPage(): JSX.Element {
 
   const { data: incomes } = useTransactions(TransactionType.INCOME, period);
   const { data: expenses } = useTransactions(TransactionType.EXPENSE, period);
+  const { data: savings } = useSavings();
+  const savingsList = savings ?? [];
+  const totalSaved = getSavingsTotal(savingsList);
+  const savingsByLocation = getSavingsByLocation(savingsList);
   const totalIncomes = getProjectedTransactionsTotal(
     incomes ?? [],
     period.startDate,
@@ -191,6 +231,33 @@ export default function AnalyticsPage(): JSX.Element {
         <div className="rounded bg-slate-700/90 p-4">
           <span className="text-sm text-gray-300">Savings rate</span>
           <div className="text-2xl font-semibold">{savingsRate}%</div>
+        </div>
+      </section>
+
+      <section className="grid gap-4 lg:grid-cols-[1fr_2fr]">
+        <div className="rounded bg-slate-700/90 p-4">
+          <span className="text-sm text-gray-300">Total saved</span>
+          <Money className="text-2xl font-semibold" value={totalSaved} />
+        </div>
+        <div className="rounded bg-slate-700/90 p-4">
+          <h2 className="mb-3 text-sm font-semibold text-gray-300">
+            Saved money by location
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+            {Object.values(SavingLocation).map(
+              (location: SavingLocation): JSX.Element => (
+                <div key={location} className="min-w-0">
+                  <div className="truncate text-xs text-gray-400">
+                    {savingLocationLabels[location]}
+                  </div>
+                  <Money
+                    className="text-sm font-semibold"
+                    value={savingsByLocation[location]}
+                  />
+                </div>
+              )
+            )}
+          </div>
         </div>
       </section>
 
