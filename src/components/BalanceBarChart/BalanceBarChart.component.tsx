@@ -2,6 +2,7 @@
 
 import { RepeatInterval } from '@/enums';
 import type { Installment, Transaction } from '@/types';
+import { parseApiDate } from '@/utils/globalFormats.util';
 import { BarChart } from '@mui/x-charts';
 import { addMonths, format, startOfMonth } from 'date-fns';
 import type { JSX } from 'react';
@@ -35,7 +36,7 @@ function expandTransaction(
   if (transaction.installments && transaction.installments.length > 0) {
     return transaction.installments.map(
       ({ amount, dueDate }: Installment): ExpandTransaction => ({
-        month: format(startOfMonth(new Date(dueDate)), 'MMM yyyy'),
+        month: format(startOfMonth(parseApiDate(dueDate)), 'MMM yyyy'),
         amount: Number(amount),
       })
     );
@@ -44,7 +45,7 @@ function expandTransaction(
     const results: ExpandTransaction[] = [];
     let current: Date = startOfMonth(
       new Date(
-        Math.max(new Date(transaction.date).getTime(), startDate.getTime())
+        Math.max(parseApiDate(transaction.date).getTime(), startDate.getTime())
       )
     );
 
@@ -59,7 +60,7 @@ function expandTransaction(
   }
   return [
     {
-      month: format(startOfMonth(new Date(transaction.date)), 'MMM yyyy'),
+      month: format(startOfMonth(parseApiDate(transaction.date)), 'MMM yyyy'),
       amount: Number(transaction.totalValue),
     },
   ];

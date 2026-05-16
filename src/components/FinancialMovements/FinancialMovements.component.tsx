@@ -3,7 +3,11 @@
 import { Money, NewTransaction } from '@/components';
 import { deleteFetcher } from '@/libs/fetchers.lib';
 import type { Installment, Transaction } from '@/types';
-import { formatDate, roundNumbersUp } from '@/utils/globalFormats.util';
+import {
+  formatDate,
+  parseApiDate,
+  roundNumbersUp,
+} from '@/utils/globalFormats.util';
 import clsx from 'clsx';
 import { useMemo, useState, type JSX } from 'react';
 import { BiEdit } from 'react-icons/bi';
@@ -53,7 +57,7 @@ export default function FinancialMovements({
 
   function getDate(): string {
     if (transaction.repeats !== 'NONE') {
-      const day: string = new Date(transaction.date)
+      const day: string = parseApiDate(transaction.date)
         .getDate()
         .toString()
         .padStart(2, '0');
@@ -62,14 +66,14 @@ export default function FinancialMovements({
     if (currentInstallment) {
       return formatDate(currentInstallment.dueDate, 'en-US');
     }
-    return formatDate(new Date(transaction.date), 'en-US');
+    return formatDate(transaction.date, 'en-US');
   }
 
   const currentInstallment: Installment | undefined =
     transaction.installments?.find(
       (installment: Installment): boolean =>
         new Date(selectedDate).getMonth() ===
-        new Date(installment.dueDate).getMonth()
+        parseApiDate(installment.dueDate).getMonth()
     );
 
   const calculateInstallmentAmount: number = useMemo((): number => {

@@ -5,7 +5,7 @@ import { RepeatInterval, TransactionType } from '@/enums';
 import { useCategories } from '@/hooks';
 import { postFetcher, putFetcher } from '@/libs/fetchers.lib';
 import type { Category, Transaction } from '@/types';
-import { getLocalDate } from '@/utils/globalFormats.util';
+import { getApiDate, parseApiDate } from '@/utils/globalFormats.util';
 import clsx from 'clsx';
 import { useState, type ChangeEvent, type FormEvent, type JSX } from 'react';
 import { BsFillCreditCard2BackFill } from 'react-icons/bs';
@@ -27,7 +27,7 @@ export default function NewTransaction({
     transaction ?? { repeats: RepeatInterval.NONE }
   );
   const [date, setDate] = useState<Date>(
-    new Date(transaction?.date ?? new Date())
+    transaction?.date ? parseApiDate(transaction.date) : new Date()
   );
   const [transactionType, setTransactionType] = useState<TransactionType | ''>(
     form.category?.transactionType ?? ''
@@ -77,7 +77,7 @@ export default function NewTransaction({
       installments: form.installments ?? null,
       repeats: form.repeats ?? RepeatInterval.NONE,
       category: form.category,
-      date: getLocalDate(date).replaceAll('-', '/'),
+      date: getApiDate(date),
     });
 
     try {

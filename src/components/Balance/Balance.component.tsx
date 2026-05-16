@@ -2,14 +2,14 @@
 
 import { DatePickerDialog, Money } from '@/components';
 import type { Transaction } from '@/types';
-import { roundNumbersUp } from '@/utils/globalFormats.util';
+import { parseApiDate, roundNumbersUp } from '@/utils/globalFormats.util';
 import { useMemo, type Dispatch, type JSX, type SetStateAction } from 'react';
 import { FcBearish, FcBullish } from 'react-icons/fc';
 
 function getTransactionAmount(transaction: Transaction, date: Date): number {
   const currentInstallment = transaction.installments?.find(
     ({ dueDate }): boolean => {
-      const installmentDate = new Date(dueDate);
+      const installmentDate = parseApiDate(dueDate);
 
       return (
         installmentDate.getMonth() === date.getMonth() &&

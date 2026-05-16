@@ -2,6 +2,7 @@
 
 import { FinancialMovements, HeaderCell } from '@/components';
 import type { Transaction } from '@/types';
+import { parseApiDate } from '@/utils/globalFormats.util';
 import type { JSX } from 'react';
 import { useMemo, useState } from 'react';
 import type { KeyedMutator } from 'swr';
@@ -63,8 +64,8 @@ export default function Transactions({
             B = (b.notes ?? '').toLowerCase();
             break;
           case 'date':
-            A = Date.parse(a.date);
-            B = Date.parse(b.date);
+            A = parseApiDate(a.date).getTime();
+            B = parseApiDate(b.date).getTime();
             break;
           case 'value':
             A = getAmount(a);

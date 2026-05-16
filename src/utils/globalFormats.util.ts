@@ -17,8 +17,20 @@ export function getLocalDate(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-export function formatDate(date: Date, language: string): string {
-  return new Date(date).toLocaleDateString(getLocation(language), {
+export function getApiDate(date: Date): string {
+  return getLocalDate(date).replaceAll('-', '/');
+}
+
+export function parseApiDate(date: Date | string): Date {
+  if (date instanceof Date) {
+    return date;
+  }
+
+  return new Date(date.replaceAll('/', '-'));
+}
+
+export function formatDate(date: Date | string, language: string): string {
+  return parseApiDate(date).toLocaleDateString(getLocation(language), {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
