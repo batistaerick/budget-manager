@@ -71,7 +71,7 @@ describe('Tooltip component', (): void => {
     const tooltip: HTMLElement = getTooltipElement();
     expect(tooltip.className).toContain('absolute');
     expect(tooltip.className).toContain('rounded-md');
-    expect(tooltip.className).toContain('bg-sky-950');
-    expect(tooltip.className).toContain('text-white');
+    expect(tooltip.className).toContain('bg-[var(--ctp-mantle)]');
+    expect(tooltip.className).toContain('text-[var(--ctp-text)]');
   });
 });

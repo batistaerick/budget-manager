@@ -40,15 +40,18 @@ function totalInstallmentsInRange(
   startDate: Date,
   endDate: Date
 ): number {
-  return installments.reduce((sum: number, installment: Installment): number => {
-    const dueDate = parseApiDate(installment.dueDate);
+  return installments.reduce(
+    (sum: number, installment: Installment): number => {
+      const dueDate = parseApiDate(installment.dueDate);
 
-    if (!isBetween(dueDate, startDate, endDate)) {
-      return sum;
-    }
+      if (!isBetween(dueDate, startDate, endDate)) {
+        return sum;
+      }
 
-    return sum + Number(installment.amount);
-  }, 0);
+      return sum + Number(installment.amount);
+    },
+    0
+  );
 }
 
 export function getProjectedTransactionTotal(
@@ -57,7 +60,11 @@ export function getProjectedTransactionTotal(
   endDate: Date
 ): number {
   if (transaction.installments?.length) {
-    return totalInstallmentsInRange(transaction.installments, startDate, endDate);
+    return totalInstallmentsInRange(
+      transaction.installments,
+      startDate,
+      endDate
+    );
   }
 
   const transactionDate = parseApiDate(transaction.date);

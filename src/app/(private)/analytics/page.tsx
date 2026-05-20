@@ -181,13 +181,18 @@ export default function AnalyticsPage(): JSX.Element {
 
   return (
     <div className="flex w-full flex-col gap-4 p-4">
-      <div className="flex w-full flex-col gap-3 rounded bg-slate-700/90 p-3 md:flex-row md:items-center md:justify-between">
-        <span className="text-sm font-semibold text-gray-300">
-          Analytics period
-        </span>
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <div className="flex items-center gap-2 rounded border border-slate-500 px-3 py-1">
-            <span className="text-xs font-medium text-gray-400">Start</span>
+      <div className="flex w-full flex-col gap-3 rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-3 shadow-md md:flex-row md:items-center md:justify-between">
+        <div>
+          <span className="text-sm font-semibold text-[var(--ctp-text)]">
+            Analytics period
+          </span>
+          <p className="text-xs text-[var(--ctp-subtext0)]">Monthly range</p>
+        </div>
+        <div className="flex flex-col overflow-hidden rounded-lg border border-[var(--ctp-surface1)] bg-[var(--ctp-base)] shadow-sm sm:flex-row sm:items-center">
+          <div className="flex flex-col gap-1 px-3 py-2">
+            <span className="text-xs font-semibold text-[var(--ctp-subtext0)]">
+              From
+            </span>
             <DatePickerDialog
               date={startDate}
               setDate={setStartDate}
@@ -195,8 +200,11 @@ export default function AnalyticsPage(): JSX.Element {
               showMonthYearPicker
             />
           </div>
-          <div className="flex items-center gap-2 rounded border border-slate-500 px-3 py-1">
-            <span className="text-xs font-medium text-gray-400">End</span>
+          <div className="h-px bg-[var(--ctp-surface1)] sm:h-16 sm:w-px" />
+          <div className="flex flex-col gap-1 px-3 py-2">
+            <span className="text-xs font-semibold text-[var(--ctp-subtext0)]">
+              To
+            </span>
             <DatePickerDialog
               date={endDate}
               setDate={setEndDate}
@@ -207,47 +215,57 @@ export default function AnalyticsPage(): JSX.Element {
         </div>
       </div>
       {isInvalidDateRange && (
-        <span className="text-sm text-red-300">
+        <span className="text-sm text-[var(--ctp-red)]">
           Start date must be before or equal to end date.
         </span>
       )}
 
       <section className="grid gap-3 md:grid-cols-4">
-        <div className="rounded bg-slate-700/90 p-4">
-          <span className="text-sm text-gray-300">Projected end balance</span>
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-4 shadow-md">
+          <span className="text-sm text-[var(--ctp-subtext1)]">
+            Projected end balance
+          </span>
           <Money
             className="text-2xl font-semibold"
             value={projectedEndBalance}
           />
         </div>
-        <div className="rounded bg-slate-700/90 p-4">
-          <span className="text-sm text-gray-300">Projected income</span>
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-4 shadow-md">
+          <span className="text-sm text-[var(--ctp-subtext1)]">
+            Projected income
+          </span>
           <Money className="text-2xl font-semibold" value={totalIncomes} />
         </div>
-        <div className="rounded bg-slate-700/90 p-4">
-          <span className="text-sm text-gray-300">Projected expenses</span>
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-4 shadow-md">
+          <span className="text-sm text-[var(--ctp-subtext1)]">
+            Projected expenses
+          </span>
           <Money className="text-2xl font-semibold" value={totalExpenses} />
         </div>
-        <div className="rounded bg-slate-700/90 p-4">
-          <span className="text-sm text-gray-300">Savings rate</span>
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-4 shadow-md">
+          <span className="text-sm text-[var(--ctp-subtext1)]">
+            Savings rate
+          </span>
           <div className="text-2xl font-semibold">{savingsRate}%</div>
         </div>
       </section>
 
       <section className="grid gap-4 lg:grid-cols-[1fr_2fr]">
-        <div className="rounded bg-slate-700/90 p-4">
-          <span className="text-sm text-gray-300">Total saved</span>
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-4 shadow-md">
+          <span className="text-sm text-[var(--ctp-subtext1)]">
+            Total saved
+          </span>
           <Money className="text-2xl font-semibold" value={totalSaved} />
         </div>
-        <div className="rounded bg-slate-700/90 p-4">
-          <h2 className="mb-3 text-sm font-semibold text-gray-300">
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-4 shadow-md">
+          <h2 className="mb-3 text-sm font-semibold text-[var(--ctp-subtext1)]">
             Saved money by location
           </h2>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
             {Object.values(SavingLocation).map(
               (location: SavingLocation): JSX.Element => (
                 <div key={location} className="min-w-0">
-                  <div className="truncate text-xs text-gray-400">
+                  <div className="truncate text-xs text-[var(--ctp-subtext0)]">
                     {savingLocationLabels[location]}
                   </div>
                   <Money
@@ -262,12 +280,12 @@ export default function AnalyticsPage(): JSX.Element {
       </section>
 
       <section className="grid gap-4 xl:grid-cols-[2fr_1fr]">
-        <div className="rounded bg-slate-700/90 p-3">
-          <h2 className="mb-2 text-sm font-semibold text-gray-300">
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-3 shadow-md">
+          <h2 className="mb-2 text-sm font-semibold text-[var(--ctp-subtext1)]">
             Monthly cash flow
           </h2>
           {isInvalidDateRange ? (
-            <div className="flex h-[260px] items-center justify-center text-gray-300">
+            <div className="flex h-[260px] items-center justify-center text-[var(--ctp-subtext1)]">
               Select a valid date range to view analytics.
             </div>
           ) : (
@@ -281,8 +299,8 @@ export default function AnalyticsPage(): JSX.Element {
             />
           )}
         </div>
-        <div className="rounded bg-slate-700/90 p-3">
-          <h2 className="mb-2 text-sm font-semibold text-gray-300">
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-3 shadow-md">
+          <h2 className="mb-2 text-sm font-semibold text-[var(--ctp-subtext1)]">
             Balance trend
           </h2>
           <LineChart
@@ -309,8 +327,8 @@ export default function AnalyticsPage(): JSX.Element {
       </section>
 
       <section className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded bg-slate-700/90 p-3">
-          <h2 className="mb-2 text-sm font-semibold text-gray-300">
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-3 shadow-md">
+          <h2 className="mb-2 text-sm font-semibold text-[var(--ctp-subtext1)]">
             Expense mix
           </h2>
           <BalancePieChart
@@ -320,8 +338,8 @@ export default function AnalyticsPage(): JSX.Element {
             width={260}
           />
         </div>
-        <div className="rounded bg-slate-700/90 p-3">
-          <h2 className="mb-2 text-sm font-semibold text-gray-300">
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-3 shadow-md">
+          <h2 className="mb-2 text-sm font-semibold text-[var(--ctp-subtext1)]">
             Income mix
           </h2>
           <BalancePieChart
@@ -334,39 +352,43 @@ export default function AnalyticsPage(): JSX.Element {
       </section>
 
       <section className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded bg-slate-700/90 p-3">
-          <h2 className="mb-3 text-sm font-semibold text-gray-300">
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-3 shadow-md">
+          <h2 className="mb-3 text-sm font-semibold text-[var(--ctp-subtext1)]">
             Top expense categories
           </h2>
           <div className="space-y-3">
             {topExpenses.map(({ category, total }: CategoryTotal) => (
               <div key={category} className="grid grid-cols-[1fr_auto] gap-3">
-                <span className="truncate text-sm text-gray-200">
+                <span className="truncate text-sm text-[var(--ctp-text)]">
                   {category}
                 </span>
                 <Money className="text-sm font-semibold" value={total} />
               </div>
             ))}
             {!topExpenses.length && (
-              <span className="text-sm text-gray-300">No expenses found.</span>
+              <span className="text-sm text-[var(--ctp-subtext1)]">
+                No expenses found.
+              </span>
             )}
           </div>
         </div>
-        <div className="rounded bg-slate-700/90 p-3">
-          <h2 className="mb-3 text-sm font-semibold text-gray-300">
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-3 shadow-md">
+          <h2 className="mb-3 text-sm font-semibold text-[var(--ctp-subtext1)]">
             Top income categories
           </h2>
           <div className="space-y-3">
             {topIncomes.map(({ category, total }: CategoryTotal) => (
               <div key={category} className="grid grid-cols-[1fr_auto] gap-3">
-                <span className="truncate text-sm text-gray-200">
+                <span className="truncate text-sm text-[var(--ctp-text)]">
                   {category}
                 </span>
                 <Money className="text-sm font-semibold" value={total} />
               </div>
             ))}
             {!topIncomes.length && (
-              <span className="text-sm text-gray-300">No income found.</span>
+              <span className="text-sm text-[var(--ctp-subtext1)]">
+                No income found.
+              </span>
             )}
           </div>
         </div>

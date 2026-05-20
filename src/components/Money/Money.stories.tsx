@@ -12,13 +12,13 @@ export default meta;
 type Story = StoryObj<typeof Money>;
 
 export const Default: Story = {
-  args: { value: 1234.56, className: 'text-lg text-green-500' },
+  args: { value: 1234.56, className: 'text-lg text-[var(--ctp-green)]' },
 };
 
 export const LargeNumber: Story = {
-  args: { value: 9876543.21, className: 'text-2xl text-blue-600' },
+  args: { value: 9876543.21, className: 'text-2xl text-[var(--ctp-blue)]' },
 };
 
 export const Empty: Story = {
-  args: { value: undefined, className: 'text-gray-400' },
+  args: { value: undefined, className: 'text-[var(--ctp-subtext0)]' },
 };

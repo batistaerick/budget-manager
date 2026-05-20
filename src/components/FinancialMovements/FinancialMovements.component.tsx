@@ -70,16 +70,14 @@ export default function FinancialMovements({
   }
 
   const currentInstallment: Installment | undefined =
-    transaction.installments?.find(
-      (installment: Installment): boolean => {
-        const installmentDate = parseApiDate(installment.dueDate);
+    transaction.installments?.find((installment: Installment): boolean => {
+      const installmentDate = parseApiDate(installment.dueDate);
 
-        return (
-          selectedDate.getMonth() === installmentDate.getMonth() &&
-          selectedDate.getFullYear() === installmentDate.getFullYear()
-        );
-      }
-    );
+      return (
+        selectedDate.getMonth() === installmentDate.getMonth() &&
+        selectedDate.getFullYear() === installmentDate.getFullYear()
+      );
+    });
 
   const calculateInstallmentAmount: number = useMemo((): number => {
     if (transaction.installmentNumbers) {
@@ -92,16 +90,16 @@ export default function FinancialMovements({
   }, [transaction]);
 
   return (
-    <div className="grid grid-cols-4 border-b-2 border-gray-500 text-lg">
+    <div className="grid grid-cols-4 border-b-2 border-[var(--ctp-surface1)] text-lg">
       {isEditOpen && (
         <button
-          className="fixed inset-0 z-10 backdrop-blur-xs transition-opacity"
+          className="fixed inset-0 z-40 bg-[var(--ctp-crust)]/25 backdrop-blur-xs transition-opacity"
           onClick={onEditOrClose}
         />
       )}
       <div className="flex items-center justify-start gap-2">
         <BiEdit
-          className="cursor-pointer text-slate-300 transition-colors duration-500 hover:text-slate-500"
+          className="cursor-pointer text-[var(--ctp-subtext1)] transition-colors duration-500 hover:text-[var(--ctp-subtext0)]"
           size={22}
           onClick={onEditOrClose}
         />
@@ -116,44 +114,53 @@ export default function FinancialMovements({
       <div className="flex items-center justify-end gap-1">
         <Money className="truncate" value={calculateInstallmentAmount} />
         {errorMessage && (
-          <span className="truncate text-xs text-red-300">{errorMessage}</span>
+          <span className="truncate text-xs text-[var(--ctp-red)]">
+            {errorMessage}
+          </span>
         )}
         {isConfirmingDelete && (
+          <div className="flex items-center gap-1">
+            <button
+              className="cursor-pointer rounded bg-[var(--ctp-red)]/25 px-2 py-1 text-xs font-semibold text-[var(--ctp-red)]"
+              disabled={isDeleting}
+              onClick={deleteTransaction}
+              type="button"
+            >
+              {isDeleting ? 'Deleting...' : 'Confirm'}
+            </button>
+            <button
+              className="cursor-pointer rounded bg-[var(--ctp-surface1)] px-2 py-1 text-xs font-semibold text-[var(--ctp-text)] hover:bg-[var(--ctp-surface2)]"
+              disabled={isDeleting}
+              onClick={(): void => setIsConfirmingDelete(false)}
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+        {!isConfirmingDelete && (
           <button
-            className="rounded bg-red-900 px-2 py-1 text-xs font-semibold text-white"
+            aria-label="Delete transaction"
+            className="cursor-pointer"
             disabled={isDeleting}
-            onClick={deleteTransaction}
+            onClick={(): void => {
+              void deleteTransaction();
+            }}
+            type="button"
           >
-            {isDeleting ? 'Deleting...' : 'Confirm'}
+            <FcFullTrash size={22} />
           </button>
         )}
-        <button
-          aria-label={
-            isConfirmingDelete ? 'Cancel delete transaction' : 'Delete transaction'
-          }
-          className="cursor-pointer"
-          disabled={isDeleting}
-          onClick={(): void => {
-            if (isConfirmingDelete) {
-              setIsConfirmingDelete(false);
-              return;
-            }
-            void deleteTransaction();
-          }}
-          type="button"
-        >
-          <FcFullTrash size={22} />
-        </button>
       </div>
       <div
         className={clsx(
-          'fixed top-0 right-0 z-10 h-full w-[400px] transform bg-black shadow-lg transition-transform duration-300 md:w-[500px]',
-          isEditOpen ? 'visible translate-x-0' : 'invisible translate-x-full'
+          'fixed top-0 right-0 z-50 h-full w-[400px] transform bg-[var(--ctp-mantle)] shadow-lg transition-transform duration-300 md:w-[500px]',
+          isEditOpen
+            ? 'pointer-events-auto translate-x-0'
+            : 'pointer-events-none translate-x-full'
         )}
       >
-        {isEditOpen && (
-          <NewTransaction onClose={onEditOrClose} transaction={transaction} />
-        )}
+        <NewTransaction onClose={onEditOrClose} transaction={transaction} />
       </div>
     </div>
   );

@@ -48,8 +48,8 @@ export default function BalancePieChart({
           },
           {}
         )
-      ).filter(
-        (transaction): transaction is PieChartDataType => Boolean(transaction)
+      ).filter((transaction): transaction is PieChartDataType =>
+        Boolean(transaction)
       );
 
       return grouped.sort(
@@ -58,16 +58,16 @@ export default function BalancePieChart({
     }, [transactions]);
 
   const darkColors: string[] = [
-    '#433cae',
-    '#1c6db8',
-    '#32b3e0',
-    '#089477',
-    '#2ead28',
-    '#fdf800',
-    '#fa8726',
-    '#eb1f25',
-    '#d30f73',
-    '#823cc1',
+    'var(--ctp-blue)',
+    'var(--ctp-mauve)',
+    'var(--ctp-pink)',
+    'var(--ctp-teal)',
+    'var(--ctp-green)',
+    'var(--ctp-yellow)',
+    'var(--ctp-peach)',
+    'var(--ctp-red)',
+    'var(--ctp-maroon)',
+    'var(--ctp-lavender)',
   ];
 
   return transactions.length ? (
@@ -83,7 +83,7 @@ export default function BalancePieChart({
       />
     </div>
   ) : (
-    <div className="flex h-full w-full items-center justify-center text-gray-300">
+    <div className="flex h-full w-full items-center justify-center text-[var(--ctp-subtext1)]">
       <span>No transaction data available</span>
     </div>
   );

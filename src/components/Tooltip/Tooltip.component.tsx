@@ -15,7 +15,7 @@ export default function Tooltip({
   children,
 }: Readonly<TooltipProps>): JSX.Element {
   const tooltipClasses: string = clsx(
-    'absolute z-50 rounded-md bg-sky-950 px-2 py-1 text-xs text-white whitespace-nowrap',
+    'absolute z-50 rounded-md bg-[var(--ctp-mantle)] px-2 py-1 text-xs text-[var(--ctp-text)] whitespace-nowrap',
     'opacity-0 group-hover:opacity-100 transition-opacity duration-200',
     'pointer-events-none',
     {

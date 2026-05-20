@@ -1,8 +1,8 @@
 'use client';
 
-import { MenuButton } from '@/components';
+import { MenuButton, ThemeSwitcher } from '@/components';
 import { authenticationService } from '@/services';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import type { JSX } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FaHome } from 'react-icons/fa';
@@ -17,7 +17,12 @@ interface SideMenuProps {
 export default function SideMenu({
   onClose,
 }: Readonly<SideMenuProps>): JSX.Element {
+  const pathname = usePathname();
   const { push } = useRouter();
+
+  function isActive(path: string): boolean {
+    return pathname === path;
+  }
 
   function onClick(path: string): void {
     onClose();
@@ -25,22 +30,31 @@ export default function SideMenu({
   }
 
   return (
-    <div className="h-full w-full max-w-xs bg-slate-900/95 p-6 shadow-xl backdrop-blur-sm">
-      <p className="mb-8 text-3xl font-bold text-white">Menu</p>
+    <div className="flex h-full w-full max-w-xs flex-col bg-[var(--ctp-mantle)]/95 p-6 shadow-xl backdrop-blur-sm">
+      <p className="mb-8 text-3xl font-bold text-[var(--ctp-text)]">Menu</p>
       <nav className="flex flex-col gap-3 text-lg">
-        <MenuButton onClick={(): void => onClick('/')}>
+        <MenuButton active={isActive('/')} onClick={(): void => onClick('/')}>
           <FaHome size={22} />
           Home
         </MenuButton>
-        <MenuButton onClick={(): void => onClick('/analytics')}>
+        <MenuButton
+          active={isActive('/analytics')}
+          onClick={(): void => onClick('/analytics')}
+        >
           <VscGraph size={22} />
           Analytics
         </MenuButton>
-        <MenuButton onClick={(): void => onClick('/savings')}>
+        <MenuButton
+          active={isActive('/savings')}
+          onClick={(): void => onClick('/savings')}
+        >
           <RiSafe2Line size={22} />
           Savings
         </MenuButton>
-        <MenuButton onClick={(): void => onClick('/profile')}>
+        <MenuButton
+          active={isActive('/profile')}
+          onClick={(): void => onClick('/profile')}
+        >
           <CgProfile size={22} />
           Profile
         </MenuButton>
@@ -49,6 +63,9 @@ export default function SideMenu({
           Sign Out
         </MenuButton>
       </nav>
+      <div className="mt-auto pt-8">
+        <ThemeSwitcher />
+      </div>
     </div>
   );
 }

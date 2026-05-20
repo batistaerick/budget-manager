@@ -29,8 +29,8 @@ export default function HeaderCell({
   return (
     <button
       className={clsx(
-        'flex cursor-pointer items-center justify-center gap-2 font-bold transition-colors select-none hover:text-slate-500',
-        active ? 'text-slate-100' : 'text-slate-300'
+        'flex cursor-pointer items-center justify-center gap-2 font-bold transition-colors select-none hover:text-[var(--ctp-subtext0)]',
+        active ? 'text-[var(--ctp-text)]' : 'text-[var(--ctp-subtext1)]'
       )}
       onClick={(): void => toggleSort(keyName)}
       tabIndex={0}

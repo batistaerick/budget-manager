@@ -16,7 +16,7 @@ export default function Charts({
   endDate,
 }: Readonly<ChartsProps>): JSX.Element {
   return (
-    <div className="flex w-full cursor-default items-center justify-start rounded bg-slate-700/90 p-2">
+    <div className="flex w-full cursor-default items-center justify-start rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-2 shadow-md">
       <BalanceBarChart
         startDate={startDate}
         endDate={endDate}

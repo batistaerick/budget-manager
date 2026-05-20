@@ -145,8 +145,8 @@ export default function NewTransaction({
   );
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-slate-700/35 p-5 backdrop-blur-xs">
-      <div className="flex items-center justify-center rounded-full border border-gray-500 hover:border-gray-600">
+    <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-[var(--ctp-surface0)]/55 p-5 text-[var(--ctp-text)] backdrop-blur-xs">
+      <div className="flex items-center justify-center">
         <DatePickerDialog date={date} setDate={setDate} arrows />
       </div>
       <form
@@ -157,7 +157,9 @@ export default function NewTransaction({
         <SelectWithTooltip
           id="repeats"
           tooltip="Does it repeat?"
-          icon={<MdEventRepeat className="text-amber-900" size={25} />}
+          icon={
+            <MdEventRepeat className="text-[var(--ctp-yellow)]" size={25} />
+          }
           value={form.repeats}
           onChange={handleChange}
           options={[
@@ -168,7 +170,7 @@ export default function NewTransaction({
         <SelectWithTooltip
           id="transactionType"
           tooltip="Transaction Type"
-          icon={<GrTransaction className="text-green-700" size={25} />}
+          icon={<GrTransaction className="text-[var(--ctp-green)]" size={25} />}
           value={transactionType}
           onChange={handleTransactionTypeChange}
           options={[
@@ -197,7 +199,10 @@ export default function NewTransaction({
         />
         {isInstallmentsEnabled && (
           <div className="flex flex-col gap-1">
-            <BsFillCreditCard2BackFill className="text-purple-600" size={25} />
+            <BsFillCreditCard2BackFill
+              className="text-[var(--ctp-mauve)]"
+              size={25}
+            />
             <Input
               id="installmentNumbers"
               label="Number of installments"
@@ -232,10 +237,12 @@ export default function NewTransaction({
             onChange={handleChange}
           />
         </div>
-        {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}
+        {errorMessage && (
+          <p className="text-sm text-[var(--ctp-red)]">{errorMessage}</p>
+        )}
         <div className="flex w-full items-center justify-center gap-2">
           <button
-            className="h-12 w-full cursor-pointer rounded-md bg-blue-900 font-bold"
+            className="h-12 w-full cursor-pointer rounded-md bg-[var(--ctp-surface1)] font-bold text-[var(--ctp-text)] hover:bg-[var(--ctp-surface2)]"
             type="button"
             onClick={handleOnClose}
           >
@@ -245,8 +252,8 @@ export default function NewTransaction({
             className={clsx(
               'h-12 w-full rounded-md font-bold',
               isSaveDisabled || isSubmitting
-                ? 'cursor-not-allowed bg-blue-950'
-                : 'cursor-pointer bg-blue-900'
+                ? 'cursor-not-allowed bg-[var(--ctp-surface0)] text-[var(--ctp-overlay0)]'
+                : 'cursor-pointer bg-[var(--ctp-blue)] text-[var(--ctp-crust)] hover:bg-[var(--ctp-lavender)]'
             )}
             type="submit"
             form="newTransactionForm"

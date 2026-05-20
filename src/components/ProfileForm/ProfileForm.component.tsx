@@ -2,11 +2,7 @@
 
 import { Input } from '@/components';
 import { useCurrentUser, useProfileImage } from '@/hooks';
-import {
-  deleteFetcher,
-  postFetcher,
-  putFetcher,
-} from '@/libs/fetchers.lib';
+import { deleteFetcher, postFetcher, putFetcher } from '@/libs/fetchers.lib';
 import {
   arePasswordsEqual,
   hasValueInside,
@@ -171,7 +167,7 @@ export default function ProfileForm(): JSX.Element {
       );
     }
     return (
-      <div className="flex h-full w-full items-center justify-center text-gray-400">
+      <div className="flex h-full w-full items-center justify-center text-[var(--ctp-subtext0)]">
         Choose Image
       </div>
     );
@@ -188,7 +184,7 @@ export default function ProfileForm(): JSX.Element {
   return (
     <div className="flex flex-col items-center gap-6">
       <div className="flex flex-col items-center gap-3">
-        <label className="relative h-40 w-40 cursor-pointer overflow-hidden rounded-full border-4 border-gray-700 bg-gray-800 transition-all hover:border-blue-500 hover:shadow-lg">
+        <label className="relative h-40 w-40 cursor-pointer overflow-hidden rounded-full border-4 border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)] transition-all hover:border-[var(--ctp-blue)] hover:shadow-lg">
           <input
             type="file"
             accept="image/png, image/jpeg"
@@ -202,7 +198,7 @@ export default function ProfileForm(): JSX.Element {
             type="button"
             onClick={handleDeleteImage}
             disabled={isDeletingImage}
-            className="cursor-pointer rounded-md bg-red-900/70 px-4 py-2 text-sm font-medium text-red-100 transition hover:bg-red-800 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400"
+            className="cursor-pointer rounded-md bg-[var(--ctp-red)]/25 px-4 py-2 text-sm font-medium text-[var(--ctp-red)] transition hover:bg-[var(--ctp-red)]/35 disabled:cursor-not-allowed disabled:bg-[var(--ctp-surface1)] disabled:text-[var(--ctp-subtext0)]"
           >
             {isDeletingImage ? 'Deleting...' : 'Delete image'}
           </button>
@@ -210,17 +206,17 @@ export default function ProfileForm(): JSX.Element {
       </div>
       <div className="text-center">
         {currentUser?.name && (
-          <h2 className="text-xl font-semibold text-white">
+          <h2 className="text-xl font-semibold text-[var(--ctp-text)]">
             Hello, {currentUser.name} 👋
           </h2>
         )}
         {currentUser?.email && (
-          <p className="text-gray-400">{currentUser.email}</p>
+          <p className="text-[var(--ctp-subtext0)]">{currentUser.email}</p>
         )}
       </div>
       <form
         onSubmit={onSubmit}
-        className="w-full max-w-md space-y-4 rounded-xl bg-gray-800/90 p-6 shadow-md backdrop-blur-md"
+        className="w-full max-w-md space-y-4 rounded-xl border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-6 shadow-md backdrop-blur-md"
       >
         <Input
           id="name"
@@ -243,12 +239,14 @@ export default function ProfileForm(): JSX.Element {
           value={updatedUser.confirmPassword}
           onChange={handleChange}
         />
-        {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}
+        {errorMessage && (
+          <p className="text-sm text-[var(--ctp-red)]">{errorMessage}</p>
+        )}
         <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
           <button
             type="button"
             onClick={() => push('/')}
-            className="flex-1 cursor-pointer rounded-lg bg-gray-700 py-3 text-lg font-medium text-white transition hover:bg-gray-600"
+            className="flex-1 cursor-pointer rounded-lg bg-[var(--ctp-surface1)] py-3 text-lg font-medium text-[var(--ctp-text)] transition hover:bg-[var(--ctp-surface2)]"
           >
             Cancel
           </button>
@@ -258,8 +256,8 @@ export default function ProfileForm(): JSX.Element {
             className={clsx(
               'flex-1 rounded-lg py-3 text-lg font-medium transition',
               isSaveButtonDisabled
-                ? 'cursor-not-allowed bg-gray-600 text-gray-400'
-                : 'cursor-pointer bg-gray-700 text-white hover:bg-gray-600'
+                ? 'cursor-not-allowed bg-[var(--ctp-surface2)] text-[var(--ctp-subtext0)]'
+                : 'cursor-pointer bg-[var(--ctp-surface1)] text-[var(--ctp-text)] hover:bg-[var(--ctp-surface2)]'
             )}
           >
             Save

@@ -90,7 +90,7 @@ export default function LoginForm(): JSX.Element {
 
   return (
     <>
-      <h2 className="mb-8 text-center text-3xl font-bold text-white">
+      <h2 className="mb-8 text-center text-3xl font-bold text-[var(--ctp-text)]">
         {variant === 'login' ? 'Sign In' : 'Sign Up'}
       </h2>
       <div className="flex flex-col gap-4">
@@ -129,15 +129,17 @@ export default function LoginForm(): JSX.Element {
             onKeyDown={onKeyDown}
           />
         </div>
-        {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}
+        {errorMessage && (
+          <p className="text-sm text-[var(--ctp-red)]">{errorMessage}</p>
+        )}
       </div>
       <div className="mt-8">
         <button
           className={clsx(
-            'h-12 w-full rounded-md text-lg font-bold text-white transition-all duration-300',
+            'h-12 w-full rounded-md text-lg font-bold transition-all duration-300',
             password.length && !isSubmitting
-              ? 'cursor-pointer bg-blue-600 hover:bg-blue-700'
-              : 'cursor-not-allowed bg-gray-700'
+              ? 'cursor-pointer bg-[var(--ctp-blue)] text-[var(--ctp-crust)] hover:bg-[var(--ctp-lavender)]'
+              : 'cursor-not-allowed bg-[var(--ctp-surface1)] text-[var(--ctp-subtext0)]'
           )}
           disabled={!password.length || isSubmitting}
           onClick={onClick}
@@ -145,12 +147,12 @@ export default function LoginForm(): JSX.Element {
           {isSubmitting ? 'Please wait...' : submitLabel}
         </button>
       </div>
-      <p className="mt-6 text-center text-gray-300">
+      <p className="mt-6 text-center text-[var(--ctp-subtext1)]">
         {variant === 'login'
           ? "Don't have an account?"
           : 'Already have an account?'}
         <button
-          className="ml-1 cursor-pointer font-semibold text-blue-400 hover:underline"
+          className="ml-1 cursor-pointer font-semibold text-[var(--ctp-blue)] hover:underline"
           onClick={toggleVariant}
         >
           {variant === 'login' ? 'Sign Up' : 'Sign In'}

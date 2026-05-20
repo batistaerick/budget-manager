@@ -11,13 +11,13 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
       <div
         ref={ref}
         className={clsx(
-          'relative h-3 w-full overflow-hidden rounded-full bg-gray-200',
+          'relative h-3 w-full overflow-hidden rounded-full bg-[var(--ctp-surface1)]',
           className
         )}
         {...props}
       >
         <div
-          className="h-full bg-blue-500 transition-all"
+          className="h-full bg-[var(--ctp-blue)] transition-all"
           style={{ width: `${Math.min(Math.max(value, 0), 100)}%` }}
         />
       </div>

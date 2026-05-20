@@ -27,8 +27,8 @@ export default function Body(): JSX.Element {
   );
 
   return (
-    <div className="flex h-full flex-col gap-2 p-2">
-      <div className="flex w-full flex-col justify-between gap-2 lg:flex-row">
+    <div className="flex min-h-0 flex-col gap-2 p-2 lg:h-[calc(100vh-61px)] lg:overflow-hidden">
+      <div className="flex w-full shrink-0 flex-col justify-between gap-2 lg:flex-row">
         <Balance
           incomes={incomes ?? []}
           expenses={expenses ?? []}
@@ -42,7 +42,7 @@ export default function Body(): JSX.Element {
           endDate={monthRange.endDate}
         />
       </div>
-      <div className="flex w-full flex-1 flex-col gap-2 lg:flex-row">
+      <div className="flex min-h-0 w-full flex-1 flex-col gap-2 lg:flex-row">
         <Transactions
           transactions={incomes}
           transactionsMutate={incomesMutate}

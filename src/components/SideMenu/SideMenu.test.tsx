@@ -7,15 +7,20 @@ jest.mock('@/services', () => ({
 }));
 
 const mockPush = jest.fn();
+let mockPathname = '/';
 
 jest.mock('next/navigation', () => ({
+  usePathname: () => mockPathname,
   useRouter: () => ({ push: mockPush }),
 }));
 
 describe('SideMenu', (): void => {
   const mockOnClose = jest.fn();
 
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach((): void => {
+    mockPathname = '/';
+    jest.clearAllMocks();
+  });
 
   it('renders all menu buttons', (): void => {
     render(<SideMenu onClose={mockOnClose} />);
@@ -42,6 +47,16 @@ describe('SideMenu', (): void => {
 
     fireEvent.click(signOutButton);
     expect(authenticationService.logout).toHaveBeenCalledTimes(1);
+  });
+
+  it('marks the current route as active', (): void => {
+    mockPathname = '/savings';
+
+    render(<SideMenu onClose={mockOnClose} />);
+
+    expect(
+      screen.getByRole('button', { name: /savings/i }).className
+    ).toContain('bg-[var(--ctp-blue)]/20');
   });
 
   it('calls onClose and pushes correctly for other buttons', (): void => {

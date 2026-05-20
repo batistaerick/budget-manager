@@ -33,17 +33,17 @@ export default function Header(): JSX.Element {
   }
 
   return (
-    <div className="w-full bg-[#070f52] px-4">
+    <div className="relative z-30 w-full border-b border-[var(--ctp-surface1)] bg-[var(--ctp-mantle)] px-4 text-[var(--ctp-text)] shadow-md">
       {(isLeftOpen || isRightOpen) && (
         <button
-          className="fixed inset-0 z-10 backdrop-blur-xs transition-opacity"
+          className="fixed inset-0 z-40 bg-[var(--ctp-crust)]/25 backdrop-blur-xs transition-opacity"
           onClick={closeMenu}
         />
       )}
-      <header className="flex justify-between py-3 shadow-md">
+      <header className="flex justify-between py-2">
         <Tooltip tooltip="Menu" placement="right">
           {profileImageUrl ? (
-            <div className="relative h-12 w-12 cursor-pointer overflow-hidden rounded-full">
+            <div className="relative h-11 w-11 cursor-pointer overflow-hidden rounded-full">
               <Image
                 src={profileImageUrl}
                 onClick={(): void =>
@@ -56,8 +56,8 @@ export default function Header(): JSX.Element {
             </div>
           ) : (
             <VscRobot
-              size={50}
-              className="cursor-pointer rounded-md p-1 hover:text-gray-400"
+              size={44}
+              className="cursor-pointer rounded-md p-1 hover:text-[var(--ctp-subtext0)]"
               onClick={(): void =>
                 setIsLeftOpen((prev: boolean): boolean => !prev)
               }
@@ -66,8 +66,8 @@ export default function Header(): JSX.Element {
         </Tooltip>
         <Tooltip tooltip="New transaction" placement="left">
           <AiOutlinePlus
-            className="cursor-pointer rounded-md p-1 hover:text-gray-400"
-            size={50}
+            className="cursor-pointer rounded-md p-1 hover:text-[var(--ctp-subtext0)]"
+            size={44}
             onClick={(): void =>
               setIsRightOpen((prev: boolean): boolean => !prev)
             }
@@ -76,19 +76,23 @@ export default function Header(): JSX.Element {
       </header>
       <div
         className={clsx(
-          'fixed top-0 left-0 z-10 h-full w-72 transform bg-black shadow-lg transition-transform duration-300',
-          isLeftOpen ? 'visible translate-x-0' : 'invisible -translate-x-full'
+          'fixed top-0 left-0 z-50 h-full w-72 transform bg-[var(--ctp-mantle)] shadow-lg transition-transform duration-300',
+          isLeftOpen
+            ? 'pointer-events-auto translate-x-0'
+            : 'pointer-events-none -translate-x-full'
         )}
       >
-        {isLeftOpen && <SideMenu onClose={closeMenu} />}
+        <SideMenu onClose={closeMenu} />
       </div>
       <div
         className={clsx(
-          'fixed top-0 right-0 z-10 h-full w-[400px] transform bg-black shadow-lg transition-transform duration-300 md:w-[500px]',
-          isRightOpen ? 'visible translate-x-0' : 'invisible translate-x-full'
+          'fixed top-0 right-0 z-50 h-full w-[400px] transform bg-[var(--ctp-mantle)] shadow-lg transition-transform duration-300 md:w-[500px]',
+          isRightOpen
+            ? 'pointer-events-auto translate-x-0'
+            : 'pointer-events-none translate-x-full'
         )}
       >
-        {isRightOpen && <NewTransaction onClose={closeMenu} />}
+        <NewTransaction onClose={closeMenu} />
       </div>
     </div>
   );

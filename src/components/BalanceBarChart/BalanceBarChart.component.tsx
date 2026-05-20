@@ -121,8 +121,8 @@ export default function BalanceBarChart({
         monthly[month].expense += amount;
       }
     }
-    return Object.values(monthly).filter(
-      (balance): balance is MonthlyBalance => Boolean(balance)
+    return Object.values(monthly).filter((balance): balance is MonthlyBalance =>
+      Boolean(balance)
     );
   }, [expenses, incomes, startDate, endDate]);
 

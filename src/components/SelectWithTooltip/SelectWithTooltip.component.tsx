@@ -31,7 +31,7 @@ export default function SelectWithTooltip({
       <Tooltip placement="top" tooltip={tooltip}>
         <select
           id={id}
-          className="w-full rounded-md border border-neutral-700 bg-neutral-700 p-3 text-zinc-300 focus:outline-none disabled:opacity-50"
+          className="w-full rounded-md border border-[var(--ctp-surface1)] bg-[var(--ctp-base)] p-3 text-[var(--ctp-text)] shadow-sm transition-colors focus:border-[var(--ctp-blue)] focus:ring-2 focus:ring-[var(--ctp-blue)]/25 focus:outline-none disabled:opacity-50"
           value={value}
           onChange={onChange}
           disabled={disabled}

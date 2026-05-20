@@ -153,12 +153,14 @@ export default function SavingsPage(): JSX.Element {
   return (
     <div className="flex w-full flex-col gap-4 p-4">
       <section className="grid gap-3 md:grid-cols-[2fr_1fr]">
-        <div className="rounded bg-slate-700/90 p-4">
-          <span className="text-sm text-gray-300">Total saved</span>
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-4 shadow-md">
+          <span className="text-sm text-[var(--ctp-subtext1)]">
+            Total saved
+          </span>
           <Money className="text-3xl font-semibold" value={totalSaved} />
         </div>
-        <div className="rounded bg-slate-700/90 p-4">
-          <span className="text-sm text-gray-300">Entries</span>
+        <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-4 shadow-md">
+          <span className="text-sm text-[var(--ctp-subtext1)]">Entries</span>
           <div className="text-3xl font-semibold">{savingsList.length}</div>
         </div>
       </section>
@@ -166,9 +168,9 @@ export default function SavingsPage(): JSX.Element {
       <section className="grid gap-4 xl:grid-cols-[360px_1fr]">
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-3 rounded bg-slate-700/90 p-4"
+          className="flex flex-col gap-3 rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-4 shadow-md"
         >
-          <h1 className="text-base font-semibold text-gray-100">
+          <h1 className="text-base font-semibold text-[var(--ctp-text)]">
             {editingSaving ? 'Edit saved money' : 'Add saved money'}
           </h1>
           <Input
@@ -190,7 +192,7 @@ export default function SavingsPage(): JSX.Element {
             id="location"
             value={form.location}
             onChange={handleChange}
-            className="rounded-md bg-neutral-700 px-4 py-3 text-white focus:ring-0 focus:outline-none"
+            className="rounded-md border border-[var(--ctp-surface1)] bg-[var(--ctp-base)] px-4 py-3 text-[var(--ctp-text)] shadow-sm transition-colors focus:border-[var(--ctp-blue)] focus:ring-2 focus:ring-[var(--ctp-blue)]/25 focus:outline-none"
           >
             {Object.values(SavingLocation).map(
               (location: SavingLocation): JSX.Element => (
@@ -201,7 +203,9 @@ export default function SavingsPage(): JSX.Element {
             )}
           </select>
           {errorMessage && (
-            <span className="text-sm text-red-300">{errorMessage}</span>
+            <span className="text-sm text-[var(--ctp-red)]">
+              {errorMessage}
+            </span>
           )}
           <div className="grid grid-cols-[1fr_auto] gap-2">
             <button
@@ -210,8 +214,8 @@ export default function SavingsPage(): JSX.Element {
               className={clsx(
                 'flex items-center justify-center gap-2 rounded-md px-4 py-3 font-medium transition',
                 isSaving || isFormInvalid
-                  ? 'cursor-not-allowed bg-gray-600 text-gray-400'
-                  : 'cursor-pointer bg-blue-700 text-white hover:bg-blue-600'
+                  ? 'cursor-not-allowed bg-[var(--ctp-surface2)] text-[var(--ctp-subtext0)]'
+                  : 'cursor-pointer bg-[var(--ctp-blue)] text-[var(--ctp-crust)] hover:bg-[var(--ctp-lavender)]'
               )}
             >
               <FiPlus />
@@ -221,7 +225,7 @@ export default function SavingsPage(): JSX.Element {
               <button
                 type="button"
                 onClick={resetForm}
-                className="cursor-pointer rounded-md bg-gray-700 px-4 py-3 text-white transition hover:bg-gray-600"
+                className="cursor-pointer rounded-md bg-[var(--ctp-surface1)] px-4 py-3 text-[var(--ctp-text)] transition hover:bg-[var(--ctp-surface2)]"
               >
                 <FiX />
               </button>
@@ -230,8 +234,8 @@ export default function SavingsPage(): JSX.Element {
         </form>
 
         <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
-          <div className="rounded bg-slate-700/90 p-4">
-            <h2 className="mb-3 text-sm font-semibold text-gray-300">
+          <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-4 shadow-md">
+            <h2 className="mb-3 text-sm font-semibold text-[var(--ctp-subtext1)]">
               By location
             </h2>
             <div className="space-y-3">
@@ -241,7 +245,7 @@ export default function SavingsPage(): JSX.Element {
                     key={location}
                     className="grid grid-cols-[1fr_auto] gap-3"
                   >
-                    <span className="truncate text-sm text-gray-200">
+                    <span className="truncate text-sm text-[var(--ctp-text)]">
                       {savingLocationLabels[location]}
                     </span>
                     <Money
@@ -254,8 +258,8 @@ export default function SavingsPage(): JSX.Element {
             </div>
           </div>
 
-          <div className="rounded bg-slate-700/90 p-4">
-            <h2 className="mb-3 text-sm font-semibold text-gray-300">
+          <div className="rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-4 shadow-md">
+            <h2 className="mb-3 text-sm font-semibold text-[var(--ctp-subtext1)]">
               Saved money
             </h2>
             <div className="space-y-2">
@@ -263,13 +267,13 @@ export default function SavingsPage(): JSX.Element {
                 (saving: Saving): JSX.Element => (
                   <div
                     key={saving.id}
-                    className="grid grid-cols-[1fr_auto] items-center gap-3 rounded border border-slate-600 p-3"
+                    className="grid grid-cols-[1fr_auto] items-center gap-3 rounded border border-[var(--ctp-surface1)] p-3"
                   >
                     <div className="min-w-0">
-                      <div className="truncate text-sm font-semibold text-white">
+                      <div className="truncate text-sm font-semibold text-[var(--ctp-text)]">
                         {saving.name}
                       </div>
-                      <div className="text-xs text-gray-400">
+                      <div className="text-xs text-[var(--ctp-subtext0)]">
                         {savingLocationLabels[saving.location]}
                       </div>
                     </div>
@@ -281,7 +285,7 @@ export default function SavingsPage(): JSX.Element {
                       <button
                         type="button"
                         onClick={(): void => handleEdit(saving)}
-                        className="cursor-pointer rounded p-2 text-gray-200 hover:bg-slate-600"
+                        className="cursor-pointer rounded p-2 text-[var(--ctp-text)] hover:bg-[var(--ctp-surface1)]"
                         title="Edit"
                       >
                         <FiEdit2 />
@@ -289,7 +293,7 @@ export default function SavingsPage(): JSX.Element {
                       <button
                         type="button"
                         onClick={(): Promise<void> => handleDelete(saving.id)}
-                        className="cursor-pointer rounded p-2 text-red-200 hover:bg-red-900/60"
+                        className="cursor-pointer rounded p-2 text-[var(--ctp-red)] hover:bg-[var(--ctp-red)]/25"
                         title="Delete"
                       >
                         <FiTrash2 />
@@ -299,7 +303,7 @@ export default function SavingsPage(): JSX.Element {
                 )
               )}
               {!savingsList.length && (
-                <span className="text-sm text-gray-300">
+                <span className="text-sm text-[var(--ctp-subtext1)]">
                   No saved money added yet.
                 </span>
               )}

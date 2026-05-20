@@ -61,7 +61,7 @@ export default function Balance({
   );
 
   return (
-    <div className="flex w-full cursor-default flex-col justify-between gap-2 rounded bg-slate-700/90 p-2">
+    <div className="flex w-full cursor-default flex-col justify-between gap-2 rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-2 shadow-md">
       <div className="flex w-full justify-between">
         <div>
           <span>Total</span>
@@ -70,7 +70,7 @@ export default function Balance({
             value={totalIncomes - totalExpenses}
           />
         </div>
-        <div className="flex items-center rounded-full border border-gray-500 hover:border-gray-600">
+        <div className="flex items-center">
           <DatePickerDialog
             date={date}
             setDate={setDate}

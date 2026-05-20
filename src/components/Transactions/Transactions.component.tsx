@@ -86,8 +86,8 @@ export default function Transactions({
   }, [transactions, sortKey, sortOrder]);
 
   return (
-    <div className="w-full rounded bg-blue-950/90 px-3 py-3">
-      <div className="mb-2 grid grid-cols-4 place-items-start">
+    <div className="flex min-h-0 w-full flex-col rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-base)]/95 px-3 py-3 shadow-md">
+      <div className="mb-2 grid grid-cols-4 place-items-start rounded bg-[var(--ctp-crust)]/60 px-2 py-2">
         <HeaderCell
           label={title}
           keyName="category"
@@ -119,10 +119,7 @@ export default function Transactions({
           />
         </div>
       </div>
-      <div
-        className="space-y-2 overflow-y-auto"
-        style={{ height: 'calc(100vh - 382px)' }}
-      >
+      <div className="min-h-64 space-y-2 overflow-y-auto lg:min-h-0 lg:flex-1">
         {sortedTransactions.map(
           (transaction: Transaction): JSX.Element => (
             <FinancialMovements
