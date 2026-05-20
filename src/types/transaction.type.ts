@@ -11,3 +11,16 @@ export interface Transaction {
   repeats: RepeatInterval;
   date: string;
 }
+
+export interface Page<T> {
+  content: T[];
+  first: boolean;
+  last: boolean;
+  number: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+export type TransactionSortKey = 'category' | 'notes' | 'date' | 'value';
+export type TransactionSortOrder = 'asc' | 'desc';

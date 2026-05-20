@@ -12,11 +12,10 @@ import clsx from 'clsx';
 import { useMemo, useState, type JSX } from 'react';
 import { BiEdit } from 'react-icons/bi';
 import { FcFullTrash } from 'react-icons/fc';
-import type { KeyedMutator } from 'swr';
 
 export interface FinancialMovementsProps {
   transaction: Transaction;
-  mutateOnDelete: KeyedMutator<Transaction[]>;
+  mutateOnDelete: () => Promise<unknown>;
   selectedDate: Date;
 }
 

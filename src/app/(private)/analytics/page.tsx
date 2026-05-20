@@ -141,8 +141,14 @@ export default function AnalyticsPage(): JSX.Element {
   );
   const isInvalidDateRange = period.startDate > period.endDate;
 
-  const { data: incomes } = useTransactions(TransactionType.INCOME, period);
-  const { data: expenses } = useTransactions(TransactionType.EXPENSE, period);
+  const { data: incomes } = useTransactions(TransactionType.INCOME, period, {
+    loadAll: true,
+    pageSize: 1000,
+  });
+  const { data: expenses } = useTransactions(TransactionType.EXPENSE, period, {
+    loadAll: true,
+    pageSize: 1000,
+  });
   const { data: savings } = useSavings();
   const savingsList = savings ?? [];
   const totalSaved = getSavingsTotal(savingsList);

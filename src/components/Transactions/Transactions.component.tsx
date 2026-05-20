@@ -1,89 +1,62 @@
 'use client';
 
 import { FinancialMovements, HeaderCell } from '@/components';
-import type { Transaction } from '@/types';
-import { parseApiDate } from '@/utils/globalFormats.util';
+import type {
+  Transaction,
+  TransactionSortKey,
+  TransactionSortOrder,
+} from '@/types';
 import type { JSX } from 'react';
-import { useMemo, useState } from 'react';
-import type { KeyedMutator } from 'swr';
-
-type SortKey = 'category' | 'notes' | 'date' | 'value';
-type SortOrder = 'asc' | 'desc';
+import { useCallback, useEffect, useRef } from 'react';
 
 interface SingleTransactionProps {
+  hasMore: boolean;
+  isLoadingMore: boolean;
+  loadMore: () => Promise<void>;
+  sortKey: TransactionSortKey;
+  sortOrder: TransactionSortOrder;
   transactions?: Transaction[];
-  transactionsMutate: KeyedMutator<Transaction[]>;
+  transactionsMutate: () => Promise<unknown>;
   selectedDate: Date;
   title: string;
+  toggleSort: (key: TransactionSortKey) => void;
 }
 
 export default function Transactions({
+  hasMore,
+  isLoadingMore,
+  loadMore,
+  sortKey,
+  sortOrder,
   transactions,
   transactionsMutate,
   selectedDate,
   title,
+  toggleSort,
 }: Readonly<SingleTransactionProps>): JSX.Element {
-  const [sortKey, setSortKey] = useState<SortKey>('date');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  function toggleSort(key: SortKey): void {
-    if (sortKey === key) {
-      setSortOrder(
-        (prev: SortOrder): SortOrder => (prev === 'asc' ? 'desc' : 'asc')
-      );
-    } else {
-      setSortKey(key);
-      setSortOrder('asc');
+  const loadMoreIfNeeded = useCallback((): void => {
+    const element = scrollContainerRef.current;
+
+    if (!element || !hasMore || isLoadingMore) {
+      return;
     }
-  }
-
-  const sortedTransactions: Transaction[] = useMemo((): Transaction[] => {
-    if (!transactions || transactions.length === 0) {
-      return [];
+    if (element.scrollTop + element.clientHeight >= element.scrollHeight - 80) {
+      void loadMore();
     }
+  }, [hasMore, isLoadingMore, loadMore]);
 
-    function getAmount(transaction: Transaction): number {
-      return transaction.installmentNumbers
-        ? Number(transaction.installments?.[0]?.amount ?? 0)
-        : Number(transaction.totalValue);
+  useEffect((): void => {
+    const element = scrollContainerRef.current;
+
+    if (!element || !hasMore || isLoadingMore) {
+      return;
     }
-
-    return transactions
-      .slice()
-      .sort((a: Transaction, b: Transaction): number => {
-        let A: string | number = '';
-        let B: string | number = '';
-
-        switch (sortKey) {
-          case 'category':
-            A = a.category.name.toLowerCase();
-            B = b.category.name.toLowerCase();
-            break;
-          case 'notes':
-            A = (a.notes ?? '').toLowerCase();
-            B = (b.notes ?? '').toLowerCase();
-            break;
-          case 'date':
-            A = parseApiDate(a.date).getTime();
-            B = parseApiDate(b.date).getTime();
-            break;
-          case 'value':
-            A = getAmount(a);
-            B = getAmount(b);
-            break;
-          default:
-            return 0;
-        }
-
-        if (A < B) {
-          return sortOrder === 'asc' ? -1 : 1;
-        }
-        if (A > B) {
-          return sortOrder === 'asc' ? 1 : -1;
-        }
-        return 0;
-      });
-  }, [transactions, sortKey, sortOrder]);
+    if (element.scrollHeight <= element.clientHeight) {
+      void loadMore();
+    }
+  }, [hasMore, isLoadingMore, loadMore, transactions?.length]);
 
   return (
     <div className="flex min-h-0 w-full flex-col rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-base)]/95 px-3 py-3 shadow-md">
@@ -119,8 +92,12 @@ export default function Transactions({
           />
         </div>
       </div>
-      <div className="min-h-64 space-y-2 overflow-y-auto lg:min-h-0 lg:flex-1">
-        {sortedTransactions.map(
+      <div
+        className="min-h-64 space-y-2 overflow-y-auto lg:min-h-0 lg:flex-1"
+        onScroll={loadMoreIfNeeded}
+        ref={scrollContainerRef}
+      >
+        {transactions?.map(
           (transaction: Transaction): JSX.Element => (
             <FinancialMovements
               key={transaction.id}
@@ -129,6 +106,11 @@ export default function Transactions({
               selectedDate={selectedDate}
             />
           )
+        )}
+        {isLoadingMore && (
+          <div className="py-2 text-center text-sm text-[var(--ctp-subtext0)]">
+            Loading more...
+          </div>
         )}
       </div>
     </div>

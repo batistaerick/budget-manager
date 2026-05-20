@@ -64,7 +64,7 @@ export default function Balance({
     <div className="flex w-full cursor-default flex-col justify-between gap-2 rounded border border-[var(--ctp-surface1)] bg-[var(--ctp-surface0)]/90 p-2 shadow-md">
       <div className="flex w-full justify-between">
         <div>
-          <span>Total</span>
+          <span className="text-2xl">Total</span>
           <Money
             className="text-left text-3xl"
             value={totalIncomes - totalExpenses}
@@ -82,17 +82,17 @@ export default function Balance({
       </div>
       <div className="flex justify-between text-sm">
         <div className="text-left">
-          Expenses
+          <span className="text-xl">Expenses</span>
           <div className="flex items-end gap-1">
             <FcBearish size={35} />
-            <Money value={totalExpenses} />
+            <Money className="text-xl" value={totalExpenses} />
           </div>
         </div>
         <div className="flex gap-1">
           <div className="text-end">
-            Incomes
+            <span className="text-xl">Incomes</span>
             <div className="flex items-end justify-end gap-1">
-              <Money value={totalIncomes} />
+              <Money className="text-xl" value={totalIncomes} />
               <FcBullish size={35} />
             </div>
           </div>
