@@ -1,14 +1,18 @@
 # Budget Manager
 
 Budget Manager is a personal-finance monorepo containing the browser application,
-the transactional API, documentation, and deployment infrastructure.
+the native mobile application, the transactional API, shared packages,
+documentation, and deployment infrastructure.
 
 ## Repository structure
 
 ```text
 apps/
   api/            Java 25 / Spring Boot API
+  mobile/         Expo / React Native Android and iOS application
   web/            Next.js 16 web application
+packages/
+  api-client/     Shared API transport, validation, and domain contracts
 docs/             Architecture and engineering documentation
 infrastructure/   Terraform for the AWS deployment foundation
 ```
@@ -33,10 +37,11 @@ make compose-up
 ```
 
 The web application is available at `http://localhost:3000`; the API is available
-at `http://localhost:8080`.
+at `http://localhost:8080`. Copy `apps/mobile/.env.example` to
+`apps/mobile/.env` before starting Expo.
 
-For development without containers, run `make api-dev` and `make web-dev` in
-separate terminals.
+For development without containers, run `make api-dev`, `make web-dev`, and
+`make mobile-dev` in separate terminals.
 
 ## Quality gates
 
@@ -47,7 +52,7 @@ make compose-config
 make terraform-check
 ```
 
-`make install` installs locked web dependencies and activates Lefthook. The
+`make install` installs all locked JavaScript dependencies and activates Lefthook. The
 pre-commit hook runs checks for changed applications. Commit messages must follow
 Conventional Commits, for example `feat: add recurring transactions`.
 

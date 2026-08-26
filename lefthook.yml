@@ -4,6 +4,12 @@ pre-commit:
     - name: web
       glob: "apps/web/**/*.{js,jsx,ts,tsx,json,css,md}"
       run: npm run check --prefix apps/web
+    - name: mobile
+      glob: "apps/mobile/**/*.{js,jsx,ts,tsx,json,md}"
+      run: npm run check --prefix apps/mobile
+    - name: api-client
+      glob: "packages/api-client/**/*.{ts,json,md}"
+      run: npm run check --prefix packages/api-client
     - name: api
       glob: "apps/api/**/*.{java,xml,yaml,yml,properties}"
       run: cd apps/api && ./mvnw --batch-mode verify

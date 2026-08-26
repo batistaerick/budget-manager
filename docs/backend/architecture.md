@@ -12,13 +12,13 @@ contexts:
 
 The current package vocabulary maps to DDD concerns as follows:
 
-| Package | DDD responsibility |
-| --- | --- |
-| `domain.entities`, `enums` | Aggregates, entities, and domain vocabulary |
-| `services` | Application use cases and transaction orchestration |
-| `controllers`, `domain.dtos` | HTTP adapters and transport contracts |
-| `repositories` | Persistence adapters |
-| `security`, `config` | Technical infrastructure |
+| Package                      | DDD responsibility                                  |
+| ---------------------------- | --------------------------------------------------- |
+| `domain.entities`, `enums`   | Aggregates, entities, and domain vocabulary         |
+| `services`                   | Application use cases and transaction orchestration |
+| `controllers`, `domain.dtos` | HTTP adapters and transport contracts               |
+| `repositories`               | Persistence adapters                                |
+| `security`, `config`         | Technical infrastructure                            |
 
 Dependencies point inward: controllers call application services; services use
 repositories; domain objects never access HTTP, security, or persistence types.

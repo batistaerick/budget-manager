@@ -19,6 +19,7 @@
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run test:ci -- --runInBand"
   },
   "dependencies": {
+    "@budget-manager/api-client": "file:../../packages/api-client",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/x-charts": "^8.28.2",

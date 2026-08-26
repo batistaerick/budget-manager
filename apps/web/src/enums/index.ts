@@ -1,4 +1,6 @@
-export { RepeatInterval } from '@/enums/repeatInterval.enum';
-export { SavingLocation } from '@/enums/savingLocation.enum';
-export { TransactionType } from '@/enums/transactionType.enum';
-export { UserRole } from '@/enums/userRole.enum';
+export {
+  RepeatInterval,
+  SavingLocation,
+  TransactionType,
+  UserRole,
+} from '@budget-manager/api-client';

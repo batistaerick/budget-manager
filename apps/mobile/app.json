@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Budget Manager",
+    "slug": "budget-manager",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "budgetmanager",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.batistaerick.budgetmanager"
+    },
+    "android": {
+      "package": "com.batistaerick.budgetmanager",
+      "adaptiveIcon": { "backgroundColor": "#111827" },
+      "edgeToEdgeEnabled": true
+    },
+    "plugins": ["expo-router"],
+    "experiments": { "typedRoutes": true }
+  }
+}
