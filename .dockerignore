@@ -1,0 +1,10 @@
+.git
+.idea
+.vscode
+**/.next
+**/node_modules
+**/target
+**/coverage
+**/storybook-static
+**/.env*
+*.log

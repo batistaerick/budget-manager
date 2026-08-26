@@ -1,0 +1,14 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: web
+      glob: "apps/web/**/*.{js,jsx,ts,tsx,json,css,md}"
+      run: npm run check --prefix apps/web
+    - name: api
+      glob: "apps/api/**/*.{java,xml,yaml,yml,properties}"
+      run: cd apps/api && ./mvnw --batch-mode verify
+
+commit-msg:
+  commands:
+    conventional-commit:
+      run: node scripts/validate-conventional-commit.mjs {1}

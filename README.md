@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Budget Manager
 
-## Getting Started
+Budget Manager is a personal-finance monorepo containing the browser application,
+the transactional API, documentation, and deployment infrastructure.
 
-First, run the development server:
+## Repository structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```text
+apps/
+  api/            Java 25 / Spring Boot API
+  web/            Next.js 16 web application
+docs/             Architecture and engineering documentation
+infrastructure/   Terraform for the AWS deployment foundation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The API is a modular monolith organized around identity, ledger, and savings
+business capabilities. Its dependency direction and DDD boundaries are described
+in [the backend architecture](docs/backend/architecture.md).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Requirements
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Java 25
+- Node.js 24 and npm 11+
+- Docker with Docker Compose
+- Terraform 1.13+ (only when changing infrastructure)
 
-## Learn More
+## Getting started
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+make install
+cp .env.example .env
+make compose-up
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The web application is available at `http://localhost:3000`; the API is available
+at `http://localhost:8080`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+For development without containers, run `make api-dev` and `make web-dev` in
+separate terminals.
 
-## Deploy on Vercel
+## Quality gates
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+make check
+make build
+make compose-config
+make terraform-check
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`make install` installs locked web dependencies and activates Lefthook. The
+pre-commit hook runs checks for changed applications. Commit messages must follow
+Conventional Commits, for example `feat: add recurring transactions`.
+
+Never commit `.env` files, credentials, Terraform state, generated builds, or
+personal finance data.
