@@ -1,82 +1,195 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help install check build format api-client-generate api-client-check api-client-format api-check api-build api-format api-dev web-check web-build web-format web-dev mobile-check mobile-build mobile-format mobile-dev compose-up compose-down compose-config clean terraform-check
+API_DIR := apps/api
+WEB_DIR := apps/web
+MOBILE_DIR := apps/mobile
+API_CLIENT_DIR := packages/api-client
+LOCAL_API_URL := http://localhost:8080
+COMPOSE := docker compose
+TERRAFORM_DIR := infrastructure/terraform
+TERRAFORM := terraform
+MVNW := cd $(API_DIR) && ./mvnw --batch-mode
+WEB_NPM := npm --prefix $(WEB_DIR)
+MOBILE_NPM := npm --prefix $(MOBILE_DIR)
+API_CLIENT_NPM := npm --prefix $(API_CLIENT_DIR)
+ROOT_NPM := npm
+
+.PHONY: help install prepare check build format test hooks-install hooks-uninstall commit-title-check \
+	api-check api-format api-test api-build api-run \
+	api-client-install api-client-generate api-client-check api-client-format api-client-audit \
+	web-install web-check web-format web-test web-build web-dev web-storybook web-storybook-build \
+	mobile-install mobile-check mobile-format mobile-test mobile-build mobile-start mobile-android mobile-ios \
+	compose-config compose-up compose-down compose-restart compose-ps compose-logs compose-deps-up compose-deps-down \
+	terraform-format terraform-init terraform-validate terraform-check up down clean restart ps logs
 
 help:
-	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z_-]+:.*## / {printf "%-22s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+	@echo "Usage: make <command>"
+	@echo ""
+	@echo "🚀 Core: install prepare check build format test hooks-install hooks-uninstall commit-title-check"
+	@echo "☕ API: api-run api-check api-format api-test api-build"
+	@echo "🔗 Client: api-client-generate api-client-check api-client-format api-client-audit"
+	@echo "🌐 Web: web-dev web-check web-format web-test web-build web-storybook web-storybook-build"
+	@echo "📱 Mobile: mobile-start mobile-android mobile-ios mobile-check mobile-format mobile-test mobile-build"
+	@echo "🐳 Compose: up down clean restart ps logs compose-config compose-deps-up compose-deps-down"
+	@echo "🏗️  Terraform: terraform-format terraform-init terraform-validate terraform-check"
 
-install: ## Install locked dependencies and Git hooks
-	npm ci
-	npm ci --prefix packages/api-client
-	npm ci --prefix apps/web
-	npm ci --prefix apps/mobile
-	npx lefthook install
+# ── Core commands ─────────────────────────────────────────────────────────────
 
-check: api-client-check api-check web-check mobile-check ## Run all static analysis and tests
+install: hooks-install api-client-install web-install mobile-install
 
-build: api-build web-build mobile-build ## Build all deployable applications
+prepare: format check build
 
-format: api-client-format api-format web-format mobile-format ## Format all application source
-	npx prettier --write "*.{json,md,yaml,yml}" ".github/**/*.{yaml,yml,md}" "docs/**/*.md"
+check: api-check api-client-check api-client-audit web-check mobile-check
 
-api-client-check: ## Verify shared API contracts and client types
-	npm run check --prefix packages/api-client
+build: check api-build web-build mobile-build
 
-api-client-generate: ## Regenerate the shared client from OpenAPI
-	npm run generate --prefix packages/api-client
+format: api-format api-client-format web-format mobile-format
+	$(ROOT_NPM) exec prettier -- --write "*.{json,md,yaml,yml}" ".github/**/*.{yaml,yml,md}" "docs/**/*.md"
 
-api-client-format: ## Format the shared API client
-	npm run format --prefix packages/api-client
+test: api-test web-test mobile-test
 
-api-check: ## Verify API formatting, tests, PMD, SpotBugs, and architecture
-	cd apps/api && ./mvnw --batch-mode verify
+hooks-install:
+	$(ROOT_NPM) ci
+	$(ROOT_NPM) run hooks:install
 
-api-build: ## Package the API
-	cd apps/api && ./mvnw --batch-mode package -DskipTests
+hooks-uninstall:
+	$(ROOT_NPM) run hooks:uninstall
 
-api-format: ## Format API source
-	cd apps/api && ./mvnw spotless:apply
+commit-title-check:
+	@test -n "$(TITLE)" || (echo "Usage: make commit-title-check TITLE='feat: add capability'" && exit 1)
+	node scripts/validate-conventional-commit.mjs --title "$(TITLE)"
 
-api-dev: ## Run the API locally
-	cd apps/api && ./mvnw spring-boot:run
+# ── API ───────────────────────────────────────────────────────────────────────
 
-web-check: ## Verify web formatting, lint, types, and tests
-	npm run check --prefix apps/web
+api-run:
+	$(MVNW) spring-boot:run
 
-web-build: ## Build the web application
-	npm run build --prefix apps/web
+api-check:
+	$(MVNW) verify
 
-web-format: ## Format web source
-	npm run format --prefix apps/web
+api-format:
+	$(MVNW) spotless:apply
 
-web-dev: ## Run the web application locally
-	npm run dev --prefix apps/web
+api-test:
+	$(MVNW) test
 
-mobile-check: ## Verify mobile formatting, lint, types, and tests
-	npm run check --prefix apps/mobile
+api-build:
+	$(MVNW) package -DskipTests
 
-mobile-build: ## Export Android and iOS application bundles
-	EXPO_PUBLIC_API_URL=$${EXPO_PUBLIC_API_URL:-http://localhost:8080} npm run build --prefix apps/mobile
+# ── Generated API client ──────────────────────────────────────────────────────
 
-mobile-format: ## Format mobile source
-	npm run format --prefix apps/mobile
+api-client-install:
+	$(API_CLIENT_NPM) ci
 
-mobile-dev: ## Run the Expo development server
-	npm run start --prefix apps/mobile
+api-client-generate:
+	$(API_CLIENT_NPM) run generate
 
-compose-up: ## Start the complete local stack
-	docker compose up --build --detach --wait
+api-client-check:
+	$(API_CLIENT_NPM) run check
 
-compose-down: ## Stop the local stack
-	docker compose down
+api-client-format:
+	$(API_CLIENT_NPM) run format
 
-compose-config: ## Validate Docker Compose configuration
-	docker compose config --quiet
+api-client-audit:
+	$(API_CLIENT_NPM) audit --audit-level=high
 
-clean: ## Remove local containers and volumes
-	docker compose down --volumes --remove-orphans
+# ── Web ───────────────────────────────────────────────────────────────────────
 
-terraform-check: ## Format-check and validate Terraform
-	terraform fmt -check -recursive infrastructure/terraform
-	terraform -chdir=infrastructure/terraform init -backend=false
-	terraform -chdir=infrastructure/terraform validate
+web-install:
+	$(WEB_NPM) ci
+
+web-dev:
+	$(WEB_NPM) run dev
+
+web-check:
+	$(WEB_NPM) run check
+
+web-format:
+	$(WEB_NPM) run format
+
+web-test:
+	$(WEB_NPM) test -- --runInBand
+
+web-build:
+	NEXT_PUBLIC_API_URL=$(LOCAL_API_URL) $(WEB_NPM) run build
+
+web-storybook:
+	$(WEB_NPM) run storybook
+
+web-storybook-build:
+	NEXT_PUBLIC_API_URL=$(LOCAL_API_URL) $(WEB_NPM) run build-storybook
+
+# ── Mobile ────────────────────────────────────────────────────────────────────
+
+mobile-install:
+	$(MOBILE_NPM) ci
+
+mobile-check:
+	$(MOBILE_NPM) run check
+
+mobile-format:
+	$(MOBILE_NPM) run format
+
+mobile-test:
+	$(MOBILE_NPM) test -- --runInBand
+
+mobile-build:
+	EXPO_PUBLIC_API_URL=$(LOCAL_API_URL) $(MOBILE_NPM) run build
+
+mobile-start:
+	$(MOBILE_NPM) start
+
+mobile-android:
+	$(MOBILE_NPM) run android
+
+mobile-ios:
+	$(MOBILE_NPM) run ios
+
+# ── Docker Compose ────────────────────────────────────────────────────────────
+
+compose-config:
+	$(COMPOSE) config --quiet
+
+compose-up:
+	$(COMPOSE) up --build -d
+
+compose-down:
+	$(COMPOSE) down
+
+compose-restart: compose-down compose-up
+
+compose-ps:
+	$(COMPOSE) ps
+
+compose-logs:
+	$(COMPOSE) logs --follow
+
+compose-deps-up:
+	$(COMPOSE) up -d postgres
+
+compose-deps-down:
+	$(COMPOSE) stop postgres
+
+up: compose-up
+down: compose-down
+restart: compose-restart
+ps: compose-ps
+logs: compose-logs
+
+clean:
+	$(COMPOSE) down --volumes --remove-orphans
+
+# ── Terraform ─────────────────────────────────────────────────────────────────
+
+terraform-format:
+	$(TERRAFORM) fmt -recursive $(TERRAFORM_DIR)
+
+terraform-init:
+	$(TERRAFORM) -chdir=$(TERRAFORM_DIR) init -backend=false
+
+terraform-validate: terraform-init
+	$(TERRAFORM) -chdir=$(TERRAFORM_DIR) validate
+
+terraform-check:
+	$(TERRAFORM) fmt -check -recursive $(TERRAFORM_DIR)
+	$(MAKE) terraform-validate

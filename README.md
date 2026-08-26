@@ -44,8 +44,8 @@ The web application is available at `http://localhost:3000`; the API is availabl
 at `http://localhost:8080`. Copy `apps/mobile/.env.example` to
 `apps/mobile/.env` before starting Expo.
 
-For development without containers, run `make api-dev`, `make web-dev`, and
-`make mobile-dev` in separate terminals.
+For development without containers, run `make api-run`, `make web-dev`, and
+`make mobile-start` in separate terminals.
 
 ## Quality gates
 

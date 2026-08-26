@@ -2,12 +2,20 @@
   "name": "budget-manager-monorepo",
   "version": "1.0.0",
   "private": true,
-  "scripts": {},
-  "devDependencies": {
-    "lefthook": "^2.0.13",
-    "prettier": "^3.8.3"
+  "scripts": {
+    "hooks:install": "lefthook install",
+    "hooks:uninstall": "lefthook uninstall"
   },
+  "devDependencies": {
+    "lefthook": "2.1.10",
+    "prettier": "3.9.6"
+  },
+  "engines": {
+    "node": ">=24",
+    "npm": ">=12"
+  },
+  "packageManager": "npm@12.0.2",
   "allowScripts": {
-    "lefthook": true
+    "lefthook@2.1.10": true
   }
 }
