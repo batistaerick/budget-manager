@@ -10,19 +10,20 @@ contexts:
 - **Ledger** owns categories, transactions, and installments.
 - **Savings** owns savings goals and their location rules.
 
-The current package vocabulary maps to DDD concerns as follows:
+The code is split by capability first and then by DDD layer:
 
-| Package                      | DDD responsibility                                  |
-| ---------------------------- | --------------------------------------------------- |
-| `domain.entities`, `enums`   | Aggregates, entities, and domain vocabulary         |
-| `services`                   | Application use cases and transaction orchestration |
-| `controllers`, `domain.dtos` | HTTP adapters and transport contracts               |
-| `repositories`               | Persistence adapters                                |
-| `security`, `config`         | Technical infrastructure                            |
+| Package                                | DDD responsibility                        |
+| -------------------------------------- | ----------------------------------------- |
+| `{context}.domain`                     | Entities and domain vocabulary            |
+| `{context}.application`                | Use cases and transaction orchestration   |
+| `{context}.infrastructure.http`        | Controllers, DTOs, and converters         |
+| `{context}.infrastructure.persistence` | Spring Data persistence adapters          |
+| `{context}.infrastructure.security`    | Authentication and authorization adapters |
 
 Dependencies point inward: controllers call application services; services use
-repositories; domain objects never access HTTP, security, or persistence types.
-ArchUnit enforces these first-order boundaries in every Maven verification.
+repositories; domain objects never access application or infrastructure types.
+ArchUnit enforces those boundaries and prevents HTTP adapters from accessing
+persistence adapters directly in every Maven verification.
 
 ## Evolution rules
 

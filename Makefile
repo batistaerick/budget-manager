@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help install check build format api-client-check api-client-format api-check api-build api-format api-dev web-check web-build web-format web-dev mobile-check mobile-build mobile-format mobile-dev compose-up compose-down compose-config clean terraform-check
+.PHONY: help install check build format api-client-generate api-client-check api-client-format api-check api-build api-format api-dev web-check web-build web-format web-dev mobile-check mobile-build mobile-format mobile-dev compose-up compose-down compose-config clean terraform-check
 
 help:
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z_-]+:.*## / {printf "%-22s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -21,6 +21,9 @@ format: api-client-format api-format web-format mobile-format ## Format all appl
 
 api-client-check: ## Verify shared API contracts and client types
 	npm run check --prefix packages/api-client
+
+api-client-generate: ## Regenerate the shared client from OpenAPI
+	npm run generate --prefix packages/api-client
 
 api-client-format: ## Format the shared API client
 	npm run format --prefix packages/api-client

@@ -1,0 +1,34 @@
+package com.budgetmanager.bm.ledger.domain;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import java.time.Instant;
+import java.util.UUID;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+@Table(name = "t_category")
+@Entity
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Category {
+
+  @Id @GeneratedValue private UUID id;
+
+  @Column(nullable = false, unique = true)
+  private String name;
+
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private TransactionType transactionType;
+
+  @CreationTimestamp
+  @Column(updatable = false)
+  private Instant createdAt;
+
+  @UpdateTimestamp private Instant updatedAt;
+}

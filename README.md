@@ -12,7 +12,7 @@ apps/
   mobile/         Expo / React Native Android and iOS application
   web/            Next.js 16 web application
 packages/
-  api-client/     Shared API transport, validation, and domain contracts
+  api-client/     OpenAPI-generated SDK, validation, and domain contracts
 docs/             Architecture and engineering documentation
 infrastructure/   Terraform for the AWS deployment foundation
 ```
@@ -20,6 +20,10 @@ infrastructure/   Terraform for the AWS deployment foundation
 The API is a modular monolith organized around identity, ledger, and savings
 business capabilities. Its dependency direction and DDD boundaries are described
 in [the backend architecture](docs/backend/architecture.md).
+
+The committed OpenAPI contract at `packages/api-client/openapi.yaml` generates a
+typed fetch SDK used by both frontend applications. After changing the contract,
+run `make api-client-generate` and commit the generated sources.
 
 ## Requirements
 

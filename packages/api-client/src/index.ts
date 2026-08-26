@@ -13,6 +13,9 @@ export {
   transactionSchema,
   userSchema,
 } from './models';
+export { client as generatedClient } from './generated/client.gen';
+export * from './generated/sdk.gen';
+export * as OpenApi from './generated/types.gen';
 export type {
   Category,
   Installment,

@@ -13,28 +13,25 @@ import com.tngtech.archunit.lang.ArchRule;
 class ArchitectureTest {
 
   @ArchTest
-  static final ArchRule domainDoesNotDependOnDeliveryOrPersistence =
+  static final ArchRule DOMAIN_DOES_NOT_DEPEND_ON_APPLICATION_OR_INFRASTRUCTURE =
       noClasses()
           .that()
-          .resideInAnyPackage("..domain..", "..enums..")
+          .resideInAPackage("..domain..")
           .should()
           .dependOnClassesThat()
-          .resideInAnyPackage(
-              "com.budgetmanager.bm.controllers..",
-              "com.budgetmanager.bm.repositories..",
-              "com.budgetmanager.bm.security..");
+          .resideInAnyPackage("..application..", "..infrastructure..");
 
   @ArchTest
-  static final ArchRule controllersDoNotAccessRepositories =
+  static final ArchRule HTTP_ADAPTERS_DO_NOT_ACCESS_PERSISTENCE =
       noClasses()
           .that()
-          .resideInAPackage("..controllers..")
+          .resideInAPackage("..infrastructure.http..")
           .should()
           .dependOnClassesThat()
-          .resideInAPackage("..repositories..");
+          .resideInAPackage("..infrastructure.persistence..");
 
   @ArchTest
-  static final ArchRule domainDoesNotDependOnSpringSecurity =
+  static final ArchRule DOMAIN_DOES_NOT_DEPEND_ON_SPRING_SECURITY =
       noClasses()
           .that()
           .resideInAnyPackage("..domain..", "..enums..")
