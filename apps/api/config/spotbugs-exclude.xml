@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- Spring services intentionally retain references supplied through constructor injection. -->
+    <Match>
+        <Package name="~com\.budgetmanager\.bm\.services"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+</FindBugsFilter>

@@ -1,0 +1,46 @@
+package com.budgetmanager.bm.converters;
+
+import com.budgetmanager.bm.domain.dtos.RoleDto;
+import com.budgetmanager.bm.domain.dtos.UserDto;
+import com.budgetmanager.bm.domain.entities.Role;
+import com.budgetmanager.bm.domain.entities.User;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public final class UserConverter {
+
+  private UserConverter() {}
+
+  public static UserDto entityToDto(User entity) {
+    return UserDto.builder()
+        .id(entity.getId())
+        .email(entity.getEmail())
+        .name(entity.getName())
+        .roles(checkRoles(entity))
+        .build();
+  }
+
+  public static User dtoToEntity(UserDto dto) {
+    return User.builder()
+        .id(dto.id())
+        .email(dto.email())
+        .name(dto.name())
+        .password(dto.password())
+        .roles(checkRoles(dto))
+        .build();
+  }
+
+  public static Set<Role> checkRoles(UserDto dto) {
+    if (dto.roles() != null) {
+      return dto.roles().stream().map(RoleConverter::dtoToEntity).collect(Collectors.toSet());
+    }
+    return Set.of();
+  }
+
+  public static Set<RoleDto> checkRoles(User user) {
+    if (user.getRoles() != null) {
+      return user.getRoles().stream().map(RoleConverter::entityToDto).collect(Collectors.toSet());
+    }
+    return Set.of();
+  }
+}
