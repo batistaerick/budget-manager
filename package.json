@@ -5,7 +5,7 @@
   "scripts": {},
   "devDependencies": {
     "lefthook": "^2.0.13",
-    "prettier": "^3.8.3"
+    "prettier": "^3.9.6"
   },
   "allowScripts": {
     "lefthook": true
