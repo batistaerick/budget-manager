@@ -3,12 +3,12 @@ import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = dirname(fileURLToPath(import.meta.url));
+const monorepoRoot = dirname(dirname(root));
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  turbopack: {
-    root,
-  },
+  outputFileTracingRoot: monorepoRoot,
+  transpilePackages: ['@budget-manager/api-client'],
 };
 
 export default nextConfig;
