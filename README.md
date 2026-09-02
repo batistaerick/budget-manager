@@ -45,7 +45,9 @@ at `http://localhost:8080`. Copy `apps/mobile/.env.example` to
 `apps/mobile/.env` before starting Expo.
 
 For development without containers, run `make api-run`, `make web-dev`, and
-`make mobile-start` in separate terminals.
+`make mobile-start` in separate terminals. The mobile app's `npm start` script
+targets a development build; use `npm --prefix apps/mobile run start:go` for
+Expo Go.
 
 ## Quality gates
 
@@ -54,6 +56,21 @@ make check
 make build
 make compose-config
 make terraform-check
+```
+
+Mobile command shortcuts mirror the Expo workflow used by the reference mobile
+app:
+
+```bash
+npm --prefix apps/mobile start
+npm --prefix apps/mobile run start:go
+npm --prefix apps/mobile run android
+npm --prefix apps/mobile run android:device
+npm --prefix apps/mobile run ios
+npm --prefix apps/mobile run web
+npm --prefix apps/mobile run prebuild
+npm --prefix apps/mobile run bundle
+npm --prefix apps/mobile run verify
 ```
 
 `make install` installs all locked JavaScript dependencies and activates Lefthook. The

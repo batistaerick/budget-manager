@@ -1,5 +1,7 @@
 .expo/
 dist/
+android/
+ios/
 node_modules/
 coverage/
 .env
