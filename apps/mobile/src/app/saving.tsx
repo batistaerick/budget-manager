@@ -33,6 +33,7 @@ export default function SavingScreen() {
     <Screen
       title="Add saving"
       description="Track money held outside your monthly balance."
+      header={false}
     >
       <Field
         label="Name"

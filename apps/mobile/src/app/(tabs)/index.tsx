@@ -25,10 +25,7 @@ export default function OverviewScreen() {
     .sort((a, b) => b.item.date.localeCompare(a.item.date))
     .slice(0, 5);
   return (
-    <Screen
-      title="Your month"
-      description="A clear view of what came in, what went out, and what you kept."
-    >
+    <Screen title="Home" description="This month at a glance.">
       {error ? (
         <>
           <ErrorMessage message={error} />
@@ -81,7 +78,7 @@ export default function OverviewScreen() {
           </View>
           <Card>
             <Text style={[styles.sectionTitle, { color: colors.foreground }]}>
-              Recent activity
+              Incomes and expenses
             </Text>
             {recent.length === 0 ? (
               <EmptyState

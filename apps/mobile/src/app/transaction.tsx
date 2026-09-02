@@ -69,6 +69,7 @@ export default function TransactionScreen() {
           : 'Add expense'
       }
       description="Record today’s movement."
+      header={false}
     >
       <Field
         keyboardType="decimal-pad"

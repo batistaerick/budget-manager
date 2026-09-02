@@ -43,8 +43,10 @@ export default function AuthScreen() {
   return (
     <SafeAreaView
       edges={['bottom']}
-      style={[styles.safeArea, { backgroundColor: colors.background }]}
+      style={[styles.safeArea, { backgroundColor: '#032258' }]}
     >
+      <View style={[styles.gradientBand, { backgroundColor: '#2a1c33' }]} />
+      <View style={[styles.gradientGlow, { backgroundColor: '#18313f' }]} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.safeArea}
@@ -56,19 +58,20 @@ export default function AuthScreen() {
           <View
             style={[
               styles.card,
-              { backgroundColor: colors.surface, borderColor: colors.border },
+              {
+                backgroundColor: `${colors.mantle}ee`,
+                borderColor: colors.border,
+              },
             ]}
           >
-            <Text style={[styles.mark, { color: colors.accent }]}>BM</Text>
+            <Text style={[styles.welcome, { color: colors.foreground }]}>
+              Welcome
+            </Text>
             <Text
               accessibilityRole="header"
               style={[styles.title, { color: colors.foreground }]}
             >
-              {creating ? 'Create your account' : 'Welcome back'}
-            </Text>
-            <Text style={[styles.copy, { color: colors.muted }]}>
-              A calm place for every transaction, saving goal, and monthly
-              decision.
+              {creating ? 'Sign Up' : 'Sign In'}
             </Text>
             <View style={styles.form}>
               {creating ? (
@@ -115,15 +118,34 @@ export default function AuthScreen() {
 
 const styles = StyleSheet.create({
   safeArea: { flex: 1 },
-  content: { flexGrow: 1, justifyContent: 'center', padding: 20 },
-  card: { borderRadius: 28, borderWidth: 1, padding: 24 },
-  mark: { fontSize: 22, fontWeight: '900', letterSpacing: -1 },
-  title: {
-    fontSize: 31,
-    fontWeight: '800',
-    letterSpacing: -1.2,
-    marginTop: 24,
+  gradientBand: {
+    bottom: -120,
+    height: 280,
+    left: -80,
+    position: 'absolute',
+    transform: [{ rotate: '-18deg' }],
+    width: '150%',
   },
-  copy: { fontSize: 15, lineHeight: 22, marginTop: 8 },
+  gradientGlow: {
+    borderRadius: 220,
+    height: 360,
+    position: 'absolute',
+    right: -160,
+    top: -90,
+    width: 360,
+  },
+  content: { flexGrow: 1, justifyContent: 'center', padding: 20 },
+  card: { borderRadius: 24, borderWidth: 1, padding: 30 },
+  welcome: {
+    fontSize: 38,
+    fontWeight: '800',
+    marginBottom: 26,
+    textAlign: 'center',
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: '800',
+    textAlign: 'center',
+  },
   form: { gap: 16, marginTop: 26 },
 });

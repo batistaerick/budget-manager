@@ -2,6 +2,20 @@ import { fireEvent, render } from '@testing-library/react-native';
 
 import { Button, EmptyState } from './ui';
 
+jest.mock('expo-router', () => ({
+  router: {
+    push: jest.fn(),
+    replace: jest.fn(),
+  },
+  usePathname: () => '/',
+}));
+
+jest.mock('@/features/auth/auth-context', () => ({
+  useAuth: () => ({
+    signOut: jest.fn().mockResolvedValue(undefined),
+  }),
+}));
+
 describe('shared mobile UI', () => {
   it('invokes button actions', async () => {
     const onPress = jest.fn();

@@ -22,7 +22,7 @@ export default function TransactionsScreen() {
   ].sort((a, b) => b.item.date.localeCompare(a.item.date));
   return (
     <Screen
-      title="Activity"
+      title="Transactions"
       description="Income and expenses recorded this month."
     >
       <View style={styles.actions}>
