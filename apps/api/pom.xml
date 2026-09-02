@@ -33,7 +33,7 @@
         <spotbugs.version>4.10.3.0</spotbugs.version>
         <spotless.version>3.9.0</spotless.version>
         <google-java-format.version>1.36.0</google-java-format.version>
-        <archunit.version>1.4.1</archunit.version>
+        <archunit.version>1.5.0</archunit.version>
     </properties>
     <dependencies>
         <dependency>
