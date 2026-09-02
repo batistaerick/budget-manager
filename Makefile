@@ -15,7 +15,7 @@ API_CLIENT_NPM := npm --prefix $(API_CLIENT_DIR)
 ROOT_NPM := npm
 
 .PHONY: help install prepare check build format test hooks-install hooks-uninstall commit-title-check \
-	api-check api-format api-test api-build api-run \
+	api-check api-format api-test api-build api-run api-logs \
 	api-client-install api-client-generate api-client-check api-client-format api-client-audit \
 	web-install web-check web-format web-test web-build web-dev web-storybook web-storybook-build \
 	mobile-install mobile-check mobile-format mobile-test mobile-build mobile-start mobile-android mobile-ios \
@@ -42,6 +42,7 @@ help:
 	@echo " ➔ api-format              Format Java and backend configuration"
 	@echo " ➔ api-test                Run API tests"
 	@echo " ➔ api-build               Build the executable API artifact"
+	@echo " ➔ api-logs                Follow API container logs"
 	@echo ""
 	@echo "🔗 API Client:"
 	@echo " ➔ api-client-generate     Generate the typed Fetch client from OpenAPI"
@@ -126,6 +127,9 @@ api-test:
 
 api-build:
 	$(MVNW) package -DskipTests
+
+api-logs:
+	$(COMPOSE) logs --follow api
 
 # ── Generated API client ──────────────────────────────────────────────────────
 
