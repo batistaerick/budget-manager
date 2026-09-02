@@ -154,7 +154,7 @@ web-install:
 	$(WEB_NPM) ci
 
 web-dev:
-	$(WEB_NPM) run dev
+	NEXT_PUBLIC_API_URL=$(LOCAL_API_URL) $(WEB_NPM) run dev
 
 web-check:
 	$(WEB_NPM) run check
